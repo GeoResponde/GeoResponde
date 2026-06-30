@@ -4,6 +4,9 @@ import { validateSchemas } from './validators/schema.js';
 import { validateRelations } from './validators/relations.js';
 import { buildSearchIndex } from './indexers/search.js';
 import { writeJson } from './utils/fs.js';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export * from './types/index.js';
 

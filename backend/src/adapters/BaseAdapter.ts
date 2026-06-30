@@ -3,5 +3,6 @@ import { HumanitarianProvider, NormalizedSearchResult, SubmissionPackage } from 
 export interface BaseAdapter {
   provider: HumanitarianProvider;
   search(query: string, domain?: string): Promise<NormalizedSearchResult[]>;
-  submit(pkg: SubmissionPackage): Promise<boolean>;
+  submit(pkg: SubmissionPackage): Promise<{ success: boolean; referenceId?: string }>;
+  getGeoJSON?(): Promise<any>;
 }

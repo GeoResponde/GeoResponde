@@ -112,3 +112,16 @@
   visualization:
     type: raster
     url: 'https://tiledimageservices7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_sentinel1_unwrappedInterferogram/ImageServer/tile/{z}/{y}/{x}'
+
+- id: layer-verified-buildings
+  name:
+    en: Field-Verified Buildings (TerremotoVenezuela)
+    es: Edificios Verificados en Terreno (TerremotoVenezuela)
+  datasetIds: []
+  category: Humanitarian
+  confidence: Official
+  refreshFrequency: Real-time
+  enabled: false
+  visualization:
+    type: point
+    color: "#f39c12"

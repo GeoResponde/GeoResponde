@@ -20,5 +20,8 @@
   "devDependencies": {
     "@georesponde/catalog": "workspace:*",
     "vitest": "^1.4.0"
+  },
+  "dependencies": {
+    "@georesponde/shared": "workspace:*"
   }
 }

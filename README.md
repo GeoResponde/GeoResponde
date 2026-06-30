@@ -224,6 +224,7 @@ See:
 
 ```
 CONTRIBUTING.md
+docs/community/ways-to-contribute.md
 ```
 
 ---

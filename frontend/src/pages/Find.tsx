@@ -37,7 +37,7 @@ export function Find() {
   };
 
   return (
-    <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', flex: 1, overflowY: 'auto', width: '100%' }}>
+    <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', flex: 1, overflowY: 'auto', width: '100%', minHeight: 0 }}>
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ color: '#fff', marginBottom: '16px', fontSize: '36px' }}>{t('find.title')}</h1>
         <p style={{ color: '#aaa', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>
@@ -45,7 +45,7 @@ export function Find() {
         </p>
       </div>
 
-      <form id="search-form" onSubmit={handleSearch} style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+      <form id="search-form" className="find-form" onSubmit={handleSearch} style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
         <input 
           type="text" 
           placeholder={t('find.placeholder')}
@@ -113,7 +113,7 @@ export function Find() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {results.map((r, i) => (
-          <div key={i} style={{ 
+          <div key={i} className="mobile-col" style={{ 
             backgroundColor: '#1e293b', 
             padding: '24px', 
             borderRadius: '12px',

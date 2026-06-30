@@ -34,7 +34,8 @@ export class VenezuelaTeBuscaAdapter implements BaseAdapter {
     }
   }
 
-  async submit(pkg: SubmissionPackage): Promise<boolean> {
-    throw new Error('Not implemented');
+  async submit(pkg: SubmissionPackage): Promise<{ success: boolean; referenceId?: string }> {
+    console.warn(`[VenezuelaTeBuscaAdapter] Submit not implemented for this provider`);
+    return { success: false };
   }
 }

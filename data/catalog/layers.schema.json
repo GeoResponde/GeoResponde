@@ -6,7 +6,15 @@
     "type": "object",
     "properties": {
       "id": { "type": "string" },
-      "name": { "type": "string" },
+      "name": {
+        "anyOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        ]
+      },
       "datasetIds": {
         "type": "array",
         "items": { "type": "string" }
@@ -18,7 +26,7 @@
       },
       "confidence": {
         "type": "string",
-        "enum": ["Verified", "Cross-Referenced", "Community Report", "Pending Verification"]
+        "enum": ["Verified", "Cross-Referenced", "Community Report", "Pending Verification", "Official"]
       },
       "refreshFrequency": {
         "type": "string",
