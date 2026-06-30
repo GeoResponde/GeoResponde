@@ -1,4 +1,4 @@
-import logoUrl from '../assets/logo.png';
+import logo from "../assets/GeoResponde.png";
 import { useTranslation } from 'react-i18next';
 
 export function About() {
@@ -83,7 +83,7 @@ export function About() {
       <div style={contentStyle}>
         
         <header style={headerStyle}>
-          <img src={logoUrl} alt="GeoResponde Logo" style={{ height: '192px', marginBottom: '16px' }} />
+          <img src={logo} alt="GeoResponde Logo" style={{ height: '192px', marginBottom: '16px' }} />
           <h1 style={titleStyle}>{t('about.title')}</h1>
           <p style={subtitleStyle}>{t('about.subtitle')}</p>
         </header>
