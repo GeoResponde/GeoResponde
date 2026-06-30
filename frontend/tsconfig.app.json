@@ -21,5 +21,9 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../packages/client" },
+    { "path": "../packages/shared" }
+  ]
 }
