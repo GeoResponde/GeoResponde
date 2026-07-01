@@ -59,9 +59,16 @@ export interface PfifDocument {
 
 const PFIF_NS = 'http://zesty.ca/pfif/1.4';
 
-/** Escape the five XML-significant characters in a text value. */
+/**
+ * Escape the five XML-significant characters in a text value and strip control
+ * characters that are illegal in XML 1.0 (everything in `\x00-\x1F` except tab
+ * `\x09`, newline `\x0A`, and carriage return `\x0D`). Left unescaped, an illegal
+ * control char makes the emitted document unparseable by a strict XML reader.
+ */
 function escapeXml(value: string): string {
   return value
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
