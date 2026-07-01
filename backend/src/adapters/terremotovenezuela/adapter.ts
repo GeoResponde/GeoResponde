@@ -5,6 +5,8 @@ import {
   Report,
   SubmissionResult,
 } from '@georesponde/shared';
+import { fetchJson } from '../../transports/rest/client.js';
+import { postJson } from '../../transports/rest/postClient.js';
 
 const API_BASE = 'https://api.terremotovenezuela.com/api/v1';
 
@@ -51,12 +53,7 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
     try {
       // The API has no general ?q= search; ?name= is the federated query.
       const url = `${API_BASE}/edificios?name=${encodeURIComponent(query)}&limit=50`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`API returned ${response.status}`);
-      }
-
-      const data: any[] = await response.json();
+      const data = await fetchJson<any[]>(url, { timeoutMs: 10000 });
 
       return data.map((building: any) => ({
         provider: this.provider.display_name,
@@ -83,8 +80,8 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
           has_missing_persons: building.has_missing_persons,
         },
       }));
-    } catch (error) {
-      console.error('[TerremotoVenezuelaAdapter] Search failed:', error);
+    } catch {
+      console.error('[TerremotoVenezuelaAdapter] Search failed (network/transport error)');
       return [];
     }
   }
@@ -94,6 +91,11 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
    * endpoint. Dry-run is the SAFE default (per the federator directive nothing
    * is sent unless the caller explicitly opts into a live send). PII (reporter
    * contact) is mapped only for a live send and never logged.
+   *
+   * A real POST fires ONLY when BOTH hold: `opts.dryRun === false` AND
+   * `GEORESPONDE_SUBMIT_LIVE === '1'` (mirrors Ushahidi/VR). A bare `?dryRun=0`
+   * never live-POSTs — it degrades to a `skipped` result with the PII-safe
+   * preview.
    */
   async submit(report: Report, opts?: SubmitOptions): Promise<SubmissionResult> {
     const dryRun = opts?.dryRun !== false;
@@ -101,11 +103,15 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
 
     // Shape the outbound payload once — reused for the dry-run preview and the
     // live send so the preview is faithful to what would actually be sent.
+    // `building-damage` collects `address` (not a separate building name/city),
+    // so `building_name` is derived from `address` and `city` is only sent when
+    // the report actually carries it (otherwise omitted).
     const coords = Array.isArray(f.locationCoords) ? f.locationCoords : undefined;
+    const city = typeof f.city === 'string' && f.city.trim() ? f.city.trim() : undefined;
     const payload = {
-      building_name: (f.buildingName as string) || (f.address as string) || 'Unknown',
+      building_name: (f.address as string) || 'Unknown',
       address: (f.address as string) || 'Unknown',
-      city: (f.city as string) || 'Unknown',
+      ...(city ? { city } : {}),
       damage_level: mapDamageLevel(f.damageLevel),
       description: (f.description as string) || '',
       lng: coords ? coords[0] : undefined,
@@ -114,9 +120,10 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
       reporter_contact: report.reporter?.contact || (f.reporterContact as string) || undefined,
     };
 
+    // PII-safe preview: strip reporter_contact from what we echo back.
+    const { reporter_contact: _omit, ...safePreview } = payload;
+
     if (dryRun) {
-      // PII-safe preview: strip reporter_contact from what we echo back.
-      const { reporter_contact: _omit, ...safePreview } = payload;
       return {
         provider: this.provider.id,
         mode: 'dry-run',
@@ -126,51 +133,63 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
       };
     }
 
-    try {
-      const response = await fetch(`${API_BASE}/reportes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(opts?.idempotencyKey ? { 'Idempotency-Key': opts.idempotencyKey } : {}),
-        },
-        body: JSON.stringify(payload),
-      });
+    // Live path: fire ONLY when explicitly enabled. A bare `?dryRun=0` never
+    // sends — it degrades to `skipped` with the PII-safe preview.
+    const liveEnabled = process.env.GEORESPONDE_SUBMIT_LIVE === '1';
+    if (!liveEnabled) {
+      return {
+        provider: this.provider.id,
+        mode: 'dry-run',
+        status: 'skipped',
+        preview: safePreview,
+        idempotencyKey: opts?.idempotencyKey,
+      };
+    }
 
-      if (!response.ok) {
+    const submittedAt = new Date().toISOString();
+
+    try {
+      const { status, body } = await postJson<{ id?: string; reference_id?: string }>(
+        `${API_BASE}/reportes`,
+        payload,
+        { idempotencyKey: opts?.idempotencyKey, retryable: true },
+      );
+
+      if (status >= 200 && status < 300) {
+        const remoteId = body?.id || body?.reference_id;
         return {
           provider: this.provider.id,
           mode: 'live',
-          status: 'error',
-          error: `API returned ${response.status}`,
-          retryable: response.status >= 500,
+          status: 'ok',
+          receipt: {
+            remoteId: remoteId != null ? String(remoteId) : undefined,
+            url: remoteId ? `https://terremotovenezuela.com/edificio/${remoteId}` : undefined,
+            timestamp: submittedAt,
+          },
           idempotencyKey: opts?.idempotencyKey,
-          submittedAt: new Date().toISOString(),
+          submittedAt,
         };
       }
 
-      const data = await response.json().catch(() => ({} as any));
-      return {
-        provider: this.provider.id,
-        mode: 'live',
-        status: 'ok',
-        receipt: {
-          remoteId: data.id || data.reference_id,
-          url: data.id ? `https://terremotovenezuela.com/edificio/${data.id}` : undefined,
-          timestamp: new Date().toISOString(),
-        },
-        idempotencyKey: opts?.idempotencyKey,
-        submittedAt: new Date().toISOString(),
-      };
-    } catch (error) {
-      console.error('[TerremotoVenezuelaAdapter] Submit failed:', error);
       return {
         provider: this.provider.id,
         mode: 'live',
         status: 'error',
-        error: error instanceof Error ? error.message : String(error),
+        error: `API returned ${status}`,
+        retryable: status >= 500 || status === 429,
+        idempotencyKey: opts?.idempotencyKey,
+        submittedAt,
+      };
+    } catch {
+      // Never surface the raw error (may echo the URL/payload). PII-free message.
+      return {
+        provider: this.provider.id,
+        mode: 'live',
+        status: 'error',
+        error: 'terremotovenezuela submission failed (network/transport error)',
         retryable: true,
         idempotencyKey: opts?.idempotencyKey,
-        submittedAt: new Date().toISOString(),
+        submittedAt,
       };
     }
   }
@@ -182,12 +201,9 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
    */
   async getGeoJSON(): Promise<any> {
     try {
-      const response = await fetch(`${API_BASE}/edificios?limit=1000`);
-      if (!response.ok) {
-        throw new Error(`API returned ${response.status}`);
-      }
-
-      const data: any[] = await response.json();
+      const data = await fetchJson<any[]>(`${API_BASE}/edificios?limit=1000`, {
+        timeoutMs: 10000,
+      });
 
       const features = data
         .filter((b) => b.lng != null && b.lat != null)
@@ -209,8 +225,9 @@ export class TerremotoVenezuelaAdapter implements BaseAdapter {
         }));
 
       return { type: 'FeatureCollection', features };
-    } catch (error) {
-      console.error('[TerremotoVenezuelaAdapter] getGeoJSON failed:', error);
+    } catch {
+      // Degrade to an empty collection; never surface the raw error/URL.
+      console.error('[TerremotoVenezuelaAdapter] getGeoJSON failed (network/transport error)');
       return { type: 'FeatureCollection', features: [] };
     }
   }
