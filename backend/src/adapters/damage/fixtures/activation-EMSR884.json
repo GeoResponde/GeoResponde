@@ -1,0 +1,75 @@
+{
+  "results": [
+    {
+      "code": "EMSR884",
+      "title": "Synthetic EMSR884 activation (test fixture)",
+      "aois": [
+        {
+          "number": 0,
+          "name": "AOI00",
+          "products": [
+            {
+              "id": "grm-v1",
+              "type": "GRM",
+              "version": { "number": 1, "statusCode": "F" },
+              "layers": [
+                {
+                  "format": "vt",
+                  "name": "groundMovementA",
+                  "json": "https://rapidmapping-viewer.s3.eu-west-1.amazonaws.com/EMSR884/AOI00/GRM_PRODUCT/EMSR884_AOI00_GRM_PRODUCT_groundMovementA_v1.json"
+                }
+              ]
+            },
+            {
+              "id": "grm-v2",
+              "type": "GRM",
+              "version": { "number": 2, "statusCode": "F" },
+              "layers": [
+                {
+                  "format": "vt",
+                  "name": "groundMovementA",
+                  "json": "https://rapidmapping-viewer.s3.eu-west-1.amazonaws.com/EMSR884/AOI00/GRM_PRODUCT/EMSR884_AOI00_GRM_PRODUCT_groundMovementA_v2.json"
+                },
+                {
+                  "format": "vt",
+                  "name": "decoy",
+                  "json": "https://evil.example.com/EMSR884/steal.json"
+                }
+              ]
+            },
+            {
+              "id": "ref-01",
+              "type": "REF",
+              "version": { "number": 1, "statusCode": "F" },
+              "layers": [
+                {
+                  "format": "vt",
+                  "name": "reference",
+                  "json": "https://rapidmapping-viewer.s3.eu-west-1.amazonaws.com/EMSR884/AOI00/REF_PRODUCT/EMSR884_AOI00_REF_PRODUCT_reference_v1.json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 1,
+          "name": "AOI01",
+          "products": [
+            {
+              "id": "gra-v1",
+              "type": "GRA",
+              "version": { "number": 1, "statusCode": "F" },
+              "layers": [
+                {
+                  "format": "vt",
+                  "name": "builtUpA",
+                  "json": "https://rapidmapping-viewer.s3.eu-west-1.amazonaws.com/EMSR884/AOI01/GRA_PRODUCT/EMSR884_AOI01_GRA_PRODUCT_builtUpA_v1.json"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
