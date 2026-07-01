@@ -210,6 +210,18 @@
     ]
   },
   {
+    "id": "prov-vr-ingresos",
+    "display_name": "Venezuela Reporta (Ingresos)",
+    "website": "https://venezuelareporta.org/",
+    "description": "Hospital-intake roster of admitted persons (~20k entries), via Venezuela Reporta's open /api/v1/ingresos endpoint. A roster appearance does not confirm safety, so no status is inferred.",
+    "logo": "/logos/venezuelareporta.png",
+    "status": "active",
+    "adapter": "IngresosAdapter",
+    "capabilities": [
+      "search"
+    ]
+  },
+  {
     "id": "prov-ushahidi",
     "display_name": "Ushahidi",
     "website": "https://www.ushahidi.com/",
