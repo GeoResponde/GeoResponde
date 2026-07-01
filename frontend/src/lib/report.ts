@@ -13,5 +13,10 @@ export async function submitReport(report: Report): Promise<SubmissionResult> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(report),
   });
+  // Throw on a non-2xx before parsing so callers surface a real error instead of
+  // silently treating a 400/500 body as a SubmissionResult. Never log the body.
+  if (!response.ok) {
+    throw new Error(`Report submission failed (${response.status})`);
+  }
   return (await response.json()) as SubmissionResult;
 }
