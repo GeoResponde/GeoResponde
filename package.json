@@ -14,6 +14,7 @@
     "build": "pnpm -r run build",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "lint": "eslint .",
+    "test": "pnpm -r run test",
     "format": "prettier --write .",
     "prepare": "husky",
     "catalog:build": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js build",
