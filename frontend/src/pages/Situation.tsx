@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCatalog } from '../hooks/useCatalog';
+import { useEonetEvents } from '../hooks/useEonetEvents';
+import { EONET_CATEGORIES } from '../lib/eonet';
 import { MapViewer } from '../components/Map/MapViewer';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 
 export function Situation() {
+  const { t } = useTranslation();
   const { layers } = useCatalog();
   const [activeLayerIds, setActiveLayerIds] = useState<Set<string>>(new Set());
   const [unavailableLayerIds, setUnavailableLayerIds] = useState<Set<string>>(new Set());
+  const [showEonet, setShowEonet] = useState(true);
+
+  const { features: eonetFeatures } = useEonetEvents('VE', EONET_CATEGORIES as unknown as string[]);
 
   useEffect(() => {
     // Determine which layers are missing their datasets
@@ -56,12 +63,41 @@ export function Situation() {
 
   return (
     <div style={{ display: 'flex', flex: 1, position: 'relative' }}>
-      <MapViewer 
-        activeLayerIds={activeLayerIds} 
-        setUnavailableLayerIds={setUnavailableLayerIds} 
-        unavailableLayerIds={unavailableLayerIds} 
+      <MapViewer
+        activeLayerIds={activeLayerIds}
+        setUnavailableLayerIds={setUnavailableLayerIds}
+        unavailableLayerIds={unavailableLayerIds}
+        eonetFeatures={eonetFeatures}
+        showEonet={showEonet}
       />
-      <Sidebar 
+      <label
+        style={{
+          position: 'absolute',
+          top: '16px',
+          left: '16px',
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: '#1e293b',
+          border: '1px solid #334155',
+          color: '#e2e8f0',
+          padding: '8px 12px',
+          borderRadius: '10px',
+          fontSize: '13px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={showEonet}
+          onChange={(e) => setShowEonet(e.target.checked)}
+        />
+        {t('situation.eonet.layerLabel')}
+      </label>
+      <Sidebar
         activeLayerIds={activeLayerIds} 
         onToggleLayer={toggleLayer} 
         unavailableLayerIds={unavailableLayerIds}

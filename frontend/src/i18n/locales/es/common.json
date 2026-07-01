@@ -30,6 +30,20 @@
       "Pending Verification": "Pendiente de Verificación"
     }
   },
+  "situation": {
+    "eonet": {
+      "layerLabel": "Eventos NASA EONET",
+      "source": "Fuente",
+      "firstSeen": "Primera aparición",
+      "categories": {
+        "floods": "Inundaciones",
+        "wildfires": "Incendios forestales",
+        "severeStorms": "Tormentas severas",
+        "volcanoes": "Volcanes",
+        "landslides": "Deslizamientos"
+      }
+    }
+  },
   "find": {
     "title": "Buscar Personas y Recursos",
     "subtitle": "Busca simultáneamente en múltiples organizaciones humanitarias confiables.",

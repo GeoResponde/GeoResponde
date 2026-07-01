@@ -5,15 +5,28 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useCatalog } from '../../hooks/useCatalog';
 import { CopernicusLegend } from './CopernicusLegend';
+import { EonetLayer, EONET_LAYER_ID } from './EonetLayer';
+import type { RenderFeature } from '../../lib/eonet';
 import { useArcGISFeatureLayer } from '../../hooks/useArcGISFeatureLayer';
 import { useRef } from 'react';
 interface Props {
   activeLayerIds: Set<string>;
   unavailableLayerIds?: Set<string>;
   setUnavailableLayerIds?: (ids: Set<string>) => void;
+  eonetFeatures?: RenderFeature[];
+  showEonet?: boolean;
+  eonetVisibleEpoch?: number | null;
+  eonetActiveCategories?: Set<string>;
 }
 
-export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: Props) {
+export function MapViewer({
+  activeLayerIds,
+  unavailableLayerIds = new Set(),
+  eonetFeatures = [],
+  showEonet = false,
+  eonetVisibleEpoch = null,
+  eonetActiveCategories,
+}: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
   
@@ -49,6 +62,13 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
   const onHover = useCallback((event: any) => {
     const { features, lngLat } = event;
     const hoveredFeature = features && features[0];
+
+    // EONET circles own their own popup (EonetLayer via useMap); don't let the
+    // generic catalog popup capture them.
+    if (hoveredFeature && hoveredFeature.layer?.id === EONET_LAYER_ID) {
+      setHoverInfo(null);
+      return;
+    }
 
     if (hoveredFeature) {
       setHoverInfo({
@@ -566,7 +586,10 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
         onMove={e => setViewState(e.viewState)}
         onMoveEnd={onMapMoveEnd}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
-        interactiveLayerIds={getInteractiveIds(activeLayersWithData)}
+        interactiveLayerIds={[
+          ...getInteractiveIds(activeLayersWithData),
+          ...(showEonet ? [EONET_LAYER_ID] : []),
+        ]}
         onClick={onHover}
         onMouseMove={(e) => {
           const { features } = e as any;
@@ -583,6 +606,13 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
         style={{ width: '100%', height: '100%' }}
       >
         {renderLayers(activeLayersWithData)}
+        {showEonet && (
+          <EonetLayer
+            features={eonetFeatures}
+            visibleEpoch={eonetVisibleEpoch}
+            activeCategories={eonetActiveCategories}
+          />
+        )}
         {renderPopup()}
       </Map>
       {nasaLoading && activeLayerIds.has('layer-nasa-sentinel-damage') && (
