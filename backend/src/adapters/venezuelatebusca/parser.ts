@@ -1,4 +1,12 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper, normalizeGender } from '../person.js';
+
+const toStatus = makeStatusMapper({
+  missing: 'missing',
+  found: 'found',
+  deceased: 'deceased',
+  safe: 'safe',
+});
 
 /**
  * Searches the deeply nested object for any array named 'persons'.
@@ -55,7 +63,28 @@ export function normalizeRecord(record: any): NormalizedSearchResult {
     type: 'person',
     status: record.status || 'unknown',
     last_update: record.lastSeen,
-    thumbnail: record.photoUrl || undefined
+    thumbnail: record.photoUrl || undefined,
+    person: {
+      fullName: title,
+      firstName: record.firstName || undefined,
+      lastName: record.lastName || undefined,
+      cedula: record.idNumber || undefined,
+      age: typeof record.age === 'number' ? record.age : undefined,
+      gender: normalizeGender(record.gender),
+      status: record.hospitalName ? 'hospitalized' : toStatus(record.status),
+      rawStatus: record.status || undefined,
+      lastSeenLocation: record.lastSeen || undefined,
+      hospital: record.hospitalName || undefined,
+      description: record.description || record.foundNote || undefined,
+      photoUrl: record.photoUrl || undefined,
+      contact: record.reporter
+        ? {
+            name: record.reporter.name && record.reporter.name !== 'N/A' ? record.reporter.name : undefined,
+            phone: record.reporter.phone && record.reporter.phone !== 'N/A' ? record.reporter.phone : undefined,
+            email: record.reporter.email && record.reporter.email !== 'N/A' ? record.reporter.email : undefined,
+          }
+        : undefined,
+    }
   };
 }
 

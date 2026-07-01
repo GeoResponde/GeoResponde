@@ -33,6 +33,17 @@ describe('VenezuelaReporta Parser', () => {
       menor: false,
       origen: null,
     });
+    expect(ana?.person).toMatchObject({
+      fullName: 'Ana Prueba',
+      cedula: '00••••01',
+      age: 34,
+      gender: 'female',
+      status: 'missing',
+      rawStatus: 'buscando',
+      lastSeenLocation: 'Ciudad Ejemplo, Zona Norte',
+      verified: false,
+      isMinor: false,
+    });
   });
 
   it('joins only non-empty subtitle parts and omits subtitle when all empty', () => {

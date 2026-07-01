@@ -3,6 +3,7 @@ import path from 'path';
 import { HumanitarianProvider, NormalizedSearchResult, SubmissionPackage } from '@georesponde/shared';
 import { BaseAdapter } from '../adapters/BaseAdapter.js';
 import { createAdapter } from '../adapters/registry.js';
+import { isCedula, normalizeCedula } from '../adapters/person.js';
 
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
@@ -48,7 +49,20 @@ export class ProviderGateway {
     }
 
     const resultsArray = await Promise.all(searchPromises);
-    return resultsArray.flat();
+    const results = resultsArray.flat();
+
+    // Cédula search: when the query is a national ID, providers whose text
+    // search accepts the number return the person; keep only exact cédula
+    // matches (by digits) so the result set is precise. Masked cédulas that
+    // cannot be compared in full are dropped from a cédula search.
+    if (isCedula(query)) {
+      const target = normalizeCedula(query);
+      return results.filter(
+        (r) => r.person?.cedula && normalizeCedula(r.person.cedula) === target,
+      );
+    }
+
+    return results;
   }
 
   getProviders() {
