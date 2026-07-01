@@ -33,6 +33,8 @@
   "situation": {
     "eonet": {
       "layerLabel": "Eventos NASA EONET",
+      "panelTitle": "Eventos de desastres naturales",
+      "panelSource": "NASA EONET",
       "source": "Fuente",
       "firstSeen": "Primera aparición",
       "timelineLabel": "Línea de tiempo",

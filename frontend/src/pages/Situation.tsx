@@ -104,18 +104,35 @@ export function Situation() {
       <div
         style={{
           position: 'absolute',
-          top: '16px',
-          left: '16px',
+          top: '24px',
+          right: '24px',
+          bottom: '24px',
           zIndex: 10,
-          width: '320px',
-          maxWidth: 'calc(100% - 32px)',
-          maxHeight: 'calc(100% - 32px)',
+          width: '340px',
+          maxWidth: 'calc(100% - 48px)',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
           overflowY: 'auto',
+          paddingRight: '2px',
         }}
       >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            gap: '8px',
+            padding: '0 2px',
+          }}
+        >
+          <span style={{ fontSize: '15px', fontWeight: 700, color: '#f8fafc' }}>
+            {t('situation.eonet.panelTitle')}
+          </span>
+          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+            {t('situation.eonet.panelSource')}
+          </span>
+        </div>
         <label
           style={{
             display: 'flex',
