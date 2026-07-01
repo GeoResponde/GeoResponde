@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FastifyInstance } from 'fastify';
-import type { Report, SubmissionResult } from '@georesponde/shared';
+import type { Report, SubmissionReport } from '@georesponde/shared';
 import { buildApp } from '../../index.js';
 
 function makeReport(overrides: Partial<Report> = {}): Report {
@@ -14,7 +14,7 @@ function makeReport(overrides: Partial<Report> = {}): Report {
   };
 }
 
-describe('POST /api/report (dry-run stub)', () => {
+describe('POST /api/report (submission router)', () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
@@ -26,47 +26,56 @@ describe('POST /api/report (dry-run stub)', () => {
     await app.close();
   });
 
-  it('returns a dry-run SubmissionResult for a valid report', async () => {
+  it('returns 200 and a SubmissionReport for a valid report', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/report',
       payload: makeReport(),
     });
     expect(res.statusCode).toBe(200);
-    const body = res.json() as SubmissionResult;
-    expect(body.mode).toBe('dry-run');
-    expect(body.status).toBe('ok');
+    const body = res.json() as SubmissionReport;
+    expect(body.topic).toBe('resource-need');
+    expect(Array.isArray(body.results)).toBe(true);
+    expect(body.summary).toEqual({
+      ok: expect.any(Number),
+      skipped: expect.any(Number),
+      error: expect.any(Number),
+    });
+    // A report-level idempotency key is minted by the router (not the client id).
+    expect(typeof body.idempotencyKey).toBe('string');
+    expect(body.idempotencyKey).not.toBe('test-report-1');
+    expect(typeof body.elapsedMs).toBe('number');
   });
 
-  it('echoes a preview of the topic and fields (no provider routing)', async () => {
-    const report = makeReport();
-    const res = await app.inject({ method: 'POST', url: '/api/report', payload: report });
-    const body = res.json() as SubmissionResult;
-    const preview = body.preview as { topic: string; fields: Record<string, unknown> };
-    expect(preview.topic).toBe('resource-need');
-    expect(preview.fields).toEqual(report.fields);
-  });
-
-  it('returns an error result (not a throw) for an unknown topic', async () => {
+  it('returns HTTP 400 for an unknown topic without throwing', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/report',
       payload: makeReport({ topic: 'not-a-topic' as Report['topic'] }),
     });
-    const body = res.json() as SubmissionResult;
-    expect(body.status).toBe('error');
-    expect(body.error).toBeTruthy();
+    expect(res.statusCode).toBe(400);
   });
 
-  it('does not echo a sensitive cedula or reporter contact at the top level', async () => {
+  it('accepts ?dryRun=0 and still returns a SubmissionReport (opt into live)', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/report?dryRun=0',
+      payload: makeReport(),
+    });
+    expect(res.statusCode).toBe(200);
+    const body = res.json() as SubmissionReport;
+    expect(Array.isArray(body.results)).toBe(true);
+  });
+
+  it('does not surface a sensitive cedula or reporter contact in the response envelope', async () => {
     const report = makeReport({
       topic: 'missing-person',
       fields: { fullName: 'Ana', cedula: 'V-12345678' },
       reporter: { contact: 'ana@example.com' },
     });
     const res = await app.inject({ method: 'POST', url: '/api/report', payload: report });
-    const body = res.json() as SubmissionResult;
-    // The result envelope itself must not surface reporter contact.
+    const body = res.json() as SubmissionReport;
     expect(JSON.stringify(body)).not.toContain('ana@example.com');
+    expect(JSON.stringify(body)).not.toContain('V-12345678');
   });
 });
