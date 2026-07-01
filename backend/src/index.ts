@@ -4,6 +4,7 @@ import { pathToFileURL } from 'url'
 import { REPORT_TOPICS, type Report, type SubmissionResult } from '@georesponde/shared'
 import { ProviderGateway } from './gateway/ProviderGateway.js'
 import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
+import { fetchEonetEvents } from './adapters/eonet/service.js'
 
 /**
  * Build and configure the Provider Gateway HTTP app. Exported so it can run
@@ -31,6 +32,25 @@ export function buildApp(): FastifyInstance {
     const query = (request.query as { q?: string }).q
     if (!query) return []
     return gateway.search(query)
+  })
+
+  // Situation map read source (Phase 12, EON-01). Proxies NASA EONET v3
+  // /events as cached, pre-sorted GeoJSON. The frontend MUST hit this gateway
+  // route, never EONET directly — the volatile TTL cache and the 60 req/min
+  // budget live here. Not gated behind ensureReady(): EONET is independent of
+  // the provider catalog. Degrades gracefully (X-EONET-Source reflects it),
+  // never returns 5xx.
+  fastify.get('/api/eonet/events', async (request, reply) => {
+    const { status, category, bbox, start, end } = request.query as {
+      status?: string
+      category?: string
+      bbox?: string
+      start?: string
+      end?: string
+    }
+    const result = await fetchEonetEvents({ status, category, bbox, start, end })
+    reply.header('X-EONET-Source', result.source)
+    return result.collection
   })
 
   // Dry-run report composition seam (Phase 9). Accepts a structured Report and
