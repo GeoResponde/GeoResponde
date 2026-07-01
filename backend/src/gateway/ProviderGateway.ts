@@ -4,6 +4,7 @@ import { HumanitarianProvider, NormalizedSearchResult, SubmissionPackage } from 
 import { BaseAdapter } from '../adapters/BaseAdapter.js';
 import { createAdapter } from '../adapters/registry.js';
 import { isCedula, normalizeCedula } from '../adapters/person.js';
+import { dedupePersons } from './dedupe.js';
 
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
@@ -57,12 +58,15 @@ export class ProviderGateway {
     // cannot be compared in full are dropped from a cédula search.
     if (isCedula(query)) {
       const target = normalizeCedula(query);
-      return results.filter(
+      const matches = results.filter(
         (r) => r.person?.cedula && normalizeCedula(r.person.cedula) === target,
       );
+      return dedupePersons(matches);
     }
 
-    return results;
+    // Many of these providers aggregate one another, so the same person is
+    // reported by several. Collapse those into one result with provenance.
+    return dedupePersons(results);
   }
 
   getProviders() {

@@ -75,6 +75,12 @@ export interface NormalizedSearchResult {
   thumbnail?: string;
   /** Structured person fields when `type === 'person'`. */
   person?: PersonRecord;
+  /**
+   * When the same entity was reported by several providers and merged, the
+   * other providers that also reported it (for provenance / "also reported by").
+   * The primary provider stays in `provider`.
+   */
+  sources?: Array<{ provider: string; url: string }>;
   metadata?: Record<string, any>;
 }
 
