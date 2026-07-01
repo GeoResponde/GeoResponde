@@ -8,6 +8,7 @@ import { fetchEonetEvents } from './adapters/eonet/service.js'
 import { fetchAidSites } from './adapters/sitios/service.js'
 import { fetchUsgsEarthquakes } from './adapters/usgs/service.js'
 import { fetchFunvisisEarthquakes } from './adapters/funvisis/service.js'
+import { fetchCopernicusProduct } from './adapters/damage/service.js'
 
 /**
  * Build and configure the Provider Gateway HTTP app. Exported so it can run
@@ -132,6 +133,24 @@ export function buildApp(): FastifyInstance {
     const result = await fetchFunvisisEarthquakes({ start })
     reply.header('X-FUNVISIS-Source', result.source)
     reply.header('X-Attribution', 'FUNVISIS (vía SismosVE)')
+    return result.collection
+  })
+
+  // Situation map Copernicus EMS damage layers (Phase 14). Proxies the public
+  // no-auth Rapid Mapping activation (EMSR884) as cached GeoJSON: `grading` (GRA,
+  // building/road damage) and `ground-movement` (GRM, LOS displacement). The
+  // frontend MUST hit THIS route, never Copernicus directly — the volatile 6h
+  // cache, SSRF host-allowlist guard, and degrade-safe behavior (fresh->stale->
+  // empty) all live here, so it NEVER returns 5xx. `:product` is validated against
+  // the {grading, ground-movement} allowlist; an unknown product/event yields an
+  // empty collection. Attribution (© European Union / Copernicus EMS) is REQUIRED
+  // and carried on X-Attribution. Not gated behind ensureReady(): damage is
+  // independent of the provider catalog, like the EONET/USGS routes.
+  fastify.get('/api/damage/copernicus/:product', async (request, reply) => {
+    const { product } = request.params as { product: string }
+    const result = await fetchCopernicusProduct(product)
+    reply.header('X-Damage-Source', result.source)
+    if (result.attribution) reply.header('X-Attribution', result.attribution)
     return result.collection
   })
 
