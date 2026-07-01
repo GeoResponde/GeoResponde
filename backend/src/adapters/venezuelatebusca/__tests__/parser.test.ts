@@ -2,7 +2,29 @@ import { describe, it, expect } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 import { deserializeTurboStream } from '../../../transports/remix/deserializer.js';
-import { parseVenezuelaTeBuscaStructural } from '../parser.js';
+import { parseVenezuelaTeBuscaStructural, normalizeRecord } from '../parser.js';
+
+describe('VenezuelaTeBusca name cleaning', () => {
+  it('keeps only the first name variant and de-duplicates the last name', () => {
+    const r = normalizeRecord({
+      id: 'abc',
+      firstName: 'Marialejandra / Rodriguez Maria Alejandra / Rodriguez Marialejandra',
+      lastName: 'Rodriguez',
+    });
+    expect(r.title).toBe('Marialejandra Rodriguez');
+    expect(r.url).toBe('https://venezuelatebusca.com/?query=Marialejandra%20Rodriguez');
+  });
+
+  it('handles a normal name without variants', () => {
+    const r = normalizeRecord({ id: 'x', firstName: 'Maria', lastName: 'Perez' });
+    expect(r.title).toBe('Maria Perez');
+  });
+
+  it('falls back to Desconocido when no name is present', () => {
+    const r = normalizeRecord({ id: 'y' });
+    expect(r.title).toBe('Desconocido');
+  });
+});
 
 describe('VenezuelaTeBusca Parser', () => {
   it('correctly parses complex structural TurboStream payloads', async () => {

@@ -30,13 +30,27 @@ export function findPersonsArray(obj: any, visited = new Set()): any[] {
 }
 
 /**
+ * The upstream source sometimes packs several transcribed name variants into a
+ * single `firstName`, separated by " / " (e.g.
+ * "Marialejandra / Rodriguez Maria Alejandra / Rodriguez Marialejandra").
+ * Keep only the first variant so the title and the search deep-link stay clean.
+ */
+function cleanName(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.split('/')[0].trim();
+}
+
+/**
  * Normalizes a single structural record from Venezuela Te Busca into the standard format.
  */
 export function normalizeRecord(record: any): NormalizedSearchResult {
-  // Combine first and last name safely
-  const parts = [];
-  if (record.firstName) parts.push(record.firstName);
-  if (record.lastName) parts.push(record.lastName);
+  // Combine first and last name safely, de-duplicating a last name that is
+  // already present at the end of the (cleaned) first name.
+  const first = cleanName(record.firstName);
+  const last = cleanName(record.lastName);
+  const parts: string[] = [];
+  if (first) parts.push(first);
+  if (last && !first.toLowerCase().endsWith(last.toLowerCase())) parts.push(last);
   const title = parts.length > 0 ? parts.join(' ') : 'Desconocido';
 
   // Build snippet using available descriptions/notes
