@@ -16,6 +16,7 @@
   "dependencies": {
     "@fastify/cors": "^11.2.0",
     "@georesponde/shared": "workspace:*",
+    "cheerio": "^1.2.0",
     "fastify": "^5.8.5",
     "turbo-stream": "^3.2.0"
   },
