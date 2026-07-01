@@ -12,6 +12,7 @@ import { BaseAdapter, isSubmissionCapable } from '../adapters/BaseAdapter.js';
 import { createAdapter } from '../adapters/registry.js';
 import { isCedula, normalizeCedula } from '../adapters/person.js';
 import { dedupePersons } from './dedupe.js';
+import { newReportKey, deriveKey } from './idempotency.js';
 
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
@@ -90,33 +91,44 @@ export class ProviderGateway {
   ): Promise<SubmissionReport> {
     const startedAt = Date.now();
 
-    const targets: BaseAdapter[] = [];
+    // One report-level key per fan-out; each target gets a distinct derived key.
+    const key = newReportKey();
+    // Dry-run is the DEFAULT: only an explicit `false` opts into a live send.
+    const dryRun = opts.dryRun ?? true;
+
+    const targets: [string, BaseAdapter][] = [];
     for (const [id, adapter] of this.adapters.entries()) {
       if (
         isSubmissionCapable(adapter) &&
         adapter.submissionTopics!.includes(report.topic) &&
         (!opts.only || opts.only.includes(id))
       ) {
-        targets.push(adapter);
+        targets.push([id, adapter]);
       }
     }
 
-    const failedResult = (adapter: BaseAdapter): SubmissionResult => ({
+    const failedResult = (adapter: BaseAdapter, provKey: string): SubmissionResult => ({
       provider: adapter.provider.id,
       mode: 'dry-run',
       status: 'error',
       error: 'submission failed',
+      idempotencyKey: provKey,
     });
 
     const results = await Promise.all(
-      targets.map((adapter) => adapter.submit(report).catch(() => failedResult(adapter))),
+      targets.map(([id, adapter]) => {
+        const provKey = deriveKey(key, id);
+        return adapter
+          .submit(report, { dryRun, idempotencyKey: provKey })
+          .catch(() => failedResult(adapter, provKey));
+      }),
     );
 
     const summary = summarize(results);
     const elapsedMs = Date.now() - startedAt;
 
     return {
-      idempotencyKey: report.id,
+      idempotencyKey: key,
       topic: report.topic,
       results,
       summary,

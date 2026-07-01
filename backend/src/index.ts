@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance } from 'fastify'
 import cors from '@fastify/cors'
 import { pathToFileURL } from 'url'
-import { REPORT_TOPICS, type Report, type SubmissionResult } from '@georesponde/shared'
+import { REPORT_TOPICS, type Report, type SubmissionReport } from '@georesponde/shared'
 import { ProviderGateway } from './gateway/ProviderGateway.js'
 import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
 import { fetchEonetEvents } from './adapters/eonet/service.js'
@@ -12,6 +12,17 @@ import { fetchEonetEvents } from './adapters/eonet/service.js'
  * (see backend/api/index.ts). The gateway is initialized lazily on first
  * request so cold serverless invocations work without a separate boot step.
  */
+/**
+ * Resolve the submission mode from the request query. Dry-run is the SAFE
+ * default: only an explicit `dryRun=0` or `dryRun=false` opts into a live send.
+ * A missing or garbled param can only fall back to dry-run, never to live.
+ */
+function parseDryRun(query: unknown): boolean {
+  const raw = (query as { dryRun?: string } | undefined)?.dryRun
+  if (raw === '0' || raw === 'false') return false
+  return true
+}
+
 export function buildApp(): FastifyInstance {
   const fastify = Fastify({ logger: true })
   fastify.register(cors, { origin: true })
@@ -53,26 +64,23 @@ export function buildApp(): FastifyInstance {
     return result.collection
   })
 
-  // Dry-run report composition seam (Phase 9). Accepts a structured Report and
-  // returns a provider-agnostic SubmissionResult preview. No provider fan-out
-  // (that is Phase 10) and — per the owner directive — nothing is persisted:
-  // GeoResponde is a federator, not a system of record. Sensitive fields
-  // (cédula, reporter.contact) are never logged here.
-  fastify.post('/api/report', async (request, reply): Promise<SubmissionResult> => {
+  // Submission federation router (Phase 10). Accepts a structured Report and
+  // fans it out to submission-capable providers via gateway.submit, returning a
+  // partial-success SubmissionReport. Submission defaults to DRY-RUN: a live send
+  // requires an explicit ?dryRun=0 (or false). Per the owner directive nothing is
+  // persisted — GeoResponde is a federator, not a system of record. Sensitive
+  // fields (cédula, reporter.contact) are never logged here.
+  fastify.post('/api/report', async (request, reply): Promise<SubmissionReport | { error: string }> => {
     const report = request.body as Partial<Report> | undefined
     const topic = report?.topic
 
     if (!topic || !(topic in REPORT_TOPICS)) {
       reply.code(400)
-      return { provider: 'dry-run', mode: 'dry-run', status: 'error', error: 'unknown topic' }
+      return { error: 'unknown topic' }
     }
 
-    return {
-      provider: 'dry-run',
-      mode: 'dry-run',
-      status: 'ok',
-      preview: { topic, fields: report?.fields ?? {} },
-    }
+    await ensureReady()
+    return gateway.submit(report as Report, { dryRun: parseDryRun(request.query) })
   })
 
   // Generic provider inspector: works for any registered provider by catalog id

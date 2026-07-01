@@ -102,4 +102,36 @@ describe('ProviderGateway.submit router', () => {
     for (const r of result.results) recomputed[r.status] += 1;
     expect(result.summary).toEqual(recomputed);
   });
+
+  it('defaults to dry-run when opts.dryRun is omitted', async () => {
+    const gateway = gatewayWith([makeMock('accept-1', ['submission'])]);
+    const result = await gateway.submit(makeReport());
+    expect(result.results[0].mode).toBe('dry-run');
+  });
+
+  it('opts into live only when dryRun is explicitly false', async () => {
+    const gateway = gatewayWith([makeMock('accept-1', ['submission'])]);
+    const result = await gateway.submit(makeReport(), { dryRun: false });
+    expect(result.results[0].mode).toBe('live');
+  });
+
+  it('mints a report-level key distinct from report.id and echoes a per-provider key', async () => {
+    const gateway = gatewayWith([
+      makeMock('accept-1', ['submission']),
+      makeMock('accept-2', ['submission']),
+    ]);
+    const result = await gateway.submit(makeReport());
+    expect(result.idempotencyKey).not.toBe('report-abc');
+    // Each result echoes its own per-provider derived key; keys differ per provider.
+    const keys = result.results.map((r) => r.idempotencyKey);
+    expect(keys.every((k) => typeof k === 'string' && k!.length > 0)).toBe(true);
+    expect(new Set(keys).size).toBe(2);
+  });
+
+  it('stamps a per-provider key on an isolated failure result', async () => {
+    const gateway = gatewayWith([makeMock('boom', ['submission'], { failSubmit: true })]);
+    const result = await gateway.submit(makeReport());
+    expect(result.results[0].status).toBe('error');
+    expect(typeof result.results[0].idempotencyKey).toBe('string');
+  });
 });
