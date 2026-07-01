@@ -69,12 +69,16 @@ export function Situation() {
     damageActive,
   );
   const { collection: groundMovementData } = useDamageLayer('ground-movement', groundMovementActive);
+  // Current map viewport, tracked (debounced) so the DPM layer requests only the
+  // polygons in view (15-04). `[minLng,minLat,maxLng,maxLat]`.
+  const [mapBounds, setMapBounds] = useState<[number, number, number, number] | null>(null);
   const {
     collection: nasaDpmData,
     attribution: nasaAttribution,
     disclaimer: nasaDisclaimer,
     loading: nasaDpmLoading,
-  } = useNasaDpmLayer(nasaDpmActive);
+    source: nasaDpmSource,
+  } = useNasaDpmLayer(nasaDpmActive, mapBounds);
   const range = appearanceRange(eonetFeatures);
 
   const toggleCategory = (id: string) => {
@@ -216,6 +220,8 @@ export function Situation() {
         nasaAttribution={nasaAttribution}
         nasaDisclaimer={nasaDisclaimer}
         nasaDpmLoading={nasaDpmLoading}
+        nasaDpmWarming={nasaDpmActive && nasaDpmSource === 'warming'}
+        onViewportBoundsChange={setMapBounds}
       />
       <Sidebar
         activeLayerIds={activeLayerIds}

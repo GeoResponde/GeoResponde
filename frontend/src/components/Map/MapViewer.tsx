@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Map, { Source, Layer as MapLayer, Popup } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
@@ -57,7 +57,18 @@ interface Props {
   nasaDisclaimer?: string | null;
   /** Whether the DPM gateway fetch is in flight (drives the loading toast). */
   nasaDpmLoading?: boolean;
+  /** Whether the DPM warm is still filling (drives the "loading damage data" toast). */
+  nasaDpmWarming?: boolean;
+  /**
+   * Debounced viewport-bounds callback as `[minLng,minLat,maxLng,maxLat]` (15-04).
+   * Fires on map load and (debounced ~300ms) on every `moveend` so the DPM layer
+   * can request only the polygons in view.
+   */
+  onViewportBoundsChange?: (bounds: [number, number, number, number]) => void;
 }
+
+/** Debounce window for viewport-bounds tracking — coalesces a pan/zoom burst. */
+const VIEWPORT_DEBOUNCE_MS = 300;
 
 const EMPTY_DAMAGE: DamageFeatureCollection = { type: 'FeatureCollection', features: [] };
 const EMPTY_NASA_DPM: NasaDpmFeatureCollection = { type: 'FeatureCollection', features: [] };
@@ -84,9 +95,33 @@ export function MapViewer({
   nasaAttribution = null,
   nasaDisclaimer = null,
   nasaDpmLoading = false,
+  nasaDpmWarming = false,
+  onViewportBoundsChange,
 }: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
+
+  // Debounced viewport-bounds emitter (15-04). Kept in refs so the latest
+  // callback is always used without re-subscribing map handlers on every render.
+  const boundsCbRef = useRef(onViewportBoundsChange);
+  boundsCbRef.current = onViewportBoundsChange;
+  const boundsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const emitBounds = useCallback((map: maplibregl.Map, immediate = false) => {
+    const cb = boundsCbRef.current;
+    if (!cb) return;
+    const send = () => {
+      const b = map.getBounds();
+      cb([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
+    };
+    if (boundsTimer.current) clearTimeout(boundsTimer.current);
+    if (immediate) send();
+    else boundsTimer.current = setTimeout(send, VIEWPORT_DEBOUNCE_MS);
+  }, []);
+
+  useEffect(() => () => {
+    if (boundsTimer.current) clearTimeout(boundsTimer.current);
+  }, []);
 
   const [hoverInfo, setHoverInfo] = useState<{
     longitude: number;
@@ -138,7 +173,11 @@ export function MapViewer({
 
   const onMapLoad = useCallback((e: any) => {
     const map = e.target;
-    
+
+    // Seed the viewport bounds immediately so the DPM layer can request only the
+    // polygons in the initial view without waiting for the first pan.
+    emitBounds(map, true);
+
     const icons = {
       'fault-reverse': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cG9seWdvbiBwb2ludHM9IjEsMTEgNiwxIDExLDExIiBmaWxsPSIjZjFjNDBmIiAvPgo8L3N2Zz4K',
       'fault-normal': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI1IiB5PSIxIiB3aWR0aD0iMiIgaGVpZ2h0PSIxMCIgZmlsbD0iI2YxYzQwZiIgLz4KPC9zdmc+Cg==',
@@ -650,6 +689,7 @@ export function MapViewer({
           ...(showAidSites ? [AID_SITES_LAYER_ID] : []),
         ]}
         onClick={onFeatureClick}
+        onMoveEnd={(e) => emitBounds(e.target as unknown as maplibregl.Map)}
         onMouseMove={(e) => {
           const { features } = e as any;
           if (features && features.length) {
@@ -680,12 +720,19 @@ export function MapViewer({
         )}
         {renderPopup()}
       </Map>
-      {nasaDpmLoading && activeLayerIds.has('layer-nasa-sentinel-damage') && (
+      {(nasaDpmLoading || nasaDpmWarming) && activeLayerIds.has('layer-nasa-sentinel-damage') && (
         <div style={{
           position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.7)',
-          color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '12px'
+          color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '12px',
+          display: 'flex', alignItems: 'center', gap: '8px'
         }}>
-          Loading NASA Data...
+          <span style={{
+            width: 10, height: 10, borderRadius: '50%',
+            border: '2px solid rgba(255,255,255,0.35)', borderTopColor: '#fff',
+            display: 'inline-block', animation: 'nasa-dpm-spin 0.8s linear infinite'
+          }} />
+          {nasaDpmWarming ? 'Loading damage data…' : 'Loading NASA data…'}
+          <style>{'@keyframes nasa-dpm-spin{to{transform:rotate(360deg)}}'}</style>
         </div>
       )}
       <CopernicusLegend
