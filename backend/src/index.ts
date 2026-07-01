@@ -28,6 +28,8 @@ export function buildApp(): FastifyInstance {
   fastify.register(cors, { origin: true })
 
   const gateway = new ProviderGateway()
+  // Route audit-lite submission lines through Fastify's pino logger.
+  gateway.setLogger(fastify.log)
   let ready: Promise<void> | null = null
   const ensureReady = () => (ready ??= gateway.initialize())
 

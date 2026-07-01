@@ -12,11 +12,26 @@ import { BaseAdapter, isSubmissionCapable } from '../adapters/BaseAdapter.js';
 import { createAdapter } from '../adapters/registry.js';
 import { isCedula, normalizeCedula } from '../adapters/person.js';
 import { dedupePersons } from './dedupe.js';
-import { newReportKey, deriveKey } from './idempotency.js';
+import { newReportKey, deriveKey, hashKey } from './idempotency.js';
+
+/** Minimal structured logger the gateway emits audit-lite lines through. */
+interface AuditLogger {
+  info(obj: unknown): void;
+}
 
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
   private adapters: Map<string, BaseAdapter> = new Map();
+  /**
+   * Structured logger for the audit-lite line. Defaults to console so the
+   * gateway stays usable standalone; the HTTP app injects Fastify's pino logger.
+   */
+  private log: AuditLogger = { info: (obj: unknown) => console.log(obj) };
+
+  /** Inject a structured logger (e.g. Fastify's pino) for audit-lite lines. */
+  setLogger(logger: AuditLogger) {
+    this.log = logger;
+  }
 
   async initialize() {
     // Load from catalog
@@ -126,6 +141,18 @@ export class ProviderGateway {
 
     const summary = summarize(results);
     const elapsedMs = Date.now() - startedAt;
+
+    // Audit-lite (REP-05): exactly one PII-free structured line. Only a SALTED
+    // hash of the report key (a correlation handle, never the key), the topic,
+    // the selected provider ids, the outcome counts, and the elapsed time. NEVER
+    // any report field, cédula, contact, coordinate, or constructed URL.
+    this.log.info({
+      idempotencyKeyHash: hashKey(key),
+      topic: report.topic,
+      targetProviderIds: targets.map(([id]) => id),
+      outcomes: summary,
+      elapsedMs,
+    });
 
     return {
       idempotencyKey: key,
