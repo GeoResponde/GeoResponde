@@ -10,10 +10,30 @@ import {
 } from '../types.js';
 
 describe('REPORT_TOPICS registry', () => {
-  it('has exactly the three v0.5 topics', () => {
+  it('has exactly the four v0.5 topics', () => {
     expect(Object.keys(REPORT_TOPICS).sort()).toEqual(
-      ['missing-person', 'resource-need', 'shelter-status'].sort(),
+      ['building-damage', 'missing-person', 'resource-need', 'shelter-status'].sort(),
     );
+  });
+
+  it('building-damage exposes the expected structured fields', () => {
+    const fields = REPORT_TOPICS['building-damage'].fields;
+    const names = fields.map((f) => f.name);
+    expect(names).toEqual(
+      expect.arrayContaining(['address', 'buildingType', 'damageLevel', 'description']),
+    );
+    const damageLevel = fields.find((f) => f.name === 'damageLevel');
+    expect(damageLevel?.required).toBe(true);
+    expect(damageLevel?.options).toEqual(['minor', 'moderate', 'severe', 'destroyed']);
+    const buildingType = fields.find((f) => f.name === 'buildingType');
+    expect(buildingType?.type).toBe('select');
+  });
+
+  it('flags reporterContact as sensitive wherever it is collected', () => {
+    for (const topic of ['missing-person', 'shelter-status', 'building-damage'] as const) {
+      const contact = REPORT_TOPICS[topic].fields.find((f) => f.name === 'reporterContact');
+      expect(contact?.sensitive).toBe(true);
+    }
   });
 
   it('missing-person exposes the expected person fields', () => {
@@ -106,8 +126,13 @@ describe('SubmissionResult shape', () => {
   });
 });
 
-// Type-level guard: ReportTopic must stay the three-topic union.
-const _topics: ReportTopic[] = ['missing-person', 'resource-need', 'shelter-status'];
+// Type-level guard: ReportTopic must stay the four-topic union.
+const _topics: ReportTopic[] = [
+  'missing-person',
+  'resource-need',
+  'shelter-status',
+  'building-damage',
+];
 void _topics;
 
 describe('validateReport', () => {
