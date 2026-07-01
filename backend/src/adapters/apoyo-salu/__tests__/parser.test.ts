@@ -20,7 +20,7 @@ describe('ApoyoSalu Parser', () => {
     expect(first.title).toBe('Ana Prueba');
     expect(first.status).toBe('Desaparecido');
     expect(first.last_update).toBe('2026-06-15T12:30:00.000+00:00');
-    expect(first.url).toBe('https://apoyo.salu.pro/?search=Ana%20Prueba');
+    expect(first.url).toBe('https://apoyo.salu.pro/');
     expect(first.metadata).toEqual({ cedula: '00000001', edad: 34, genero: 'Femenino' });
   });
 
@@ -47,7 +47,7 @@ describe('ApoyoSalu Parser', () => {
   it('trims a missing apellido out of the title', () => {
     const result = normalizeItem({ id: 'x', nombre: 'Ana' });
     expect(result.title).toBe('Ana');
-    expect(result.url).toBe('https://apoyo.salu.pro/?search=Ana');
+    expect(result.url).toBe('https://apoyo.salu.pro/');
   });
 
   it('returns an empty array for malformed responses', () => {

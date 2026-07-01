@@ -21,9 +21,17 @@ fastify.get('/api/search', async (request, reply) => {
   return gateway.search(query)
 })
 
+// Generic provider inspector: works for any registered provider by catalog id
+// (e.g. /api/dev/inspect/prov-hdx?q=venezuela). See CONTRIBUTING.md step 7.
+fastify.get('/api/dev/inspect/:id', async (request, reply) => {
+  const { id } = request.params as { id: string }
+  const query = (request.query as any).q || 'Maria'
+  return gateway.inspect(id, query)
+})
+
 import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
 
-fastify.get('/api/dev/inspect/venezuelatebusca', async (request, reply) => {
+fastify.get('/api/dev/inspect-legacy/venezuelatebusca', async (request, reply) => {
   const query = (request.query as any).q || 'Maria'
   
   const diagnostic = {

@@ -21,7 +21,7 @@ describe('Úbícame parser', () => {
     expect(ana.subtitle).toContain(' · ');
     expect(ana.status).toBe('believed_alive');
     expect(ana.last_update).toBe('2026-06-30T01:06:04Z');
-    expect(ana.url).toBe('https://911.ubica.me/?q=Ana%20Prueba');
+    expect(ana.url).toBe('https://911.ubica.me/');
     expect(ana.metadata).toMatchObject({
       age: '57',
       cedula: '00000001',

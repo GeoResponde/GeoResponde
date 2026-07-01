@@ -54,4 +54,44 @@ export class ProviderGateway {
   getProviders() {
     return this.providers;
   }
+
+  /**
+   * Diagnostic helper for the `/api/dev/inspect/:id` developer endpoint.
+   * Runs a single provider's adapter in isolation and reports what came back,
+   * so contributors can verify a new integration without booting the whole UI.
+   */
+  async inspect(providerId: string, query: string) {
+    const adapter = this.adapters.get(providerId);
+    if (!adapter) {
+      return {
+        providerId,
+        status: 'not_found' as const,
+        error: `No active adapter registered for provider id "${providerId}".`,
+        activeProviders: [...this.adapters.keys()],
+      };
+    }
+
+    const startedAt = Date.now();
+    try {
+      const results = await adapter.search(query);
+      return {
+        providerId,
+        provider: adapter.provider.display_name,
+        query,
+        status: 'ok' as const,
+        normalizedResults: results.length,
+        elapsedMs: Date.now() - startedAt,
+        sample: results.slice(0, 3),
+      };
+    } catch (err: any) {
+      return {
+        providerId,
+        provider: adapter.provider.display_name,
+        query,
+        status: 'error' as const,
+        elapsedMs: Date.now() - startedAt,
+        error: err?.message ?? String(err),
+      };
+    }
+  }
 }

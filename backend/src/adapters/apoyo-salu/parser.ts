@@ -64,7 +64,9 @@ export function normalizeItem(item: ApoyoSaluItem): NormalizedSearchResult {
     status: item.estado ?? undefined,
     last_update: item.updated_at || item.created_at,
     thumbnail: resolveThumbnail(item),
-    url: `https://apoyo.salu.pro/?search=${encodeURIComponent(title)}`,
+    // No confirmed per-person route and the SPA does not seed its search from
+    // the URL, so /?search= linked nowhere. Link to the site home instead.
+    url: 'https://apoyo.salu.pro/',
     metadata: {
       cedula: item.cedula,
       edad: item.edad_aproximada,

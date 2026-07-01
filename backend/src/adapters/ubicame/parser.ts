@@ -52,7 +52,9 @@ export function parseUbicameShard(
         subtitle: subtitle || undefined,
         status: r.status,
         last_update: r.source_date,
-        url: `https://911.ubica.me/?q=${encodeURIComponent(fullName)}`,
+        // The site is a static SPA with no per-person page and no URL-seeded
+        // search, so link to the site home rather than a dead query string.
+        url: 'https://911.ubica.me/',
         metadata: {
           age: r.age,
           cedula: r.ext_venezuela_ci,

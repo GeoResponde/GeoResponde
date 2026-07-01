@@ -54,7 +54,9 @@ export function normalizeRecord(record: EncuentralosItem): NormalizedSearchResul
       : undefined,
     last_update: record.ultima_vez ?? record.creado ?? undefined,
     thumbnail: record.foto ?? undefined,
-    url: `https://encuentralos.tecnosoft.dev/?q=${encodeURIComponent(record.nombre)}`,
+    // The site exposes a real per-person detail route (/persona/:id); link
+    // straight to it instead of a search query that the SPA never seeds.
+    url: `https://encuentralos.tecnosoft.dev/persona/${record.id}`,
     metadata: {
       edad: record.edad,
       sexo: record.sexo,

@@ -59,7 +59,7 @@ export function parseVenezuelaReportaResponse(
       status: persona.status,
       last_update: persona.created_at,
       thumbnail: persona.foto_url || undefined,
-      url: persona.ficha_url,
+      url: persona.ficha_url || 'https://venezuelareporta.org/',
       metadata: {
         cedula: persona.cedula,
         genero: persona.genero,

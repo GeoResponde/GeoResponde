@@ -26,7 +26,9 @@ describe('Encuéntralos Parser', () => {
     expect(first.location).toBeUndefined();
     expect(first.last_update).toBe('2020-01-01T10:00:00.000Z');
     expect(first.thumbnail).toBeUndefined();
-    expect(first.url).toBe('https://encuentralos.tecnosoft.dev/?q=Ana%20Prueba');
+    expect(first.url).toBe(
+      'https://encuentralos.tecnosoft.dev/persona/00000000-0000-0000-0000-000000000001',
+    );
     expect(first.metadata).toEqual({ edad: 40, sexo: 'femenino', cedula: '00000001' });
   });
 

@@ -34,7 +34,11 @@ function normalizeRecord(record: any): NormalizedSearchResult {
     location: hasLocation ? [record.lon, record.lat] : undefined,
     last_update: found,
     thumbnail: img ? `${BASE_URL}/image/${img}` : undefined,
-    url: `${BASE_URL}/?q=${encodeURIComponent(name)}`,
+    // The site is a SPA that only searches on user input; `/?q=` does not
+    // deep-link to a result and there is no per-person page. Link to the
+    // source list photo when available (the actual OCR'd hospital/shelter
+    // list evidence), otherwise fall back to the site home.
+    url: img ? `${BASE_URL}/image/${img}` : `${BASE_URL}/`,
     metadata: {
       age: record?.age ?? null,
       sex: record?.sex ?? '',

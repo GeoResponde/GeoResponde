@@ -31,7 +31,8 @@ describe('BuscaEnListas Parser', () => {
     expect(first.location).toEqual([-66.9, 10.5]);
     expect(first.last_update).toBe('2026-06-25 17:31:53');
     expect(first.thumbnail).toBeUndefined();
-    expect(first.url).toBe('https://buscaenlistasvzla.info/?q=Maria%20Prueba');
+    // no photo -> url falls back to the site home (the SPA has no deep-link)
+    expect(first.url).toBe('https://buscaenlistasvzla.info/');
     expect(first.metadata).toMatchObject({ age: 47, sex: '', cedula: '', place: 'Hospital Central', match: 96 });
   });
 
@@ -42,6 +43,8 @@ describe('BuscaEnListas Parser', () => {
     const img = '0000000000000000000000000000000000000000000000000000000000000000';
     expect(withPhoto!.provider_id).toBe(img);
     expect(withPhoto!.thumbnail).toBe(`https://buscaenlistasvzla.info/image/${img}`);
+    // with a photo -> url links to the source OCR list image
+    expect(withPhoto!.url).toBe(`https://buscaenlistasvzla.info/image/${img}`);
     expect(withPhoto!.subtitle).toBe('Refugio Modelo · PISO 2');
     expect(withPhoto!.metadata).toMatchObject({ sex: 'M', cedula: '00000000' });
   });
