@@ -9,6 +9,7 @@ import { fetchAidSites } from './adapters/sitios/service.js'
 import { fetchUsgsEarthquakes } from './adapters/usgs/service.js'
 import { fetchFunvisisEarthquakes } from './adapters/funvisis/service.js'
 import { fetchCopernicusProduct } from './adapters/damage/service.js'
+import { fetchNasaDpm } from './adapters/damage/nasa.js'
 
 /**
  * Build and configure the Provider Gateway HTTP app. Exported so it can run
@@ -151,6 +152,28 @@ export function buildApp(): FastifyInstance {
     const result = await fetchCopernicusProduct(product)
     reply.header('X-Damage-Source', result.source)
     if (result.attribution) reply.header('X-Attribution', result.attribution)
+    return result.collection
+  })
+
+  // Situation map NASA ARIA damage-proxy (DPM) layer (Phase 15). Proxies the
+  // public, anonymous ArcGIS FeatureServer "Likelihood of Damaged Structures" as
+  // cached GeoJSON. The frontend MUST hit THIS route, never ArcGIS directly — the
+  // volatile 1h cache, the MANDATORY `where=damage=1` + country-bbox envelope +
+  // 2000/page pagination filter (so it NEVER fetches all ~2.7M polygons, only the
+  // ~58,870 damaged ones), the ArcGIS host-allowlist SSRF guard, and the
+  // degrade-safe behavior (fresh->stale->empty) all live here, so it NEVER returns
+  // 5xx. Accepts an OPTIONAL `?bbox=minLng,minLat,maxLng,maxLat` viewport override
+  // (numeric-validated); absent it uses the event's country bbox. Attribution
+  // (ARIA/NASA-JPL/ESA/Overture) AND the experimental disclaimer are REQUIRED and
+  // carried on X-Attribution / X-Damage-Disclaimer. Not gated behind ensureReady():
+  // damage is independent of the provider catalog, like the Copernicus/EONET/USGS
+  // routes.
+  fastify.get('/api/damage/nasa/dpm', async (request, reply) => {
+    const { bbox } = request.query as { bbox?: string }
+    const result = await fetchNasaDpm({ bbox })
+    reply.header('X-Damage-Source', result.source)
+    if (result.attribution) reply.header('X-Attribution', result.attribution)
+    if (result.disclaimer) reply.header('X-Damage-Disclaimer', result.disclaimer)
     return result.collection
   })
 
