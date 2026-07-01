@@ -195,7 +195,6 @@ fix/search-scroll
 docs/readme
 
 ---
-
 # Our Philosophy
 
 GeoResponde does not seek to replace existing organizations.

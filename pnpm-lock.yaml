@@ -158,6 +158,10 @@ importers:
         version: 1.6.1(@types/node@20.19.43)
 
   packages/client:
+    dependencies:
+      '@georesponde/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@georesponde/catalog':
         specifier: workspace:*

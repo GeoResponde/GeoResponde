@@ -1,7 +1,7 @@
 
 export function Footer() {
   return (
-    <footer style={{
+    <footer className="footer-links" style={{
       backgroundColor: '#0f172a',
       borderTop: '1px solid #1e293b',
       padding: '24px 20px',

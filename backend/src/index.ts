@@ -21,6 +21,30 @@ fastify.get('/api/search', async (request, reply) => {
   return gateway.search(query)
 })
 
+import { SubmissionPackage } from '@georesponde/shared'
+
+fastify.post('/api/submit', async (request, reply) => {
+  const payload = request.body as SubmissionPackage
+  if (!payload || !payload.type) {
+    return reply.status(400).send({ error: 'Missing submission type in payload' })
+  }
+  const result = await gateway.routeSubmission(payload)
+  if (!result.success) {
+    return reply.status(500).send({ error: 'Submission failed' })
+  }
+  return result
+})
+
+fastify.get('/api/providers/:id/geojson', async (request, reply) => {
+  const { id } = request.params as any
+  try {
+    const geojson = await gateway.getGeoJSON(id)
+    return geojson
+  } catch (err: any) {
+    return reply.status(404).send({ error: err.message })
+  }
+})
+
 import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
 
 fastify.get('/api/dev/inspect/venezuelatebusca', async (request, reply) => {

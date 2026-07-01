@@ -21,3 +21,14 @@
     - search
     - directory
     - submission
+
+- id: prov-terremotovenezuela
+  display_name: TerremotoVenezuela
+  website: https://terremotovenezuela.com/
+  description: Official registry of verified damaged buildings.
+  logo: /logos/terremotovenezuela.png
+  status: active
+  adapter: TerremotoVenezuelaAdapter
+  capabilities:
+    - search
+    - submission

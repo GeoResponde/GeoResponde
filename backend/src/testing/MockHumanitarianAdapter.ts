@@ -39,8 +39,8 @@ export class MockHumanitarianAdapter implements BaseAdapter {
     ];
   }
 
-  async submit(pkg: SubmissionPackage): Promise<boolean> {
-    console.log(`[Mock] Submitting to provider ${this.provider.id}`, pkg);
-    return true;
+  async submit(pkg: SubmissionPackage): Promise<{ success: boolean; referenceId?: string }> {
+    console.log(`[MockHumanitarianAdapter] Pretending to submit package`, pkg);
+    return { success: true, referenceId: 'MOCK-123' };
   }
 }

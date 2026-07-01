@@ -1,4 +1,5 @@
-import { Layers, Activity, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Layers, Activity, AlertTriangle, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Layer } from '@georesponde/client';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +13,15 @@ interface Props {
 
 export function LayerToggle({ layer, dataset, isActive, onToggle, isUnavailable = false }: Props) {
   const { i18n, t } = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check initially
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Determine icon based on category
   let Icon = Layers;
@@ -29,6 +39,7 @@ export function LayerToggle({ layer, dataset, isActive, onToggle, isUnavailable 
 
   const displayName = getName(layer.name);
   const displayDescription = dataset?.description ? getName(dataset.description) : null;
+  const shouldShowDetails = !isMobile || isExpanded;
 
   return (
     <div 
@@ -36,17 +47,32 @@ export function LayerToggle({ layer, dataset, isActive, onToggle, isUnavailable 
       onClick={() => onToggle(layer.id)}
     >
       <Icon className="layer-icon" size={20} />
-      <div className="layer-info">
-        <div className="layer-name">{displayName}</div>
-        {displayDescription && (
-          <div className="layer-description" style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '2px', marginBottom: '4px', lineHeight: '1.2' }}>
-            {displayDescription}
+      <div className="layer-info" style={{ width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="layer-name">{displayName}</div>
+          {isMobile && (
+            <div 
+              onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+              style={{ padding: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            >
+              {isExpanded ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
+            </div>
+          )}
+        </div>
+        
+        {shouldShowDetails && (
+          <div style={{ marginTop: '4px' }}>
+            {displayDescription && (
+              <div className="layer-description" style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '8px', lineHeight: '1.3' }}>
+                {displayDescription}
+              </div>
+            )}
+            <div className="layer-meta" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <span className="layer-badge">{t(`sidebar.confidence.${layer.confidence}`) || layer.confidence}</span>
+              {isUnavailable && <span className="layer-badge" style={{ backgroundColor: '#ef4444', color: 'white' }}>Unavailable</span>}
+            </div>
           </div>
         )}
-        <div className="layer-meta" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span className="layer-badge">{t(`sidebar.confidence.${layer.confidence}`) || layer.confidence}</span>
-          {isUnavailable && <span className="layer-badge" style={{ backgroundColor: '#ef4444', color: 'white' }}>Unavailable</span>}
-        </div>
       </div>
     </div>
   );

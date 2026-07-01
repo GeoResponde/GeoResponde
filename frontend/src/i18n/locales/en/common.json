@@ -51,9 +51,10 @@
     "damagedBuilding": "Damaged Building",
     "shelterUpdate": "Shelter Update",
     "back": "← Back to Categories",
-    "redirectTitle": "Continue on the official reporting platform",
-    "redirectText": "To ensure data integrity and avoid fragmentation, GeoResponde does not store reports directly. We will redirect you to the authoritative organization's platform where your report will be properly handled and verified.",
-    "goToOfficial": "Go to Official Platform ↗"
+    "redirectTitle": "Continue with a participating humanitarian organization",
+    "redirectText": "GeoResponde does not permanently store emergency reports. Your report will be securely delivered to the participating humanitarian organization responsible for processing and verifying the information.",
+    "goToOfficial": "Continue to Partner Organization ↗",
+    "noProvider": "No participating organization currently supports {{category}} submissions through GeoResponde."
   },
   "about": {
     "title": "GeoResponde",

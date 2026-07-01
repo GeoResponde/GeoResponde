@@ -224,7 +224,8 @@ New contributors should read
 ```
 CONTRIBUTING.md
 ``` 
-before opening a Pull Request
+and `docs/community/ways-to-contribute.md`
+before opening a Pull Request.
 
 ---
 

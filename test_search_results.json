@@ -1,0 +1,669 @@
+﻿[
+    {
+        "provider_id":  "6e776d27-aafe-48b1-a50c-1f5746b70ea6",
+        "title":  "Francisco Palacios",
+        "subtitle":  "Pelo rulo tez clara desapareció con toda su familia\n\nReportado por:\n- Venezuela Reporta Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Francisco%20Palacios",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe",
+        "thumbnail":  "/media/photos/da9bb6f3-97d2-4000-8ff3-8377466697aa.webp"
+    },
+    {
+        "provider_id":  "bf7eab55-84b7-401f-9683-5a00beb24405",
+        "title":  "Magnolia Itriago",
+        "subtitle":  "Condicion Medica Aritmia y problemas cardiacos Última vez visto: Residencias Petunia Ultima vez: Residencias Petunia",
+        "url":  "https://venezuelatebusca.com/?query=Magnolia%20Itriago",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Petunia Ultima vez: Residencias Petunia"
+    },
+    {
+        "provider_id":  "b8f433d4-4b21-4f39-ba4b-c5dd1624f04f",
+        "title":  "Luiseudys Mata",
+        "subtitle":  "Estado en Venezuela Reporta: a salvo. Piel blanca,contextura gruesa, cabello corto negro https://venezuelareporta.org/reporte/76fe9d9d-2972-4e2c-ad0a-ca31bb30f1c0\nUbicación reportada: Residencias CARIBE. Detalle de localización: Residencias CARIBE. Última vez visto: Residencias CARIBE Ultima vez: Residencias CARIBE",
+        "url":  "https://venezuelatebusca.com/?query=Luiseudys%20Mata",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "found",
+        "last_update":  "Residencias CARIBE Ultima vez: Residencias CARIBE",
+        "thumbnail":  "/media/photos/venezuela_reporta/76fe9d9d-2972-4e2c-ad0a-ca31bb30f1c0.jpg"
+    },
+    {
+        "provider_id":  "335168fe-bea8-4a03-81ac-36c016580438",
+        "title":  "Natalia Caraballo",
+        "subtitle":  "Estatura 1.65m aproximadamente, i cabello negro rizado hasta los hombros tés morena clara ojos color negro tiene aparatos o breakers en los dientes Última vez visto: Residencias vistamar Ultima vez: Residencias vistamar",
+        "url":  "https://venezuelatebusca.com/?query=Natalia%20Caraballo",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias vistamar Ultima vez: Residencias vistamar",
+        "thumbnail":  "/media/photos/venezuela_reporta/160da65e-0b58-4dab-a99e-8f861d22cc91.jpg"
+    },
+    {
+        "provider_id":  "1b4a2d52-fe21-48cc-a2e3-24fddfb8d5e6",
+        "title":  "Elsy Peña",
+        "subtitle":  "Última vez visto: Residencias Belair Ultima vez: Residencias Belair",
+        "url":  "https://venezuelatebusca.com/?query=Elsy%20Pe%C3%B1a",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Belair Ultima vez: Residencias Belair"
+    },
+    {
+        "provider_id":  "d2b8d3f3-e41b-4075-97ec-0b7361a81b31",
+        "title":  "Sharon Cohello",
+        "subtitle":  "Alta, delgada, labios carnosos, morena Última vez visto: Residencias aguamarin Ultima vez: Residencias aguamarin",
+        "url":  "https://venezuelatebusca.com/?query=Sharon%20Cohello",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias aguamarin Ultima vez: Residencias aguamarin"
+    },
+    {
+        "provider_id":  "fe541e90-abac-4b6e-996a-2ae38d53f807",
+        "title":  "Omar Hernandez",
+        "subtitle":  "Última vez visto: Residencias Grañamar Ultima vez: Residencias Grañamar",
+        "url":  "https://venezuelatebusca.com/?query=Omar%20Hernandez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Grañamar Ultima vez: Residencias Grañamar"
+    },
+    {
+        "provider_id":  "94c5001a-2556-4751-9959-632251a527c5",
+        "title":  "Victoria Perez",
+        "subtitle":  "Pelo largo, morenita, no muy alta Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Victoria%20Perez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "e997bf4e-98c4-4561-a8c0-5bf309c7499e",
+        "title":  "Donisio Aguilarte",
+        "subtitle":  "Discapcitado de la mano izquierda Última vez visto: Residencias caribe Ultima vez: Residencias caribe",
+        "url":  "https://venezuelatebusca.com/?query=Donisio%20Aguilarte",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias caribe Ultima vez: Residencias caribe",
+        "thumbnail":  "/media/photos/venezuela_reporta/8b1fdb94-9829-49ac-afd3-f62139242cd4.jpg"
+    },
+    {
+        "provider_id":  "c5eaa002-06c0-491d-928e-4dbce029720f",
+        "title":  "Nazareth Carrillo",
+        "subtitle":  "Ultima vez vista en Residencias Caribe. Piel clara, cabello oscuro, tatuajes minimalistas en brazos y abdomen, estatura 1,58 aprox. Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Nazareth%20Carrillo",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe",
+        "thumbnail":  "/media/photos/venezuela_reporta/452108e7-0427-470c-87c7-457b27b20002.jpg"
+    },
+    {
+        "provider_id":  "0ba9b58d-4e68-4c22-838a-673cee17902c",
+        "title":  "Juan Diego",
+        "subtitle":  "Es blanco algo, no sabemos nada de ellos Última vez visto: Residencias albatros Ultima vez: Residencias albatros",
+        "url":  "https://venezuelatebusca.com/?query=Juan%20Diego",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias albatros Ultima vez: Residencias albatros"
+    },
+    {
+        "provider_id":  "be9e8e60-9567-489d-8e8c-d9f2accb1f73",
+        "title":  "Rita Martinez",
+        "subtitle":  "Última vez visto: Residencias guaracarumbo Ultima vez: Residencias guaracarumbo",
+        "url":  "https://venezuelatebusca.com/?query=Rita%20Martinez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias guaracarumbo Ultima vez: Residencias guaracarumbo"
+    },
+    {
+        "provider_id":  "05f3b3c7-c06b-4647-a6c5-bcdce8e7959e",
+        "title":  "Anderson Olivier",
+        "subtitle":  "Última vez visto: Residencias Maribel Ultima vez: Residencias Maribel",
+        "url":  "https://venezuelatebusca.com/?query=Anderson%20Olivier",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Maribel Ultima vez: Residencias Maribel"
+    },
+    {
+        "provider_id":  "462e12f7-e2f9-423d-819b-d7a6bfcc37f3",
+        "title":  "Geraldine Guedez",
+        "subtitle":  "Última vez visto: Residencias Solymar Ultima vez: Residencias Solymar",
+        "url":  "https://venezuelatebusca.com/?query=Geraldine%20Guedez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Solymar Ultima vez: Residencias Solymar"
+    },
+    {
+        "provider_id":  "fd37fdb6-44f7-4bbc-b0f8-0302d581e0eb",
+        "title":  "Rafael Lopez",
+        "subtitle":  "1.60 de estatua, adulto mayor Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Rafael%20Lopez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "4ddee306-71be-49d7-804f-3e07b4573906",
+        "title":  "Nefelin Jaramillo",
+        "subtitle":  "Estatura 1.50\nContextura rellena Última vez visto: Residencias caribe Ultima vez: Residencias caribe",
+        "url":  "https://venezuelatebusca.com/?query=Nefelin%20Jaramillo",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias caribe Ultima vez: Residencias caribe"
+    },
+    {
+        "provider_id":  "8c427c64-a5b1-4148-b6e4-ee71d74d1186",
+        "title":  "Walter Vasquez",
+        "subtitle":  "Contextura gruesa. Adulto joven y camisa azul. Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Walter%20Vasquez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "3b84edde-1110-4857-bf4b-281741649ada",
+        "title":  "Fatima Piñero",
+        "subtitle":  "Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Fatima%20Pi%C3%B1ero",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "06ddb78e-020d-48f6-84cc-232a1b43c67d",
+        "title":  "Daniel Gorrin",
+        "subtitle":  "Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Daniel%20Gorrin",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "05fbe80c-4325-4a57-841f-918db8255b02",
+        "title":  "Yeremi Luquez",
+        "subtitle":  "Estatura media, cabello negro. Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Yeremi%20Luquez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider_id":  "0f45d6b5-187d-46e6-853a-6128a308d80e",
+        "title":  "Christian Garcia",
+        "subtitle":  "Es un niño con autismo, de contextura delgada y tono de piel blanca Última vez visto: Residencias Carabamar Ultima vez: Residencias Carabamar",
+        "url":  "https://venezuelatebusca.com/?query=Christian%20Garcia",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Carabamar Ultima vez: Residencias Carabamar"
+    },
+    {
+        "provider_id":  "a4ef196c-ea3f-468a-9a73-bc5c96b2fdb1",
+        "title":  "Eneida Molina",
+        "subtitle":  "Mide aproxima 1,68 cabello negro lizo nariz grande ojos negro gordita piel morena clara Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Eneida%20Molina",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe",
+        "thumbnail":  "/media/photos/venezuela_reporta/50ec4b80-9c5f-40aa-bca6-6d5573bd2328.jpg"
+    },
+    {
+        "provider_id":  "90afa017-04d0-4f00-ad5e-393a74c51e20",
+        "title":  "Jesús Rodríguez",
+        "subtitle":  "Es algo, cabello liso, estaba con su mamá en el momento del derrumbe la guiara residencias caribe Última vez visto: Residencias caribe Ultima vez: Residencias caribe",
+        "url":  "https://venezuelatebusca.com/?query=Jes%C3%BAs%20Rodr%C3%ADguez",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias caribe Ultima vez: Residencias caribe"
+    },
+    {
+        "provider_id":  "64ce58e3-3ea9-4d73-9746-b420a8071947",
+        "title":  "Edgar Rampersad",
+        "subtitle":  "Esta con muletas no se como estaba vestido Última vez visto: Residencias Caribe Ultima vez: Residencias Caribe",
+        "url":  "https://venezuelatebusca.com/?query=Edgar%20Rampersad",
+        "provider":  "Venezuela Te Busca",
+        "type":  "person",
+        "status":  "missing",
+        "last_update":  "Residencias Caribe Ultima vez: Residencias Caribe"
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Roa",
+        "subtitle":  "6MG9+H7J, La Victoria 2121, Aragua, Venezuela, La Victoria",
+        "status":  "parcial",
+        "location":  [
+                         -67.3318682,
+                         10.2264583
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/02557cd6-1bdd-43fa-aca8-64023ef59094",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Bloque 33 de menca residencias Santa Barbara",
+        "subtitle":  "Menca, Guarenas 1220, Miranda, Venezuela, Guarenas",
+        "status":  "severo",
+        "location":  [
+                         -66.6079282525039,
+                         10.472608474869
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/077c00c9-84e2-4a30-b974-520a3ae3e3fc",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/9388177d-8589-4ea5-bb65-5616475d7894.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias El Molino",
+        "subtitle":  "Avenida Guaicaipuro, Caraballeda 1165, La Guaira, Venezuela, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         -66.8437053,
+                         10.6122196
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/2527a72e-9996-43bf-bd4c-58defeeb37f6",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/ae089b42-d2c2-4d66-8a29-58bfec73f299.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Nathalie",
+        "subtitle":  "Av. Bermúdez \u0026 C. Ribas, Cagua 2122, Aragua, Venezuela, Cagua",
+        "status":  "parcial",
+        "location":  [
+                         -67.4657819,
+                         10.1895811
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/8b5a1930-5f49-4f8e-b6cb-f2c3a072e41a",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/6640afeb-d696-41e1-8692-40eecb3a0a9c.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "residencias solange",
+        "subtitle":  "F3WM+5GG, Av. Sur 1, Caracas 1014, Distrito Capital, Venezuela, Caracas",
+        "status":  "parcial",
+        "location":  [
+                         -66.916182,
+                         10.4954378
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/32f603bd-8fd0-4a3a-ace4-a8e1e64e869d",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/558d3bcd-ce3c-48ae-aa53-e96f8c3fa1b9.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Jardininfan",
+        "subtitle":  "La Candelaria, Caracas, Distrito Capital, Venezuela, Caracas",
+        "status":  "severo",
+        "location":  [
+                         -66.9056796011217,
+                         10.5048123080805
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/3729bb9e-8940-4442-9cd1-75d7368c90c1",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/dc62927d-dc77-4552-9ee6-c465bb24a430.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Breogan",
+        "subtitle":  "Avenida 16-A, Caraballeda 1165, La Guaira, Venezuela, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/4ab2bd2f-3ced-4e0f-b7e1-9420232a5bf2",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/9647ba0f-1b5d-46ff-be31-8a3db33eed8a.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Villas Sol",
+        "subtitle":  "Paseo Valencia, C. 179 Paseo Valencia, Naguanagua 2005, Carabobo, Venezuela, Naguanagua",
+        "status":  "severo",
+        "location":  [
+                         -68.0124041,
+                         10.2485203
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/594506b4-9208-4f57-a413-0befcda54403",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/667b40b3-2eff-458f-99f8-979bc19c4dd4.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Bravamar",
+        "subtitle":  "Av. Circunvalacion, Caraballeda 1165, La Guaira, Venezuela, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         -66.8460258671913,
+                         10.6159601461449
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/5967f2ec-0b33-4720-ac64-98c722510e8d",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/cc033eff-19be-4b2d-8346-1045974418e8.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias militares Macuto",
+        "subtitle":  "Sector el ceibo al lado del restaurante brisas del mar y la maternidad de macuto, La guaira",
+        "status":  "total",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/5a12dce0-9ba3-4fe2-80bd-0ec487a359fe",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Caraballeda Humboldt",
+        "subtitle":  "Av Charaima Urbanización Tanaguarenas La Guaira, La Guaira",
+        "status":  "severo",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/5edfa174-c2a0-44d8-98ff-fd20a1e39f37",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/737f0304-750d-4530-9f89-1479ca22d934.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Gradisca",
+        "subtitle":  "Av. José María España, Macuto, La Guaira, Venezuela, La Guaira",
+        "status":  "total",
+        "location":  [
+                         -66.8890758260365,
+                         10.610466264528
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/7fbffebe-55b0-45d2-be4c-ef4e2910d374",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/c3867206-11b6-46bc-a160-d87a5615e78a.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Cimaventura",
+        "subtitle":  "https://maps.app.goo.gl/Jv77X8iupuQUFUmw7?g_st=ic, La Guaira",
+        "status":  "total",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/91ded907-624e-48fa-b3a1-01bc6a05fc59",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/fa84bb52-0c9a-4271-9f6e-9182791afd7d.png",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Riviera",
+        "subtitle":  "Av. José Antonio Páez, Caracas, Distrito Capital, Venezuela, Caracas",
+        "status":  "parcial",
+        "location":  [
+                         -66.9397055496624,
+                         10.4812749692092
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/9877ddb6-f8fd-4e0c-94b6-da58c289998b",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/57c88ff3-249c-45be-a161-e2e3864f07ce.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Atalaya",
+        "subtitle":  "Edificio Atalaya, Av. Andrés Bello, Caracas 1050, Distrito Capital, Venezuela, Caracas",
+        "status":  "severo",
+        "location":  [
+                         -66.8938611,
+                         10.5043919
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/a2ef632f-2516-44f0-bc16-71ef42a4ca74",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/2f2c595e-8376-4660-bbc0-44619fc878eb.png",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias de los Mecedores",
+        "subtitle":  "G3CJ+49F, Caracas 1010, Distrito Capital, Venezuela, Caracas",
+        "status":  "severo",
+        "location":  [
+                         -66.9190781,
+                         10.5203125
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/a6b9be89-54bf-4c0f-a9d8-39a18cb364dc",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/b18dd341-482a-45c5-914a-c95a273772ea.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Costa Azul",
+        "subtitle":  "J564+GVQ, Avenida Guaicaipuro, Caraballeda 1165, La Guaira, Venezuela, Cabaralleda",
+        "status":  "total",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/b1e503a0-e8a8-4957-91b7-0ad29048b1ec",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/217f988c-3e8b-4c6b-b0ee-7fee02975618.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Vistamar",
+        "subtitle":  "J592+FF4, Caraballeda 1165, La Guaira, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/b459ef95-7c60-4243-ae9d-41a6b5a48fde",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/c2b2729e-e347-4a30-b9fe-2eb32d1e8698.jpg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Coral Mar",
+        "subtitle":  "Residencias Coral Mar, Av. La Costanera, Caraballeda 1165, La Guaira, Venezuela, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         -66.8542156,
+                         10.6181879
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/c0e0d6f4-bd2d-4700-b695-cbeb0eb91d54",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/f8094f05-8580-49c8-8c26-d1a08a93483c.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Aldi",
+        "subtitle":  "Av 0 Sur, Esq Castán a Palmita, Municipio Libertador, Caracas",
+        "status":  "severo",
+        "location":  [
+                         null,
+                         null
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/d40565b6-7371-4aa7-a71c-64fe09f15e1b",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Cilyex",
+        "subtitle":  "Av. Este 12, Caracas 1014, Distrito Capital, Venezuela, Caracas",
+        "status":  "severo",
+        "location":  [
+                         -66.9087526,
+                         10.4977673
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/d61b1d2e-a4bf-4c1c-93d2-9090606fd654",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Club Bahía Mar",
+        "subtitle":  "J49W+6GR, Caraballeda 1165, La Guaira, Venezuela, Caraballeda",
+        "status":  "total",
+        "location":  [
+                         -66.8537201,
+                         10.618103
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/dff7a6e1-258c-4eb1-9b8b-ecd044cee02e",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/e2eab6c4-d025-47a8-a959-262aaf689abc.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias trinoral",
+        "subtitle":  "https://maps.app.goo.gl/qgPkQ73pwg8g1G876?g_st=ic, Caracas",
+        "status":  "parcial",
+        "location":  [
+                         -66.9136616,
+                         10.5088562
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/e5c71b76-d27b-45f3-87b3-71cd02798554",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/036edce7-0fe5-4c52-b8be-9e67755f6930.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias Orca",
+        "subtitle":  "JX5R+RV6, Maiquetía 1162, La Guaira, Venezuela, Maiquetía",
+        "status":  "total",
+        "location":  [
+                         -67.0078666,
+                         10.6095417
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/ef7729a8-8777-420b-933d-98b52801fc0a",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/738938f4-6825-4c98-91bf-707c70b951fc.jpeg",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    },
+    {
+        "provider":  "TerremotoVenezuela",
+        "provider_id":  "prov-terremotovenezuela",
+        "type":  "building",
+        "title":  "Residencias vista al mar",
+        "subtitle":  "C. Bella Vista, Maiquetía 1162, La Guaira, Venezuela, Maiquetía",
+        "status":  "severo",
+        "location":  [
+                         -67.0073155,
+                         10.6092545
+                     ],
+        "url":  "https://terremotovenezuela.com/edificio/f3363c36-dcf3-4d67-9dab-35644ee7c93d",
+        "thumbnail":  "https://jckifxsdlnsvbztxydes.supabase.co/storage/v1/object/public/damage-media/reports/c4c5c9ac-045a-4711-a859-07672bfe8a5b.png",
+        "metadata":  {
+                         "has_missing_persons":  false
+                     }
+    }
+]

@@ -103,3 +103,101 @@
   padding: 2px 8px;
   border-radius: var(--radius-full);
 }
+
+/* Default Hide Mobile Elements */
+.mobile-sidebar-toggle {
+  display: none;
+}
+.mobile-nav-toggle {
+  display: none;
+}
+
+/* MOBILE RESPONSIVE STYLES */
+@media (max-width: 768px) {
+  /* Sidebar Bottom Sheet */
+  .sidebar-container {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid var(--border-subtle);
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 9999;
+  }
+  .sidebar-container.mobile-open {
+    transform: translateY(0);
+  }
+  
+  /* Mobile Sidebar Toggle Button */
+  .mobile-sidebar-toggle {
+    display: block !important;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-panel);
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+
+  /* Top Nav */
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav-toggle {
+    display: flex !important;
+  }
+  .mobile-menu-open {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    padding: 16px;
+    gap: 16px;
+    z-index: 9999;
+  }
+  
+  /* Find Page */
+  .find-form {
+    flex-direction: column !important;
+  }
+  
+  /* Report Page */
+  .report-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* About Page */
+  .about-container {
+    padding: 20px !important;
+    max-width: 100% !important;
+  }
+  .about-logo {
+    width: 80% !important;
+  }
+  
+  /* Footer */
+  .footer-links {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 16px !important;
+  }
+}
+@media (max-width: 768px) { .mobile-col { flex-direction: column !important; } }

@@ -51,9 +51,10 @@
     "damagedBuilding": "Edificio Dañado",
     "shelterUpdate": "Actualización de Refugio",
     "back": "← Volver a Categorías",
-    "redirectTitle": "Continúa en la plataforma oficial de reportes",
-    "redirectText": "Para asegurar la integridad de los datos y evitar la fragmentación, GeoResponde no almacena reportes directamente. Te redirigiremos a la plataforma de la organización autorizada donde tu reporte será manejado y verificado adecuadamente.",
-    "goToOfficial": "Ir a la Plataforma Oficial ↗"
+    "redirectTitle": "Continúa con una organización humanitaria participante",
+    "redirectText": "GeoResponde no almacena reportes de emergencia de forma permanente. Tu reporte será entregado de forma segura a la organización humanitaria participante responsable de procesar y verificar la información.",
+    "goToOfficial": "Continuar a Organización Asociada ↗",
+    "noProvider": "Ninguna organización participante admite actualmente el envío de reportes de {{category}} a través de GeoResponde."
   },
   "about": {
     "title": "GeoResponde",
