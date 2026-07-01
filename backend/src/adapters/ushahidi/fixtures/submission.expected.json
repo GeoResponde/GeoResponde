@@ -1,13 +1,12 @@
 {
   "form": { "id": 12 },
   "title": "Missing person - Plaza Ejemplo",
-  "content": "Missing person report. Name: Ana Prueba. Age: 34. Gender: female. Last seen: Plaza Ejemplo. Contact: tel:+000.",
+  "content": "Missing person report. Name: Ana Prueba. Age: 34. Gender: female. Last seen: Plaza Ejemplo.",
   "values": {
     "fullName": ["Ana Prueba"],
     "age": [34],
     "gender": ["female"],
     "lastSeenLocation": ["Plaza Ejemplo"],
-    "lastSeenCoords": [{ "value": { "lat": 10.5, "lon": -66.9 } }],
-    "reporterContact": ["tel:+000"]
+    "lastSeenCoords": [{ "value": { "lat": 10.5, "lon": -66.9 } }]
   }
 }

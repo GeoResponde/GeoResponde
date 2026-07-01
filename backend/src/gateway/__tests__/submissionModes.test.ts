@@ -39,6 +39,12 @@ describe('buildDeepLink', () => {
     expect(url).not.toContain('cedula');
   });
 
+  it('NEVER includes the sensitive reporterContact in the URL', () => {
+    expect(url).not.toContain('reporterContact');
+    expect(url).not.toContain('tel%3A%2B000');
+    expect(url).not.toContain('tel:+000');
+  });
+
   it('is a pure string with no side effects', () => {
     expect(typeof url).toBe('string');
     expect(buildDeepLink(BASE_URL, report)).toBe(url);

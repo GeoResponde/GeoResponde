@@ -24,6 +24,13 @@ describe('buildUshahidiPost', () => {
     expect(result.content).not.toContain('00000123');
   });
 
+  it('drops the sensitive reporterContact from the entire body', () => {
+    const result = buildUshahidiPost(request, 12);
+    expect(JSON.stringify(result)).not.toContain('tel:+000');
+    expect(result.values).not.toHaveProperty('reporterContact');
+    expect(result.content).not.toContain('Contact');
+  });
+
   it('array-wraps every value and maps coords to [{ value: { lat, lon } }]', () => {
     const result = buildUshahidiPost(request, 12);
     for (const v of Object.values(result.values)) {

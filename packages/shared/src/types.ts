@@ -168,7 +168,7 @@ export const REPORT_TOPICS: Record<ReportTopic, ReportTopicDef> = {
       { name: 'lastSeenLocation', type: 'text', required: false },
       { name: 'lastSeenCoords', type: 'coords', required: false },
       { name: 'cedula', type: 'text', required: false, sensitive: true },
-      { name: 'reporterContact', type: 'text', required: false },
+      { name: 'reporterContact', type: 'text', required: false, sensitive: true },
     ],
   },
   'resource-need': {
@@ -189,7 +189,7 @@ export const REPORT_TOPICS: Record<ReportTopic, ReportTopicDef> = {
       { name: 'locationCoords', type: 'coords', required: false },
       { name: 'capacityStatus', type: 'select', required: false, options: ['open', 'full', 'closed', 'unknown'] },
       { name: 'needs', type: 'textarea', required: false },
-      { name: 'reporterContact', type: 'text', required: false },
+      { name: 'reporterContact', type: 'text', required: false, sensitive: true },
     ],
   },
   'building-damage': {
@@ -200,7 +200,7 @@ export const REPORT_TOPICS: Record<ReportTopic, ReportTopicDef> = {
       { name: 'buildingType', type: 'select', required: false, options: BUILDING_TYPE_VALUES },
       { name: 'damageLevel', type: 'select', required: true, options: DAMAGE_LEVEL_VALUES },
       { name: 'description', type: 'textarea', required: false },
-      { name: 'reporterContact', type: 'text', required: false },
+      { name: 'reporterContact', type: 'text', required: false, sensitive: true },
     ],
   },
 };
