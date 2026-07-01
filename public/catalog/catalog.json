@@ -705,7 +705,8 @@
       "status": "active",
       "adapter": "DesaparecidosTerremotoAdapter",
       "capabilities": [
-        "search"
+        "search",
+        "submission"
       ]
     },
     {
@@ -802,6 +803,18 @@
       "adapter": "AyudaVenezuelaAdapter",
       "capabilities": [
         "search"
+      ]
+    },
+    {
+      "id": "prov-ushahidi",
+      "display_name": "Ushahidi",
+      "website": "https://www.ushahidi.com/",
+      "description": "Open crowdsourcing platform for crisis reports; GeoResponde submits missing-person, resource-need and shelter-status reports to a deployment via POST /api/v5/posts (dry-run by default).",
+      "logo": "/logos/ushahidi.png",
+      "status": "active",
+      "adapter": "UshahidiAdapter",
+      "capabilities": [
+        "submission"
       ]
     }
   ]
