@@ -1,4 +1,5 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper, normalizeGender } from '../person.js';
 
 /**
  * Shape of a single record returned by the Encuéntralos `/api/personas`
@@ -31,6 +32,8 @@ export interface EncuentralosResponse {
 /**
  * Normalizes a single Encuéntralos record into the standard search result.
  */
+const toStatus = makeStatusMapper({ desaparecido: 'missing', encontrado: 'found' });
+
 export function normalizeRecord(record: EncuentralosItem): NormalizedSearchResult {
   const subtitle = [record.ultima_ubicacion, record.descripcion]
     .filter((part): part is string => Boolean(part))
@@ -57,6 +60,17 @@ export function normalizeRecord(record: EncuentralosItem): NormalizedSearchResul
     // The site exposes a real per-person detail route (/persona/:id); link
     // straight to it instead of a search query that the SPA never seeds.
     url: `https://encuentralos.tecnosoft.dev/persona/${record.id}`,
+    person: {
+      fullName: record.nombre || undefined,
+      cedula: record.cedula || undefined,
+      age: typeof record.edad === 'number' ? record.edad : undefined,
+      gender: normalizeGender(record.sexo),
+      status: toStatus(record.estado),
+      rawStatus: record.estado ?? undefined,
+      lastSeenLocation: record.ultima_ubicacion || undefined,
+      lastSeenAt: record.ultima_vez || undefined,
+      photoUrl: record.foto || undefined,
+    },
     metadata: {
       edad: record.edad,
       sexo: record.sexo,

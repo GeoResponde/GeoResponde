@@ -1,4 +1,12 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper, normalizeGender } from '../person.js';
+
+const toStatus = makeStatusMapper({
+  buscando: 'missing',
+  a_salvo: 'safe',
+  encontrado: 'found',
+  fallecido: 'deceased',
+});
 
 /**
  * Shape of the envelope returned by the Venezuela Reporta open API
@@ -60,6 +68,21 @@ export function parseVenezuelaReportaResponse(
       last_update: persona.created_at,
       thumbnail: persona.foto_url || undefined,
       url: persona.ficha_url || 'https://venezuelareporta.org/',
+      person: {
+        fullName: persona.nombre || undefined,
+        cedula: persona.cedula || undefined,
+        age: typeof persona.edad === 'number' ? persona.edad : undefined,
+        gender: normalizeGender(persona.genero),
+        status: toStatus(persona.status),
+        rawStatus: persona.status || undefined,
+        lastSeenLocation: [persona.ciudad, persona.zona].filter(Boolean).join(', ') || undefined,
+        lastSeenAt: persona.ultima_vez || undefined,
+        description: persona.descripcion || undefined,
+        photoUrl: persona.foto_url || undefined,
+        isMinor: persona.menor,
+        verified: persona.verificado,
+        sourceName: persona.origen || undefined,
+      },
       metadata: {
         cedula: persona.cedula,
         genero: persona.genero,

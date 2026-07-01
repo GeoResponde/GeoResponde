@@ -1,7 +1,24 @@
 import * as cheerio from 'cheerio';
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper } from '../person.js';
 
 const PERSONA_PREFIX = 'https://reencuentra-ve.vercel.app/persona/';
+
+const toStatus = makeStatusMapper({
+  desaparecido: 'missing',
+  encontrado: 'found',
+  hospitalizado: 'hospitalized',
+  'a salvo': 'safe',
+});
+
+/** Extract the first "NN años" age mention from free-text metadata spans. */
+function extractAge(info: string[]): number | undefined {
+  for (const text of info) {
+    const m = text.match(/(\d{1,3})\s*a[ñn]os/i);
+    if (m) return Number(m[1]);
+  }
+  return undefined;
+}
 
 /**
  * Pure parser for Reencuentra Venezuela search results.
@@ -45,6 +62,13 @@ export function parseReencuentraHtml(html: string): NormalizedSearchResult[] {
       subtitle: info.join(' · ') || undefined,
       status: estado || undefined,
       url: PERSONA_PREFIX + id,
+      person: {
+        fullName: name || undefined,
+        age: extractAge(info),
+        status: toStatus(estado),
+        rawStatus: estado || undefined,
+        lastSeenLocation: info.join(', ') || undefined,
+      },
       metadata: {},
     });
   });

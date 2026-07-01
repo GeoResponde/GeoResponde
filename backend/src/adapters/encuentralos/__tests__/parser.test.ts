@@ -30,6 +30,14 @@ describe('Encuéntralos Parser', () => {
       'https://encuentralos.tecnosoft.dev/persona/00000000-0000-0000-0000-000000000001',
     );
     expect(first.metadata).toEqual({ edad: 40, sexo: 'femenino', cedula: '00000001' });
+    expect(first.person).toMatchObject({
+      fullName: 'Ana Prueba',
+      cedula: '00000001',
+      age: 40,
+      gender: 'female',
+      status: 'missing',
+      rawStatus: 'desaparecido',
+    });
   });
 
   it('maps coordinates as [lng, lat] and thumbnail when present', () => {

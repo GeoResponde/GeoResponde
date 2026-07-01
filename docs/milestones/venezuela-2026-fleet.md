@@ -47,6 +47,28 @@ provider yields `[]` without breaking the others).
 > original source exists, prefer federating that source directly to avoid
 > double-counting; the gateway can later deduplicate by name + location.
 
+## Structured person schema + cédula search
+
+Because every person-oriented provider exposes a slightly different set of
+fields, adapters populate a shared, provider-agnostic `PersonRecord`
+(`packages/shared`) alongside the free-text `title`/`subtitle`:
+
+`fullName`, `firstName`, `lastName`, `cedula`, `age`, `gender` (canonical),
+`status` (canonical: `missing` / `found` / `hospitalized` / `safe` /
+`deceased` / `unknown`) + `rawStatus`, `lastSeenLocation`, `lastSeenAt`,
+`hospital`, `description`, `photoUrl`, `contact`, `isMinor`, `verified`,
+`sourceName`.
+
+Each provider maps its own vocabulary onto the canonical enums via helpers in
+`backend/src/adapters/person.ts` (`normalizeGender`, `makeStatusMapper`). The
+Find UI renders these as colored status badges and chips (cédula, age, gender,
+hospital) instead of a plain line of text.
+
+**Search by cédula:** the gateway detects when a query is a national ID
+(`isCedula`) and returns only exact cédula matches (`normalizeCedula`) across
+every provider that surfaces the number, so responders can look a person up by
+document instead of by name.
+
 ## Notes on data ethics
 
 These datasets contain sensitive personal data (names, partial ID numbers,

@@ -1,4 +1,11 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper, normalizeGender } from '../person.js';
+
+const toStatus = makeStatusMapper({
+  desaparecido: 'missing',
+  encontrado: 'found',
+  fallecido: 'deceased',
+});
 
 /**
  * Public storage bucket that hosts the missing-person photos. The stored
@@ -67,6 +74,19 @@ export function normalizeItem(item: ApoyoSaluItem): NormalizedSearchResult {
     // No confirmed per-person route and the SPA does not seed its search from
     // the URL, so /?search= linked nowhere. Link to the site home instead.
     url: 'https://apoyo.salu.pro/',
+    person: {
+      fullName: title || undefined,
+      firstName: item.nombre || undefined,
+      lastName: item.apellido || undefined,
+      cedula: item.cedula || undefined,
+      age: typeof item.edad_aproximada === 'number' ? item.edad_aproximada : undefined,
+      gender: normalizeGender(item.genero),
+      status: toStatus(item.estado),
+      rawStatus: item.estado ?? undefined,
+      lastSeenLocation: item.ultimo_lugar_visto || undefined,
+      description: item.informacion_adicional || undefined,
+      photoUrl: resolveThumbnail(item),
+    },
     metadata: {
       cedula: item.cedula,
       edad: item.edad_aproximada,

@@ -1,4 +1,5 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { normalizeGender } from '../person.js';
 
 const BASE_URL = 'https://buscaenlistasvzla.info';
 
@@ -39,6 +40,20 @@ function normalizeRecord(record: any): NormalizedSearchResult {
     // source list photo when available (the actual OCR'd hospital/shelter
     // list evidence), otherwise fall back to the site home.
     url: img ? `${BASE_URL}/image/${img}` : `${BASE_URL}/`,
+    person: {
+      fullName: name || undefined,
+      cedula: record?.cedula || undefined,
+      age: typeof record?.age === 'number' ? record.age : undefined,
+      gender: normalizeGender(record?.sex),
+      // Every entry here comes from a hospital/shelter/morgue list, i.e. the
+      // person was located; `missing_match` only flags a possible cross-match.
+      status: 'found',
+      rawStatus: record?.missing_match ? 'posible coincidencia' : 'listado',
+      lastSeenLocation: record?.place || undefined,
+      hospital: record?.place || undefined,
+      description: record?.note || undefined,
+      photoUrl: img ? `${BASE_URL}/image/${img}` : undefined,
+    },
     metadata: {
       age: record?.age ?? null,
       sex: record?.sex ?? '',

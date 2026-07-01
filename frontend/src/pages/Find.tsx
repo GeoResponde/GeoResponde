@@ -1,6 +1,56 @@
-import { useState } from 'react';
-import type { NormalizedSearchResult } from '@georesponde/shared';
+import { useState, type ReactNode } from 'react';
+import type { NormalizedSearchResult, PersonStatus, Gender } from '@georesponde/shared';
 import { useTranslation } from 'react-i18next';
+
+const STATUS_META: Record<PersonStatus, { label: string; color: string }> = {
+  missing: { label: 'Desaparecido', color: '#ef4444' },
+  found: { label: 'Encontrado', color: '#22c55e' },
+  hospitalized: { label: 'Hospitalizado', color: '#f59e0b' },
+  safe: { label: 'A salvo', color: '#3b82f6' },
+  deceased: { label: 'Fallecido', color: '#6b7280' },
+  unknown: { label: 'Sin estado', color: '#64748b' },
+};
+
+const GENDER_LABEL: Record<Gender, string> = {
+  male: 'Masculino',
+  female: 'Femenino',
+  other: 'Otro',
+  unknown: '',
+};
+
+function Chip({ children, color }: { children: ReactNode; color?: string }) {
+  return (
+    <span
+      style={{
+        backgroundColor: color ? `${color}22` : '#0f172a',
+        color: color || '#94a3b8',
+        border: `1px solid ${color || '#334155'}`,
+        padding: '3px 10px',
+        borderRadius: '12px',
+        fontSize: '12px',
+        fontWeight: 600,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function PersonChips({ person }: { person: NonNullable<NormalizedSearchResult['person']> }) {
+  const status = person.status ? STATUS_META[person.status] : undefined;
+  const gender = person.gender ? GENDER_LABEL[person.gender] : '';
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+      {status && <Chip color={status.color}>{status.label}</Chip>}
+      {person.cedula && <Chip>CI: {person.cedula}</Chip>}
+      {typeof person.age === 'number' && <Chip>{person.age} años</Chip>}
+      {gender && <Chip>{gender}</Chip>}
+      {person.hospital && <Chip>{person.hospital}</Chip>}
+      {person.verified && <Chip color="#22c55e">Verificado</Chip>}
+      {person.isMinor && <Chip color="#f59e0b">Menor</Chip>}
+    </div>
+  );
+}
 
 export function Find() {
   const [query, setQuery] = useState('');
@@ -89,7 +139,7 @@ export function Find() {
       
       <div style={{ display: 'flex', gap: '12px', marginBottom: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
         <span style={{ color: '#94a3b8', fontSize: '14px' }}>{t('find.examples')}</span>
-        {['Maria Perez', 'Hospital Vargas', 'Shelter', 'Costa Azul Building'].map(example => (
+        {['Maria Perez', '12345678', 'Hospital Vargas', 'Shelter'].map(example => (
           <button 
             key={example}
             onClick={() => handleExampleClick(example)}
@@ -125,7 +175,8 @@ export function Find() {
           }}>
             <div>
               <h3 style={{ margin: '0 0 8px 0', color: '#fff', fontSize: '24px' }}>{r.title}</h3>
-              <p style={{ margin: '0 0 16px 0', color: '#cbd5e1', fontSize: '16px' }}>{r.subtitle}</p>
+              <p style={{ margin: '0 0 12px 0', color: '#cbd5e1', fontSize: '16px' }}>{r.subtitle}</p>
+              {r.person && <PersonChips person={r.person} />}
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <span style={{ 
                   backgroundColor: '#0f172a', 

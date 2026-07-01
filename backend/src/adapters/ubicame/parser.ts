@@ -1,4 +1,15 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper } from '../person.js';
+
+const toStatus = makeStatusMapper({
+  missing: 'missing',
+  believed_alive: 'safe',
+  hospitalized: 'hospitalized',
+  found: 'found',
+  fallecido: 'deceased',
+  deceased: 'deceased',
+  is_note: 'unknown',
+});
 
 /**
  * Shape of a single victim record inside a Úbícame letter shard.
@@ -55,6 +66,18 @@ export function parseUbicameShard(
         // The site is a static SPA with no per-person page and no URL-seeded
         // search, so link to the site home rather than a dead query string.
         url: 'https://911.ubica.me/',
+        person: {
+          fullName: fullName || undefined,
+          cedula: r.ext_venezuela_ci || undefined,
+          age: r.age ? Number(r.age) || undefined : undefined,
+          status: toStatus(r.status),
+          rawStatus: r.status || undefined,
+          lastSeenLocation: r.last_known_location || undefined,
+          hospital: r.hospital || undefined,
+          description: r.notes || undefined,
+          contact: r.phone ? { phone: r.phone } : undefined,
+          sourceName: r.source || undefined,
+        },
         metadata: {
           age: r.age,
           cedula: r.ext_venezuela_ci,
