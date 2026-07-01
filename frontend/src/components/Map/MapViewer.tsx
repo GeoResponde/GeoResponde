@@ -17,6 +17,8 @@ interface Props {
   showEonet?: boolean;
   eonetVisibleEpoch?: number | null;
   eonetActiveCategories?: Set<string>;
+  eonetSelectedId?: string | null;
+  onEonetSelect?: (id: string | null) => void;
 }
 
 export function MapViewer({
@@ -26,6 +28,8 @@ export function MapViewer({
   showEonet = false,
   eonetVisibleEpoch = null,
   eonetActiveCategories,
+  eonetSelectedId,
+  onEonetSelect,
 }: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
@@ -611,6 +615,8 @@ export function MapViewer({
             features={eonetFeatures}
             visibleEpoch={eonetVisibleEpoch}
             activeCategories={eonetActiveCategories}
+            selectedId={eonetSelectedId}
+            onSelect={onEonetSelect}
           />
         )}
         {renderPopup()}

@@ -10,6 +10,8 @@ interface Props {
   features: RenderFeature[];
   visibleEpoch?: number | null;
   activeCategories?: Set<string>;
+  selectedId?: string | null;
+  onSelect?: (id: string | null) => void;
 }
 
 interface PopupState {
@@ -43,7 +45,27 @@ function buildColorExpression(): unknown[] {
  * when `visibleEpoch` is finite (13-02) and the category `in` clause only when
  * `activeCategories` is provided (13-03).
  */
-export function EonetLayer({ features, visibleEpoch = null, activeCategories }: Props) {
+function popupFromFeature(f: RenderFeature): PopupState {
+  const [longitude, latitude] = f.geometry.coordinates;
+  const p = f.properties;
+  return {
+    longitude,
+    latitude,
+    title: p.title,
+    category: p.category,
+    sourceUrl: p.sourceUrl,
+    source: p.source,
+    firstDate: p.firstDate,
+  };
+}
+
+export function EonetLayer({
+  features,
+  visibleEpoch = null,
+  activeCategories,
+  selectedId,
+  onSelect,
+}: Props) {
   const { t } = useTranslation();
   const map = useMap().current;
   const [popup, setPopup] = useState<PopupState | null>(null);
@@ -55,6 +77,11 @@ export function EonetLayer({ features, visibleEpoch = null, activeCategories }: 
       const feature = e.features?.[0];
       if (!feature) return;
       const p = feature.properties ?? {};
+      const id = String(p.id ?? '');
+      if (onSelect) {
+        onSelect(id);
+        return; // selectedId effect drives the popup + camera
+      }
       const [longitude, latitude] = (feature.geometry as unknown as { coordinates: [number, number] }).coordinates;
       setPopup({
         longitude,
@@ -81,7 +108,21 @@ export function EonetLayer({ features, visibleEpoch = null, activeCategories }: 
       map.off('mouseenter', EONET_LAYER_ID, onEnter);
       map.off('mouseleave', EONET_LAYER_ID, onLeave);
     };
-  }, [map]);
+  }, [map, onSelect]);
+
+  // When a selection flows in (from the list or a map click), open its popup and
+  // ease the camera toward it — mirrors the FindMap select→focus pattern.
+  useEffect(() => {
+    if (selectedId === undefined) return; // 13-01 mode: click handler owns the popup
+    if (!selectedId) {
+      setPopup(null);
+      return;
+    }
+    const f = features.find((feat) => feat.properties.id === selectedId);
+    if (!f) return;
+    setPopup(popupFromFeature(f));
+    map?.easeTo({ center: f.geometry.coordinates, duration: 600 });
+  }, [selectedId, features, map]);
 
   const filter: unknown[] | undefined = (() => {
     const clauses: unknown[] = ['all'];
@@ -118,7 +159,10 @@ export function EonetLayer({ features, visibleEpoch = null, activeCategories }: 
         <Popup
           longitude={popup.longitude}
           latitude={popup.latitude}
-          onClose={() => setPopup(null)}
+          onClose={() => {
+            setPopup(null);
+            if (onSelect) onSelect(null);
+          }}
           closeOnClick={false}
           anchor="bottom"
           offset={12}

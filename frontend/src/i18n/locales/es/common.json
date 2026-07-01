@@ -36,6 +36,8 @@
       "source": "Fuente",
       "firstSeen": "Primera aparición",
       "timelineLabel": "Línea de tiempo",
+      "listHeading": "Eventos por aparición",
+      "emptyList": "Aún no hay eventos para este corte.",
       "categories": {
         "floods": "Inundaciones",
         "wildfires": "Incendios forestales",

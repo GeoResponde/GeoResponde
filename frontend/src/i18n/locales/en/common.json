@@ -36,6 +36,8 @@
       "source": "Source",
       "firstSeen": "First seen",
       "timelineLabel": "Timeline",
+      "listHeading": "Events by appearance",
+      "emptyList": "No events yet for this cutoff.",
       "categories": {
         "floods": "Floods",
         "wildfires": "Wildfires",
