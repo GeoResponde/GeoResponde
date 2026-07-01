@@ -1,89 +1,126 @@
+import { useState } from 'react';
+import type { Report as ReportModel, ReportTopic, SubmissionResult } from '@georesponde/shared';
+import { useTranslation } from 'react-i18next';
+import { TopicSelector } from '../components/report/TopicSelector';
+import { ReportFields } from '../components/report/ReportFields';
+import { ConsentGate } from '../components/report/ConsentGate';
+import { ResultPreview } from '../components/report/ResultPreview';
+import { submitReport } from '../lib/report';
 
 export function Report() {
-  const containerStyle = {
-    padding: '40px 20px',
-    maxWidth: '800px',
-    margin: '0 auto',
-    flex: 1,
-    color: '#e2e8f0',
-    fontFamily: 'system-ui, -apple-system, sans-serif'
+  const { t } = useTranslation();
+  const [topic, setTopic] = useState<ReportTopic | null>(null);
+  const [fields, setFields] = useState<Record<string, unknown>>({});
+  const [acknowledgedAt, setAcknowledgedAt] = useState<string | null>(null);
+  const [result, setResult] = useState<SubmissionResult | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleTopicChange = (next: ReportTopic) => {
+    setTopic(next);
+    setFields({});
+    setResult(null);
   };
 
-  const headerStyle = {
-    textAlign: 'center' as const,
-    marginBottom: '40px'
+  const handleFieldChange = (name: string, value: unknown) => {
+    setFields((prev) => {
+      const next = { ...prev };
+      if (value === undefined || value === '') {
+        delete next[name];
+      } else {
+        next[name] = value;
+      }
+      return next;
+    });
   };
 
-  const titleStyle = {
-    fontSize: '48px',
-    fontWeight: 'bold',
-    margin: '0 0 10px 0',
-    color: '#f8fafc'
-  };
+  const canSubmit = topic !== null && acknowledgedAt !== null && !submitting;
 
-  const subtitleStyle = {
-    fontSize: '24px',
-    color: '#94a3b8',
-    margin: 0
-  };
+  const handleSubmit = async () => {
+    if (topic === null || acknowledgedAt === null) return;
+    setSubmitting(true);
+    setResult(null);
 
-  const cardStyle = {
-    backgroundColor: '#1e293b',
-    border: '1px solid #334155',
-    borderRadius: '12px',
-    padding: '40px',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-  };
+    const contact = fields.reporterContact;
+    const report: ReportModel = {
+      id: crypto.randomUUID(),
+      topic,
+      createdAt: new Date().toISOString(),
+      fields,
+      consent: { targets: [], acknowledgedAt },
+      reporter: typeof contact === 'string' && contact ? { contact } : undefined,
+    };
 
-  const pStyle = {
-    fontSize: '18px',
-    lineHeight: '1.6',
-    color: '#cbd5e1',
-    marginBottom: '32px'
-  };
-
-  const statusStyle = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    backgroundColor: '#334155',
-    padding: '8px 16px',
-    borderRadius: '20px',
-    fontWeight: 'bold',
-    color: '#f8fafc',
-    marginBottom: '32px'
-  };
-
-  const listStyle = {
-    paddingLeft: '24px',
-    fontSize: '16px',
-    color: '#94a3b8',
-    lineHeight: '1.8'
+    try {
+      const submissionResult = await submitReport(report);
+      setResult(submissionResult);
+    } catch {
+      // Do not log the report body (sensitive PII). Surface a generic error.
+      setResult({
+        provider: 'dry-run',
+        mode: 'dry-run',
+        status: 'error',
+        error: t('report.result.networkError'),
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div style={containerStyle}>
-      <header style={headerStyle}>
-        <h1 style={titleStyle}>Report</h1>
-        <p style={subtitleStyle}>Federated Reporting</p>
+    <div
+      style={{
+        padding: '40px 20px',
+        maxWidth: '800px',
+        margin: '0 auto',
+        flex: 1,
+        color: '#e2e8f0',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+      }}
+    >
+      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '40px', fontWeight: 'bold', margin: '0 0 10px 0', color: '#f8fafc' }}>
+          {t('report.title')}
+        </h1>
+        <p style={{ fontSize: '18px', color: '#94a3b8', margin: 0 }}>{t('report.subtitle')}</p>
       </header>
 
-      <div style={cardStyle}>
-        <div style={statusStyle}>
-          <span>🚧</span>
-          <span>In Development</span>
-        </div>
+      <div
+        style={{
+          backgroundColor: '#1e293b',
+          border: '1px solid #334155',
+          borderRadius: '12px',
+          padding: '32px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        }}
+      >
+        <TopicSelector value={topic} onChange={handleTopicChange} />
 
-        <p style={pStyle}>
-          GeoResponde will soon allow reports to be routed directly to the appropriate humanitarian organizations instead of creating another isolated reporting platform.
-        </p>
+        {topic && (
+          <>
+            <ReportFields topic={topic} values={fields} onChange={handleFieldChange} />
+            <ConsentGate acknowledgedAt={acknowledgedAt} onChange={setAcknowledgedAt} />
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              style={{
+                width: '100%',
+                padding: '14px',
+                borderRadius: '10px',
+                border: 'none',
+                backgroundColor: canSubmit ? '#2563eb' : '#334155',
+                color: canSubmit ? '#f8fafc' : '#64748b',
+                fontSize: '16px',
+                fontWeight: 700,
+                cursor: canSubmit ? 'pointer' : 'not-allowed',
+              }}
+            >
+              {submitting ? t('report.submitting') : t('report.submit')}
+            </button>
+          </>
+        )}
 
-        <h3 style={{ fontSize: '20px', color: '#f8fafc', marginBottom: '16px' }}>Possible future capabilities:</h3>
-        <ul style={listStyle}>
-          <li>Structured field reports</li>
-          <li>Organization routing</li>
-          <li>Validation workflows</li>
-        </ul>
+        {result && <ResultPreview result={result} />}
       </div>
     </div>
   );
