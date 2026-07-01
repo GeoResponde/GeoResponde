@@ -14,6 +14,20 @@
     ]
   },
   {
+    "id": "prov-refugiosvenezuela",
+    "display_name": "Refugios Venezuela",
+    "website": "https://refugiosvenezuela.com/",
+    "description": "Registry of active shelters and their current capacity.",
+    "logo": "/logos/refugiosvenezuela.png",
+    "status": "active",
+    "adapter": "MockHumanitarianAdapter",
+    "capabilities": [
+      "search",
+      "directory",
+      "submission"
+    ]
+  },
+  {
     "id": "prov-hdx",
     "display_name": "Humanitarian Data Exchange",
     "website": "https://data.humdata.org/",

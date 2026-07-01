@@ -379,56 +379,6 @@
     "type": "layer"
   },
   {
-    "id": "layer-hospitals",
-    "title": "Hospitals",
-    "type": "layer"
-  },
-  {
-    "id": "layer-shelters",
-    "title": "Shelters",
-    "type": "layer"
-  },
-  {
-    "id": "layer-collection-centers-chile",
-    "title": "Collection Centers (Chile)",
-    "type": "layer"
-  },
-  {
-    "id": "layer-road-closures",
-    "title": "Road Closures",
-    "type": "layer"
-  },
-  {
-    "id": "layer-landslides",
-    "title": "Landslides",
-    "type": "layer"
-  },
-  {
-    "id": "layer-power-outages",
-    "title": "Power Outages",
-    "type": "layer"
-  },
-  {
-    "id": "layer-airports",
-    "title": "Airports",
-    "type": "layer"
-  },
-  {
-    "id": "layer-ports",
-    "title": "Ports",
-    "type": "layer"
-  },
-  {
-    "id": "layer-volunteer-organizations",
-    "title": "Volunteer Organizations",
-    "type": "layer"
-  },
-  {
-    "id": "layer-donation-campaigns",
-    "title": "Donation Campaigns",
-    "type": "layer"
-  },
-  {
     "id": "layer-faults",
     "title": "Tectonic Faults",
     "type": "layer"
@@ -461,11 +411,6 @@
   {
     "id": "layer-nasa-interferogram",
     "title": "NASA Unwrapped Interferogram",
-    "type": "layer"
-  },
-  {
-    "id": "layer-citizen-reports",
-    "title": "Citizen Reports (Aggregated)",
     "type": "layer"
   }
 ]

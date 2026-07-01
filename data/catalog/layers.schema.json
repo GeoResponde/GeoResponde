@@ -18,7 +18,7 @@
       },
       "confidence": {
         "type": "string",
-        "enum": ["Verified", "Cross-Referenced", "Community Report", "Pending Verification"]
+        "enum": ["Official", "Verified", "Cross-Referenced", "Community Verified", "Community Report", "Pending Verification"]
       },
       "refreshFrequency": {
         "type": "string",

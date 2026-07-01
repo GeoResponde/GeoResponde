@@ -458,7 +458,7 @@
       ],
       "format": "geojson",
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Hourly",
       "enabled": true,
       "visualization": {
@@ -483,7 +483,7 @@
         "dataset-funvisis-earthquakes"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -492,136 +492,13 @@
       }
     },
     {
-      "id": "layer-hospitals",
-      "name": "Hospitals",
-      "datasetIds": [
-        "dataset-hospitals"
-      ],
-      "category": "Infrastructure",
-      "confidence": "Verified",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {
-        "type": "points",
-        "color": "#2ecc71"
-      }
-    },
-    {
-      "id": "layer-shelters",
-      "name": "Shelters",
-      "datasetIds": [
-        "ds-shelters"
-      ],
-      "category": "Humanitarian",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-collection-centers-chile",
-      "name": "Collection Centers (Chile)",
-      "datasetIds": [
-        "ds-collection-centers-chile"
-      ],
-      "category": "Logistics",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-road-closures",
-      "name": "Road Closures",
-      "datasetIds": [
-        "ds-road-closures"
-      ],
-      "category": "Infrastructure",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-landslides",
-      "name": "Landslides",
-      "datasetIds": [
-        "ds-landslides"
-      ],
-      "category": "Infrastructure",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-power-outages",
-      "name": "Power Outages",
-      "datasetIds": [
-        "ds-power-outages"
-      ],
-      "category": "Infrastructure",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-airports",
-      "name": "Airports",
-      "datasetIds": [
-        "ds-airports"
-      ],
-      "category": "Logistics",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-ports",
-      "name": "Ports",
-      "datasetIds": [
-        "ds-ports"
-      ],
-      "category": "Logistics",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-volunteer-organizations",
-      "name": "Volunteer Organizations",
-      "datasetIds": [
-        "ds-volunteer-organizations"
-      ],
-      "category": "Community",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
-      "id": "layer-donation-campaigns",
-      "name": "Donation Campaigns",
-      "datasetIds": [
-        "ds-donation-campaigns"
-      ],
-      "category": "Humanitarian",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {}
-    },
-    {
       "id": "layer-faults",
       "name": "Tectonic Faults",
       "datasetIds": [
         "dataset-faults"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -636,7 +513,7 @@
         "ds-usgs-geologic-units"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -651,7 +528,7 @@
         "ds-satellite-before"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -667,7 +544,7 @@
         "ds-copernicus-roads"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -681,7 +558,7 @@
         "ds-copernicus-ground-movement"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -695,7 +572,7 @@
         "ds-nasa-sentinel-damage"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
@@ -709,26 +586,12 @@
         "ds-nasa-interferogram"
       ],
       "category": "Scientific",
-      "confidence": "Verified",
+      "confidence": "Official",
       "refreshFrequency": "Static",
       "enabled": false,
       "visualization": {
         "type": "raster",
         "url": "https://tiledimageservices7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_sentinel1_unwrappedInterferogram/ImageServer/tile/{z}/{y}/{x}"
-      }
-    },
-    {
-      "id": "layer-citizen-reports",
-      "name": "Citizen Reports (Aggregated)",
-      "datasetIds": [
-        "ds-citizen-reports"
-      ],
-      "category": "Humanitarian",
-      "confidence": "Pending Verification",
-      "refreshFrequency": "Hourly",
-      "enabled": false,
-      "visualization": {
-        "type": "mixed"
       }
     }
   ],
@@ -740,7 +603,7 @@
       "description": "Platform for finding missing persons.",
       "logo": "/logos/venezuelatebusca.png",
       "status": "active",
-      "adapter": "MockHumanitarianAdapter",
+      "adapter": "VenezuelaTeBuscaAdapter",
       "capabilities": [
         "search",
         "person_lookup",
@@ -759,6 +622,114 @@
         "search",
         "directory",
         "submission"
+      ]
+    },
+    {
+      "id": "prov-hdx",
+      "display_name": "Humanitarian Data Exchange",
+      "website": "https://data.humdata.org/",
+      "description": "OCHA open humanitarian data platform. Federated dataset search via the public HDX CKAN API.",
+      "logo": "/logos/hdx.png",
+      "status": "active",
+      "adapter": "HdxAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-encuentralos",
+      "display_name": "Encuéntralos",
+      "website": "https://encuentralos.tecnosoft.dev/",
+      "description": "Aggregator of missing and found persons after the 2026 Venezuela earthquake, via its public REST API.",
+      "logo": "/logos/encuentralos.png",
+      "status": "active",
+      "adapter": "EncuentralosAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-ubicame",
+      "display_name": "Úbícame",
+      "website": "https://911.ubica.me/",
+      "description": "Unified victim search (missing, alive, hospitalized) for the 2026 Venezuela earthquake, via static JSON shards.",
+      "logo": "/logos/ubicame.png",
+      "status": "active",
+      "adapter": "UbicameAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-buscaenlistas",
+      "display_name": "Busca en Listas VZLA",
+      "website": "https://buscaenlistasvzla.info/",
+      "description": "Persons registered in hospital, shelter and morgue lists (OCR), via a public REST API.",
+      "logo": "/logos/buscaenlistas.png",
+      "status": "active",
+      "adapter": "BuscaEnListasAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-apoyo-salu",
+      "display_name": "Apoyo (salu.pro)",
+      "website": "https://apoyo.salu.pro/",
+      "description": "Missing-persons search and reunification platform for the 2026 Venezuela earthquake, via its public API.",
+      "logo": "/logos/apoyo-salu.png",
+      "status": "active",
+      "adapter": "ApoyoSaluAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-venezuelareporta",
+      "display_name": "Venezuela Reporta",
+      "website": "https://venezuelareporta.org/",
+      "description": "Consolidated citizen registry of affected persons, via the official open Venezuela Reporta API.",
+      "logo": "/logos/venezuelareporta.png",
+      "status": "active",
+      "adapter": "VenezuelaReportaAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-desaparecidos-terremoto",
+      "display_name": "Desaparecidos Terremoto VE",
+      "website": "https://desaparecidosterremotovenezuela.com/",
+      "description": "Aid-platform directory for the 2026 Venezuela earthquake (its persons endpoint is reCAPTCHA-protected).",
+      "logo": "/logos/desaparecidos-terremoto.png",
+      "status": "active",
+      "adapter": "DesaparecidosTerremotoAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-hazlohoy",
+      "display_name": "Hazlo Hoy Terremoto",
+      "website": "https://terremoto.hazlohoy.org/",
+      "description": "Map markers (missing persons, damaged buildings, aid, collection centers) extracted from the SSR payload.",
+      "logo": "/logos/hazlohoy.png",
+      "status": "active",
+      "adapter": "HazloHoyAdapter",
+      "capabilities": [
+        "search"
+      ]
+    },
+    {
+      "id": "prov-reencuentra-ve",
+      "display_name": "Reencuentra VE",
+      "website": "https://reencuentra-ve.vercel.app/",
+      "description": "Family reunification registry for the 2026 Venezuela earthquake, federated via public HTML scraping.",
+      "logo": "/logos/reencuentra-ve.png",
+      "status": "active",
+      "adapter": "ReencuentraVeAdapter",
+      "capabilities": [
+        "search"
       ]
     }
   ]

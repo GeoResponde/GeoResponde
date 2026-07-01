@@ -1,5 +1,9 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { loadOrganizations, loadSources, loadDatasets, loadLayers, loadProviders } from './loaders/index.js';
+
+// ESM has no __dirname; derive it from the module URL.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { validateSchemas } from './validators/schema.js';
 import { validateRelations } from './validators/relations.js';
 import { buildSearchIndex } from './indexers/search.js';
