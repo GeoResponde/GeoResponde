@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { HumanitarianProvider, NormalizedSearchResult, SubmissionPackage } from '@georesponde/shared';
 import { BaseAdapter } from '../adapters/BaseAdapter.js';
-import { VenezuelaTeBuscaAdapter } from '../adapters/venezuelatebusca/adapter.js';
+import { createAdapter } from '../adapters/registry.js';
 
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
@@ -19,9 +19,12 @@ export class ProviderGateway {
       
       for (const p of this.providers) {
         if (p.status !== 'active') continue;
-        
-        if (p.adapter === 'VenezuelaTeBuscaAdapter') {
-          this.adapters.set(p.id, new VenezuelaTeBuscaAdapter(p));
+
+        const adapter = createAdapter(p);
+        if (adapter) {
+          this.adapters.set(p.id, adapter);
+        } else {
+          console.warn(`[Gateway] No adapter registered for provider "${p.id}" (adapter: "${p.adapter}"). Skipping.`);
         }
       }
       console.log(`[Gateway] Initialized with ${this.adapters.size} active adapters.`);
