@@ -11,6 +11,7 @@ import type { RenderFeature } from '../../lib/eonet';
 import type { AidSiteRenderFeature } from '../../lib/sitios';
 import type { EarthquakeFeatureCollection } from '../../lib/earthquakes';
 import { EMPTY_EARTHQUAKES } from '../../lib/earthquakes';
+import type { DamageFeatureCollection } from '../../hooks/useDamageLayer';
 import { useArcGISFeatureLayer } from '../../hooks/useArcGISFeatureLayer';
 import { useRef } from 'react';
 import { API_BASE } from '../../lib/api';
@@ -42,7 +43,15 @@ interface Props {
   usgsData?: EarthquakeFeatureCollection;
   /** Live FUNVISIS (via SismosVE) earthquakes feeding `layer-funvisis`. */
   funvisisData?: EarthquakeFeatureCollection;
+  /** Live Copernicus GRA grading (buildings + roads) feeding `layer-copernicus-damage`. */
+  copernicusDamageData?: DamageFeatureCollection;
+  /** Live Copernicus GRM ground movement feeding `layer-copernicus-ground-movement`. */
+  copernicusGroundMovementData?: DamageFeatureCollection;
+  /** EU/Copernicus attribution string surfaced in the legend (D-07). */
+  copernicusAttribution?: string | null;
 }
+
+const EMPTY_DAMAGE: DamageFeatureCollection = { type: 'FeatureCollection', features: [] };
 
 export function MapViewer({
   activeLayerIds,
@@ -59,6 +68,9 @@ export function MapViewer({
   aidSiteActiveTipos,
   usgsData = EMPTY_EARTHQUAKES,
   funvisisData = EMPTY_EARTHQUAKES,
+  copernicusDamageData = EMPTY_DAMAGE,
+  copernicusGroundMovementData = EMPTY_DAMAGE,
+  copernicusAttribution = null,
 }: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
@@ -173,7 +185,7 @@ export function MapViewer({
       if (layer.id === 'layer-copernicus-damage') {
         return (
           <React.Fragment key={layer.id}>
-            <Source id={`${layer.id}-buildings-src`} type="geojson" data="/data/copernicus/builtUp.geojson">
+            <Source id={`${layer.id}-buildings-src`} type="geojson" data={copernicusDamageData}>
               <MapLayer 
                 id={`${layer.id}-buildings-viz`}
                 type="fill"
@@ -227,7 +239,7 @@ export function MapViewer({
                 }}
               />
             </Source>
-            <Source id={`${layer.id}-roads-src`} type="geojson" data="/data/copernicus/transportation.geojson">
+            <Source id={`${layer.id}-roads-src`} type="geojson" data={copernicusDamageData}>
               <MapLayer 
                 id={`${layer.id}-roads-viz`}
                 type="line"
@@ -318,8 +330,6 @@ export function MapViewer({
         sourceUrl = '/data/faults.geojson';
       } else if (layer.id === 'layer-geologic-units') {
         sourceUrl = '/data/geologic_units.geojson';
-      } else if (layer.id === 'layer-copernicus-ground-movement') {
-        sourceUrl = '/data/copernicus/groundMovement.geojson';
       } else if (layer.id === 'layer-citizen-reports') {
         sourceUrl = '/data/citizen-reports.geojson';
       } else if (layer.id === 'layer-verified-buildings') {
@@ -358,9 +368,10 @@ export function MapViewer({
       ];
 
       const isNasaLayer = layer.id === 'layer-nasa-sentinel-damage';
-      // Dynamic earthquake layers read live gateway feeds instead of /data files.
+      // Dynamic layers read live gateway feeds instead of /data files.
       const isUsgsLayer = layer.id === 'layer-earthquakes';
       const isFunvisisLayer = layer.id === 'layer-funvisis';
+      const isGroundMovementLayer = layer.id === 'layer-copernicus-ground-movement';
 
       const sourceProps = isNasaLayer
         ? { type: 'geojson' as const, data: nasaFeatures }
@@ -368,7 +379,9 @@ export function MapViewer({
           ? { type: 'geojson' as const, data: usgsData }
           : isFunvisisLayer
             ? { type: 'geojson' as const, data: funvisisData }
-            : { type: 'geojson' as const, data: sourceUrl };
+            : isGroundMovementLayer
+              ? { type: 'geojson' as const, data: copernicusGroundMovementData }
+              : { type: 'geojson' as const, data: sourceUrl };
 
       const isPlateBoundary = [
         "any",
@@ -691,6 +704,7 @@ export function MapViewer({
         eonetActiveCategories={eonetActiveCategories}
         showAidSites={showAidSites}
         aidSiteActiveTipos={aidSiteActiveTipos}
+        attribution={copernicusAttribution}
       />
     </div>
   );

@@ -96,6 +96,7 @@
     "confidence": "Official",
     "refreshFrequency": "Static",
     "enabled": false,
+    "attribution": "© European Union, 2026, Copernicus EMS (EMSR884)",
     "visualization": {
       "type": "mixed"
     }
@@ -110,6 +111,7 @@
     "confidence": "Official",
     "refreshFrequency": "Static",
     "enabled": false,
+    "attribution": "© European Union, 2026, Copernicus EMS (EMSR884)",
     "visualization": {
       "type": "fill"
     }

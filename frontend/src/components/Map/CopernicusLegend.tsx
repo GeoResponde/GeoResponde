@@ -10,6 +10,8 @@ interface CopernicusLegendProps {
   /** Aid-sites layer state (a dynamic, non-catalog source). */
   showAidSites?: boolean;
   aidSiteActiveTipos?: Set<string>;
+  /** EU/Copernicus attribution from the gateway `X-Attribution` header (D-07). */
+  attribution?: string | null;
 }
 
 export function CopernicusLegend({
@@ -18,6 +20,7 @@ export function CopernicusLegend({
   eonetActiveCategories,
   showAidSites = false,
   aidSiteActiveTipos,
+  attribution = null,
 }: CopernicusLegendProps) {
   const { t } = useTranslation();
   const hasDamage = activeLayerIds.has('layer-copernicus-damage');
@@ -221,6 +224,12 @@ export function CopernicusLegend({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {(hasDamage || hasGroundMovement) && attribution && (
+        <div style={{ fontSize: '10px', color: '#888', marginTop: '4px', borderTop: '1px solid #eee', paddingTop: '4px' }}>
+          {attribution}
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import { useEonetEvents } from '../hooks/useEonetEvents';
 import { useAidSites } from '../hooks/useAidSites';
 import { useUsgsEarthquakes } from '../hooks/useUsgsEarthquakes';
 import { useFunvisisEarthquakes } from '../hooks/useFunvisisEarthquakes';
+import { useDamageLayer } from '../hooks/useDamageLayer';
 import { EONET_CATEGORIES, appearanceRange } from '../lib/eonet';
 import { AID_SITE_TIPOS } from '../lib/sitios';
 import { presetToWindow, DEFAULT_TIME_PRESET, type TimePreset } from '../lib/timeWindow';
@@ -48,6 +49,9 @@ export function Situation() {
   const bbox = bboxToEonetParam(country);
   const usgsActive = activeLayerIds.has(USGS_LAYER_ID);
   const funvisisActive = activeLayerIds.has(FUNVISIS_LAYER_ID);
+  // Copernicus EMS damage layers are served live by the gateway route.
+  const damageActive = activeLayerIds.has('layer-copernicus-damage');
+  const groundMovementActive = activeLayerIds.has('layer-copernicus-ground-movement');
 
   const { features: eonetFeatures } = useEonetEvents(
     country,
@@ -57,6 +61,11 @@ export function Situation() {
   const { features: aidSiteFeatures } = useAidSites(showSitios);
   const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, timeWindow.quakeStart);
   const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, timeWindow.quakeStart);
+  const { collection: copernicusDamageData, attribution: copernicusAttribution } = useDamageLayer(
+    'grading',
+    damageActive,
+  );
+  const { collection: groundMovementData } = useDamageLayer('ground-movement', groundMovementActive);
   const range = appearanceRange(eonetFeatures);
 
   const toggleCategory = (id: string) => {
@@ -91,13 +100,20 @@ export function Situation() {
       const newUnavailable = new Set<string>();
 
       for (const layer of layers) {
-        if (layer.id === USGS_LAYER_ID || layer.id === FUNVISIS_LAYER_ID) continue;
+        // Gateway-served layers (USGS, FUNVISIS, Copernicus damage +
+        // ground-movement) are never "unavailable" via a /data HEAD probe.
+        if (
+          layer.id === USGS_LAYER_ID ||
+          layer.id === FUNVISIS_LAYER_ID ||
+          layer.id === 'layer-copernicus-damage' ||
+          layer.id === 'layer-copernicus-ground-movement'
+        )
+          continue;
 
         let sourceUrl = '';
         if (layer.id === 'layer-hospitals') sourceUrl = '/data/hospitals.geojson';
         else if (layer.id === 'layer-faults') sourceUrl = '/data/faults.geojson';
         else if (layer.id === 'layer-geologic-units') sourceUrl = '/data/geologic_units.geojson';
-        else if (layer.id === 'layer-copernicus-ground-movement') sourceUrl = '/data/copernicus/groundMovement.geojson';
         else if (layer.id === 'layer-citizen-reports') sourceUrl = '/data/citizen-reports.geojson';
 
         if (sourceUrl && sourceUrl.startsWith('/data/')) {
@@ -184,6 +200,9 @@ export function Situation() {
         aidSiteActiveTipos={showSitios ? activeTipos : undefined}
         usgsData={usgsData}
         funvisisData={funvisisData}
+        copernicusDamageData={copernicusDamageData}
+        copernicusGroundMovementData={groundMovementData}
+        copernicusAttribution={copernicusAttribution}
       />
       <Sidebar
         activeLayerIds={activeLayerIds}
