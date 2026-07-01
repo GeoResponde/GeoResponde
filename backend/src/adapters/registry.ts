@@ -16,6 +16,7 @@ import { MiGenteVeAdapter } from './migenteve/adapter.js';
 import { TerremotoVenezuelaAdapter } from './terremotovenezuela/adapter.js';
 import { SismoVenezuelaAdapter } from './sismovenezuela/adapter.js';
 import { AyudaVenezuelaAdapter } from './ayudavenezuela/adapter.js';
+import { UshahidiAdapter } from './ushahidi/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -71,3 +72,4 @@ registerAdapter('MiGenteVeAdapter', MiGenteVeAdapter);
 registerAdapter('TerremotoVenezuelaAdapter', TerremotoVenezuelaAdapter);
 registerAdapter('SismoVenezuelaAdapter', SismoVenezuelaAdapter);
 registerAdapter('AyudaVenezuelaAdapter', AyudaVenezuelaAdapter);
+registerAdapter('UshahidiAdapter', UshahidiAdapter);
