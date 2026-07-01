@@ -1,7 +1,20 @@
 import type {
   AidSiteFeature,
   AidSiteFeatureCollection,
+  AidSiteTipo,
 } from '@georesponde/shared';
+
+/** Attribution label REQUIRED by the VR API terms on every aid-site feature. */
+const SITIOS_ATTRIBUTION = 'Venezuela Reporta';
+
+/** Known VR site types. Anything else is bucketed into 'otro' (whitelist). */
+const KNOWN_TIPOS = new Set<AidSiteTipo>(['acopio', 'clinica', 'hospital', 'refugio', 'otro']);
+
+/** Whitelist a raw `tipo` against the known set, falling back to 'otro'. */
+function normalizeTipo(value: unknown): AidSiteTipo {
+  const t = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  return KNOWN_TIPOS.has(t as AidSiteTipo) ? (t as AidSiteTipo) : 'otro';
+}
 
 /**
  * Raw Venezuela Reporta `/api/v1/sitios` shapes — only the fields we consume are
@@ -75,7 +88,8 @@ function toFeature(site: SitioRaw): AidSiteFeature | undefined {
     geometry: { type: 'Point', coordinates: [lng, lat] },
     properties: {
       id: site.id != null ? String(site.id) : '',
-      tipo: str(site.tipo) ?? 'otro',
+      tipo: normalizeTipo(site.tipo),
+      source: SITIOS_ATTRIBUTION,
       nombre: str(site.nombre) ?? '',
       ...(str(site.municipio) ? { municipio: str(site.municipio) } : {}),
       ...(str(site.estado_operativo)

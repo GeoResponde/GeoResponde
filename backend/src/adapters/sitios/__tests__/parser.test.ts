@@ -36,6 +36,14 @@ describe('sitios parser — toAidSiteCollection', () => {
     );
   });
 
+  it('tags every feature with the Venezuela Reporta attribution', () => {
+    expect(fc.features.every((f) => f.properties.source === 'Venezuela Reporta')).toBe(true);
+  });
+
+  it('whitelists tipo to the known set, falling back to otro', () => {
+    expect(fc.features.every((f) => ['acopio', 'clinica', 'hospital', 'refugio', 'otro'].includes(f.properties.tipo))).toBe(true);
+  });
+
   it('always yields necesidades as an array (empty when none)', () => {
     const refugio = fc.features.find((f) => f.properties.id === 'sitio-syn-002')!;
     expect(refugio.properties.necesidades).toEqual([]);

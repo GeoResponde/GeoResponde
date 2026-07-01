@@ -471,8 +471,10 @@ export type AidSiteTipo = 'acopio' | 'clinica' | 'hospital' | 'refugio' | 'otro'
 export interface AidSiteFeatureProperties {
   /** Venezuela Reporta site id. */
   id: string;
-  /** Site type — one of {@link AidSiteTipo}, or an unknown passthrough string. */
-  tipo: string;
+  /** Site type — whitelisted to one of {@link AidSiteTipo} ('otro' when unknown). */
+  tipo: AidSiteTipo;
+  /** Required attribution label carried on every feature. */
+  source: string;
   nombre: string;
   municipio?: string;
   /** Free-text operational status (e.g. "operativo", "saturado"). */
