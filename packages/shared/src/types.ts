@@ -232,3 +232,57 @@ export function toReport(pkg: SubmissionPackage): Report {
     consent: { targets: [], acknowledgedAt: pkg.timestamp },
   };
 }
+
+/**
+ * ---------------------------------------------------------------------------
+ * Situation map contracts (Phase 12, EON-01)
+ * ---------------------------------------------------------------------------
+ * Normalized, Phase-13-facing shape for a natural-disaster event sourced from
+ * NASA EONET v3. The backend collapses each EONET event (which carries a
+ * time-series geometry array) into a single representative GeoJSON Point and
+ * pre-sorts the collection by first-appearance date, so the MapLibre UI never
+ * touches EONET, its 60 req/min budget, or its axis-transposed bbox.
+ *
+ * GeoJSON shapes are declared locally on purpose — we do NOT pull in
+ * `geojson`/`@types/geojson` for a handful of Point features.
+ */
+export interface SituationFeatureProperties {
+  /** EONET event id, e.g. "EONET_20860". */
+  id: string;
+  title: string;
+  /** EONET category id, e.g. "floods" | "wildfires" | "severeStorms". */
+  category: string;
+  /** Upstream provider id, e.g. "GDACS" | "CEMS". */
+  source: string;
+  /** Upstream provider deep-link for the event. */
+  sourceUrl: string;
+  /** ISO date of the earliest geometry observation (first appearance). */
+  firstDate: string;
+  /** Magnitude of the earliest geometry entry, when EONET provides one. */
+  magnitude?: number;
+  magnitudeUnit?: string;
+  /** ISO date the event ended, or null while still open. */
+  closed: string | null;
+}
+
+/** A GeoJSON Point geometry ([lon, lat]). */
+export interface SituationPointGeometry {
+  type: 'Point';
+  coordinates: [number, number];
+}
+
+/** A GeoJSON Point Feature carrying normalized situation properties. */
+export interface SituationFeature {
+  type: 'Feature';
+  geometry: SituationPointGeometry;
+  properties: SituationFeatureProperties;
+}
+
+/**
+ * Pre-sorted GeoJSON FeatureCollection of situation events, oldest first.
+ * This is the stable contract the Phase 13 MapLibre layer consumes.
+ */
+export interface SituationFeatureCollection {
+  type: 'FeatureCollection';
+  features: SituationFeature[];
+}
