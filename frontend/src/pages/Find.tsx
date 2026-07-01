@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import type { NormalizedSearchResult, PersonStatus, Gender } from '@georesponde/shared';
 import { useTranslation } from 'react-i18next';
 import { FindMap } from '../components/Map/FindMap';
+import { API_BASE } from '../lib/api';
 
 const STATUS_META: Record<PersonStatus, { label: string; color: string }> = {
   missing: { label: 'Desaparecido', color: '#ef4444' },
@@ -68,7 +69,7 @@ export function Find() {
     setLoading(true);
     setHasSearched(true);
     try {
-      const res = await fetch(`http://127.0.0.1:3001/api/search?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       setResults(data);
     } catch (err) {

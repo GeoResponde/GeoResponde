@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { API_BASE } from '../../lib/api';
 
-const API_BASE = (import.meta as { env?: Record<string, string> }).env?.VITE_API_URL || 'http://localhost:3001';
 const HEALTH_QUERY = 'a';
 
 interface Provider {
