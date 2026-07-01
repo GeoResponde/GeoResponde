@@ -21,18 +21,17 @@ export class IngresosAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[IngresosAdapter] Fetching data for query: "${query}"`);
-
+      // Never log the query — it is a person's name/cédula (PII).
       const url = `${API_BASE}?q=${encodeURIComponent(query)}&limit=10`;
       const response = await fetchJson<IngresosResponse>(url, { timeoutMs: 10000 });
 
       const normalizedResults = parseIngresosResponse(response);
 
-      console.log(`[IngresosAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`);
+      console.log(`[IngresosAdapter] Extracted ${normalizedResults.length} normalized results`);
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[IngresosAdapter] Search failed:', error);
+    } catch {
+      console.error('[IngresosAdapter] Search failed (network/transport error)');
       return [];
     }
   }

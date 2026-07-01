@@ -90,9 +90,20 @@ function normalizeDate(date: string): string | undefined {
   return undefined;
 }
 
+/** Venezuela local time is UTC-4 year-round (no DST). */
+const VE_UTC_OFFSET = '-04:00';
+
+/** Pad a "HH:MM" time to "HH:MM:SS"; pass through "HH:MM:SS" and anything else. */
+function normalizeTime(t: string): string {
+  return /^\d{1,2}:\d{2}$/.test(t) ? `${t}:00` : t;
+}
+
 /**
  * Combine SismosVE `date` + `time` into an epoch (ms), or null when unparseable.
- * Handles SismosVE's DD-MM-YYYY date and HH:MM(:SS) time.
+ * Handles SismosVE's DD-MM-YYYY date and HH:MM(:SS) time. SismosVE reports
+ * Venezuela LOCAL time, so the zone is pinned explicitly to UTC-4 — the result
+ * is independent of the host `TZ` (a server in UTC and one in America/Caracas
+ * now agree on the same instant).
  */
 function toEpoch(date?: string | null, time?: string | null): number | null {
   const raw = str(date);
@@ -100,7 +111,13 @@ function toEpoch(date?: string | null, time?: string | null): number | null {
   const iso = normalizeDate(raw);
   if (!iso) return null;
   const t = str(time);
-  const candidates = t ? [`${iso}T${t}`, `${iso} ${t}`, iso] : [iso];
+  const candidates = t
+    ? [
+        `${iso}T${normalizeTime(t)}${VE_UTC_OFFSET}`,
+        `${iso}T${t}${VE_UTC_OFFSET}`,
+        `${iso}T00:00:00${VE_UTC_OFFSET}`,
+      ]
+    : [`${iso}T00:00:00${VE_UTC_OFFSET}`];
   for (const candidate of candidates) {
     const epoch = Date.parse(candidate);
     if (Number.isFinite(epoch)) return epoch;

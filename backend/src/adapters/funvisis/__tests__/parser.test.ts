@@ -21,7 +21,9 @@ describe('toEarthquakeCollection — SismosVE normalization', () => {
     expect(f.properties.place).toContain('Barquisimeto');
     expect(f.properties.depth).toBe(12.0);
     expect(typeof f.properties.time).toBe('number');
-    expect(f.properties.time).toBe(Date.parse('2026-06-30T14:32'));
+    // SismosVE times are Venezuela local (UTC-4), pinned explicitly so the epoch
+    // is independent of the host TZ.
+    expect(f.properties.time).toBe(Date.parse('2026-06-30T14:32:00-04:00'));
   });
 
   it('tags every feature with the required FUNVISIS (vía SismosVE) attribution', () => {

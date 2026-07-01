@@ -121,8 +121,9 @@ export class VenezuelaReportaAdapter implements BaseAdapter {
         retryable: true,
       });
 
-      // 201 published, 202 pending → both are a successful acceptance.
-      if (status === 201 || status === 202) {
+      // Any 2xx is a successful acceptance: 201 published, 202 pending, and 200
+      // when a resubmit UPDATEs an existing record via origen_id.
+      if (status >= 200 && status < 300) {
         const remoteId = resBody?.id;
         const fichaUrl = resBody?.ficha_url;
         return {

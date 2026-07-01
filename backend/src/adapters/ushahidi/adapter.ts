@@ -97,13 +97,14 @@ export class UshahidiAdapter implements BaseAdapter {
         };
       }
 
+      // Only 5xx and 429 are transient; other 4xx (400/401/403) are not.
       return {
         provider: this.provider.id,
         mode: 'live',
         status: 'error',
         idempotencyKey: opts.idempotencyKey,
         submittedAt,
-        retryable: true,
+        retryable: status >= 500 || status === 429,
         error: `Ushahidi responded ${status}`,
       };
     } catch {
