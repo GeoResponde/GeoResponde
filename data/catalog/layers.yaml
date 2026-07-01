@@ -121,7 +121,7 @@
   category: Humanitarian
   confidence: Official
   refreshFrequency: Real-time
-  enabled: false
+  enabled: true
   visualization:
     type: point
     color: "#f39c12"

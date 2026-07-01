@@ -43,7 +43,7 @@ export function Situation() {
   // Shared time window: presets drive the actual fetch window (default: 7 days).
   const [preset, setPreset] = useState<TimePreset>(DEFAULT_TIME_PRESET);
   const [advanced, setAdvanced] = useState(false);
-  const window = presetToWindow(preset);
+  const timeWindow = presetToWindow(preset);
 
   const bbox = bboxToEonetParam(country);
   const usgsActive = activeLayerIds.has(USGS_LAYER_ID);
@@ -52,11 +52,11 @@ export function Situation() {
   const { features: eonetFeatures } = useEonetEvents(
     country,
     [...activeCategories],
-    window.eonetStart,
+    timeWindow.eonetStart,
   );
   const { features: aidSiteFeatures } = useAidSites(showSitios);
-  const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, window.quakeStart);
-  const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, window.quakeStart);
+  const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, timeWindow.quakeStart);
+  const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, timeWindow.quakeStart);
   const range = appearanceRange(eonetFeatures);
 
   const toggleCategory = (id: string) => {
@@ -171,7 +171,6 @@ export function Situation() {
     <div style={{ display: 'flex', flex: 1, position: 'relative' }}>
       <MapViewer
         activeLayerIds={activeLayerIds}
-        setUnavailableLayerIds={setUnavailableLayerIds}
         unavailableLayerIds={unavailableLayerIds}
         eonetFeatures={eonetFeatures}
         showEonet={showEonet}

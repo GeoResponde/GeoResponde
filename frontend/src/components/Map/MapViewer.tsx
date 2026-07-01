@@ -13,10 +13,21 @@ import type { EarthquakeFeatureCollection } from '../../lib/earthquakes';
 import { EMPTY_EARTHQUAKES } from '../../lib/earthquakes';
 import { useArcGISFeatureLayer } from '../../hooks/useArcGISFeatureLayer';
 import { useRef } from 'react';
+import { API_BASE } from '../../lib/api';
+
+/**
+ * Only allow http(s) URLs to reach an anchor href; blocks `javascript:` and
+ * other script-bearing schemes smuggled through third-party feed data. Returns
+ * null when the URL is absent or unsafe so the caller can skip rendering.
+ */
+function safeHref(url?: unknown): string | null {
+  if (typeof url !== 'string' || url.trim() === '') return null;
+  return /^https?:\/\//i.test(url.trim()) ? url.trim() : null;
+}
+
 interface Props {
   activeLayerIds: Set<string>;
   unavailableLayerIds?: Set<string>;
-  setUnavailableLayerIds?: (ids: Set<string>) => void;
   eonetFeatures?: RenderFeature[];
   showEonet?: boolean;
   eonetVisibleEpoch?: number | null;
@@ -81,7 +92,7 @@ export function MapViewer({
     active: activeLayerIds.has('layer-nasa-sentinel-damage')
   });
 
-  const onHover = useCallback((event: any) => {
+  const onFeatureClick = useCallback((event: any) => {
     const { features, lngLat } = event;
     const hoveredFeature = features && features[0];
 
@@ -312,7 +323,7 @@ export function MapViewer({
       } else if (layer.id === 'layer-citizen-reports') {
         sourceUrl = '/data/citizen-reports.geojson';
       } else if (layer.id === 'layer-verified-buildings') {
-        sourceUrl = 'http://127.0.0.1:3001/api/providers/prov-terremotovenezuela/geojson';
+        sourceUrl = `${API_BASE}/api/providers/prov-terremotovenezuela/geojson`;
       }
       
       const isRaster = layer.visualization?.type === 'raster';
@@ -553,13 +564,15 @@ export function MapViewer({
           ) : hoverInfo.feature.properties.category ? (
             <>
               <div style={{ fontWeight: 700, marginBottom: '2px' }}>{hoverInfo.feature.properties.name}</div>
-              <div style={{ color: '#475569', textTransform: 'capitalize' }}>Category: {hoverInfo.feature.properties.category.replace('_', ' ')}</div>
+              <div style={{ color: '#475569', textTransform: 'capitalize' }}>Category: {String(hoverInfo.feature.properties.category).replaceAll('_', ' ')}</div>
               <div style={{ color: '#475569' }}>Status: {hoverInfo.feature.properties.status}</div>
-              <div style={{ color: '#64748b', fontSize: '11px', marginTop: '4px', borderTop: '1px solid #e2e8f0', paddingTop: '4px' }}>
-                <a href={hoverInfo.feature.properties.source} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
-                  Verify at original source ↗
-                </a>
-              </div>
+              {safeHref(hoverInfo.feature.properties.source) && (
+                <div style={{ color: '#64748b', fontSize: '11px', marginTop: '4px', borderTop: '1px solid #e2e8f0', paddingTop: '4px' }}>
+                  <a href={safeHref(hoverInfo.feature.properties.source)!} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                    Verify at original source ↗
+                  </a>
+                </div>
+              )}
               <div style={{ color: '#94a3b8', fontSize: '10px', marginTop: '4px', fontStyle: 'italic' }}>
                 * aggregated citizen report
               </div>
@@ -633,7 +646,7 @@ export function MapViewer({
           ...(showEonet ? [EONET_LAYER_ID] : []),
           ...(showAidSites ? [AID_SITES_LAYER_ID] : []),
         ]}
-        onClick={onHover}
+        onClick={onFeatureClick}
         onMouseMove={(e) => {
           const { features } = e as any;
           if (features && features.length) {
