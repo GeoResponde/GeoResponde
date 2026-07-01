@@ -29,6 +29,9 @@ const FIELD_LABEL: Record<string, string> = {
   facilityType: 'Tipo',
   capacityStatus: 'Capacidad',
   needs: 'Necesidades',
+  address: 'Dirección',
+  buildingType: 'Tipo de edificación',
+  damageLevel: 'Nivel de daño',
 };
 
 function isPresent(value: unknown): boolean {

@@ -28,6 +28,11 @@ export function deriveKey(reportKey: string, providerId: string): string {
  * Salted sha256 of a report key for audit-lite logging. Deterministic for a
  * given key + salt, differs from the raw key, and changes with the salt. The
  * salt defaults to `GEO_AUDIT_SALT` (env) or a safe built-in default.
+ *
+ * PRODUCTION: set `GEO_AUDIT_SALT` to a private per-deployment value so the
+ * logged hash cannot be correlated back to a report key via the public default
+ * salt. The report key itself is a never-logged random UUID, so this is
+ * defense-in-depth, not a hard secret — but the salt SHOULD still be set.
  */
 export function hashKey(reportKey: string, salt?: string): string {
   const effectiveSalt = salt ?? process.env.GEO_AUDIT_SALT ?? 'georesponde-audit';
