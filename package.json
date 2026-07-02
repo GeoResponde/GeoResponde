@@ -1,6 +1,6 @@
 {
   "name": "georesponde",
-  "version": "0.2.0-alpha",
+  "version": "0.5.0-alpha",
   "private": true,
   "description": "Open-source emergency geospatial platform",
   "engines": {
@@ -14,12 +14,14 @@
     "build": "pnpm -r run build",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "lint": "eslint .",
+    "test": "pnpm -r run test",
     "format": "prettier --write .",
     "prepare": "husky",
     "catalog:build": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js build",
     "catalog:validate": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js validate"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@types/node": "^20.19.43",
     "axios": "^1.18.1",
     "eslint": "^9.0.0",

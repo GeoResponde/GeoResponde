@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "atribucion": "Venezuela Reporta",
+  "sitios": [
+    {
+      "id": "sitio-syn-001",
+      "tipo": "acopio",
+      "nombre": "Centro de Acopio Sintetico",
+      "lat": 10.4806,
+      "lng": -66.9036,
+      "municipio": "Libertador",
+      "estado_operativo": "operativo",
+      "necesidades": ["agua", "medicinas"],
+      "personas_estimadas": 120,
+      "nota": "Recibe donaciones de 8 a 17h",
+      "frescura": "reciente",
+      "ultimo_reporte_at": "2026-07-01T12:00:00Z",
+      "reportes": 4,
+      "origen": "ciudadano",
+      "ficha_url": "https://venezuelareporta.org/sitios/sitio-syn-001"
+    },
+    {
+      "id": "sitio-syn-002",
+      "tipo": "refugio",
+      "nombre": "Refugio Escuela Sintetica",
+      "lat": 10.5,
+      "lng": -66.85,
+      "municipio": "Sucre",
+      "estado_operativo": "saturado",
+      "necesidades": [],
+      "frescura": "hoy",
+      "ultimo_reporte_at": "2026-07-01T09:00:00Z"
+    },
+    {
+      "id": "sitio-syn-003",
+      "tipo": "clinica",
+      "nombre": "Sitio Sin Coordenadas",
+      "lat": null,
+      "lng": null,
+      "municipio": "Baruta",
+      "necesidades": ["personal"]
+    },
+    {
+      "id": "sitio-syn-004",
+      "tipo": "otro",
+      "nombre": "Sitio Fuera De Rango",
+      "lat": 999,
+      "lng": -66.9,
+      "necesidades": ["carpas"],
+      "ficha_url": "javascript:alert(1)"
+    }
+  ]
+}

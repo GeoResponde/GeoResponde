@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "result": {
+    "count": 48,
+    "results": [
+      {
+        "name": "venezuela-earthquake-hazardous-facilities",
+        "title": "Venezuela - Earthquake Hazardous Facilities",
+        "notes": "Location of hazardous facilities in the affected areas of the earthquake of 24 June 2026 in Venezuela.",
+        "metadata_modified": "2026-06-26T14:30:00.700345",
+        "num_resources": 8,
+        "dataset_date": "[2026-06-25T00:00:00 TO 2026-06-25T23:59:59]",
+        "organization": {
+          "name": "unep-ocha-jeu",
+          "title": "UNEP/OCHA Joint Environment Unit"
+        },
+        "groups": [
+          {
+            "name": "ven",
+            "title": "Venezuela (Bolivarian Republic of)"
+          }
+        ]
+      },
+      {
+        "name": "building-debris-assessment-venezuela-earthquake-june-2026",
+        "title": "Venezuela: Earthquake Building Debris Assessment",
+        "notes": "This initial quantification of the June 2026 earthquake-induced debris across the most-affected Venezuelan states was derived through a multi-sensor synthetic a",
+        "metadata_modified": "2026-06-30T15:01:35.159317",
+        "num_resources": 6,
+        "dataset_date": "[2026-06-24T00:00:00 TO 2026-06-27T23:59:59]",
+        "organization": {
+          "name": "unep-ocha-jeu",
+          "title": "UNEP/OCHA Joint Environment Unit"
+        },
+        "groups": [
+          {
+            "name": "ven",
+            "title": "Venezuela (Bolivarian Republic of)"
+          }
+        ]
+      }
+    ]
+  }
+}

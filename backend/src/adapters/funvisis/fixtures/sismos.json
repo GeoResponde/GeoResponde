@@ -1,0 +1,41 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "syn_fv_001",
+      "geometry": { "type": "Point", "coordinates": [-68.9, 10.5], "marcador": "marker" },
+      "properties": {
+        "value": "3.8",
+        "depth": "12.0 km",
+        "addressFormatted": "25 km al norte de Barquisimeto, Lara",
+        "date": "30-06-2026",
+        "time": "14:32",
+        "country": "Venezuela",
+        "url": "https://sismosve.rafnixg.dev/sismo/syn_fv_001"
+      }
+    },
+    {
+      "id": "syn_fv_002",
+      "geometry": { "type": "Point", "coordinates": [-71.2, 8.6] },
+      "properties": {
+        "value": "2.5",
+        "depth": "5.0 km",
+        "addressFormatted": "10 km al sur de Mérida, Mérida",
+        "date": "15-05-2026",
+        "time": "03:11",
+        "country": "Venezuela",
+        "url": "javascript:alert(1)"
+      }
+    },
+    {
+      "id": "syn_fv_bad",
+      "geometry": { "type": "Point", "coordinates": ["a", "b"] },
+      "properties": {
+        "value": "4.0",
+        "addressFormatted": "invalid coords",
+        "date": "01-06-2026",
+        "time": "00:00"
+      }
+    }
+  ]
+}

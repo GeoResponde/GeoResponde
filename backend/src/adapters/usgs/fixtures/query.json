@@ -1,0 +1,39 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "syn_us_001",
+      "properties": {
+        "mag": 4.2,
+        "place": "12 km NE of Caracas, Venezuela",
+        "time": 1751328000000,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/syn_us_001"
+      },
+      "geometry": { "type": "Point", "coordinates": [-66.8, 10.6, 15.2] }
+    },
+    {
+      "type": "Feature",
+      "id": "syn_us_002",
+      "properties": {
+        "mag": 3.1,
+        "place": "40 km W of Maracaibo, Venezuela",
+        "time": 1751241600000,
+        "url": "javascript:alert(1)"
+      },
+      "geometry": { "type": "Point", "coordinates": [-72.0, 10.7, 8.0] }
+    },
+    {
+      "type": "Feature",
+      "id": "syn_us_bad_coords",
+      "properties": { "mag": 2.0, "place": "nowhere", "time": 1751155200000 },
+      "geometry": { "type": "Point", "coordinates": ["x", "y"] }
+    },
+    {
+      "type": "Feature",
+      "id": "syn_us_no_mag",
+      "properties": { "mag": null, "place": "unknown region", "time": null },
+      "geometry": { "type": "Point", "coordinates": [-64.1, 10.2] }
+    }
+  ]
+}

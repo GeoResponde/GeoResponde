@@ -1,0 +1,55 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "organization_id": null,
+      "nombre": "Ana",
+      "apellido": "Prueba",
+      "cedula": "00000001",
+      "edad_aproximada": 34,
+      "genero": "Femenino",
+      "ultimo_lugar_visto": "Plaza Ejemplo",
+      "informacion_adicional": "Vestia chaqueta azul de prueba",
+      "estado": "Desaparecido",
+      "motivo_fallecimiento": null,
+      "fallecimiento_confirmado": false,
+      "contacto_nombre": null,
+      "contacto_apellido": null,
+      "contacto_correo": null,
+      "contacto_telefono_nacional": null,
+      "contacto_telefono_internacional": null,
+      "created_at": "2026-06-01T10:00:00.000+00:00",
+      "updated_at": "2026-06-15T12:30:00.000+00:00",
+      "has_image": true,
+      "missing_person_images": [
+        { "storage_path": "00000000-0000-0000-0000-000000000001/photo.webp" }
+      ]
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "organization_id": null,
+      "nombre": "Luis",
+      "apellido": "Ejemplo",
+      "cedula": "00000002",
+      "edad_aproximada": 0,
+      "genero": "Masculino",
+      "ultimo_lugar_visto": "Avenida Ficticia",
+      "informacion_adicional": null,
+      "estado": "En investigacion",
+      "motivo_fallecimiento": null,
+      "fallecimiento_confirmado": false,
+      "contacto_nombre": null,
+      "contacto_apellido": null,
+      "contacto_correo": null,
+      "contacto_telefono_nacional": null,
+      "contacto_telefono_internacional": null,
+      "created_at": "2026-05-20T08:00:00.000+00:00",
+      "updated_at": null,
+      "has_image": false,
+      "missing_person_images": []
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false,
+  "error": null
+}

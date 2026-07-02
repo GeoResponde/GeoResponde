@@ -1,0 +1,22 @@
+[
+  {
+    "id": "plat-13",
+    "nombre": "PsicoLínea Venezuela (UCAB)",
+    "categoria": "Apoyo psicosocial",
+    "descripcion": "Tel: 0414-121 78 82 / 0424-172 39 81 — Atención psicológica gratuita. Impulsado por la Universidad Católica Andrés Bello. Solo disponible dentro de Venezuela.",
+    "url": null,
+    "orden": 12,
+    "createdAt": 1782652995392,
+    "updatedAt": 1782652995392
+  },
+  {
+    "id": "plat-14",
+    "nombre": "Grupo Venemergencia",
+    "categoria": "Apoyo psicosocial",
+    "descripcion": "Plataforma médica venezolana operativa. Atiende afectados físicos y psicológicos.",
+    "url": "https://www.instagram.com/venemergencia",
+    "orden": 13,
+    "createdAt": 1782652995392,
+    "updatedAt": 1782652995392
+  }
+]

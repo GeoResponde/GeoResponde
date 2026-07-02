@@ -1,23 +1,127 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Map, { Source, Layer as MapLayer, Popup } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useCatalog } from '../../hooks/useCatalog';
 import { CopernicusLegend } from './CopernicusLegend';
-import { useArcGISFeatureLayer } from '../../hooks/useArcGISFeatureLayer';
+import { EonetLayer, EONET_LAYER_ID } from './EonetLayer';
+import { AidSitesLayer, AID_SITES_LAYER_ID } from './AidSitesLayer';
+import type { RenderFeature } from '../../lib/eonet';
+import type { AidSiteRenderFeature } from '../../lib/sitios';
+import type { EarthquakeFeatureCollection } from '../../lib/earthquakes';
+import { EMPTY_EARTHQUAKES } from '../../lib/earthquakes';
+import type { DamageFeatureCollection } from '../../hooks/useDamageLayer';
+import type { NasaDpmFeatureCollection } from '../../hooks/useNasaDpmLayer';
 import { useRef } from 'react';
+import { API_BASE } from '../../lib/api';
+
+/**
+ * Only allow http(s) URLs to reach an anchor href; blocks `javascript:` and
+ * other script-bearing schemes smuggled through third-party feed data. Returns
+ * null when the URL is absent or unsafe so the caller can skip rendering.
+ */
+function safeHref(url?: unknown): string | null {
+  if (typeof url !== 'string' || url.trim() === '') return null;
+  return /^https?:\/\//i.test(url.trim()) ? url.trim() : null;
+}
+
 interface Props {
   activeLayerIds: Set<string>;
   unavailableLayerIds?: Set<string>;
-  setUnavailableLayerIds?: (ids: Set<string>) => void;
+  eonetFeatures?: RenderFeature[];
+  showEonet?: boolean;
+  eonetVisibleEpoch?: number | null;
+  eonetActiveCategories?: Set<string>;
+  eonetSelectedId?: string | null;
+  onEonetSelect?: (id: string | null) => void;
+  eonetCountry?: string;
+  aidSiteFeatures?: AidSiteRenderFeature[];
+  showAidSites?: boolean;
+  aidSiteActiveTipos?: Set<string>;
+  /** Live USGS earthquakes feeding the `layer-earthquakes` catalog layer. */
+  usgsData?: EarthquakeFeatureCollection;
+  /** Live FUNVISIS (via SismosVE) earthquakes feeding `layer-funvisis`. */
+  funvisisData?: EarthquakeFeatureCollection;
+  /** Live Copernicus GRA grading (buildings + roads) feeding `layer-copernicus-damage`. */
+  copernicusDamageData?: DamageFeatureCollection;
+  /** Live Copernicus GRM ground movement feeding `layer-copernicus-ground-movement`. */
+  copernicusGroundMovementData?: DamageFeatureCollection;
+  /** EU/Copernicus attribution string surfaced in the legend (D-07). */
+  copernicusAttribution?: string | null;
+  /** Live NASA ARIA DPM (damaged structures) feeding `layer-nasa-sentinel-damage`. */
+  nasaDpmData?: NasaDpmFeatureCollection;
+  /** ARIA/NASA/ESA/Overture attribution surfaced in the legend (ND-06). */
+  nasaAttribution?: string | null;
+  /** "Experimental — not validated" disclaimer surfaced in the legend (ND-06). */
+  nasaDisclaimer?: string | null;
+  /** Whether the DPM gateway fetch is in flight (drives the loading toast). */
+  nasaDpmLoading?: boolean;
+  /** Whether the DPM warm is still filling (drives the "loading damage data" toast). */
+  nasaDpmWarming?: boolean;
+  /**
+   * Debounced viewport-bounds callback as `[minLng,minLat,maxLng,maxLat]` (15-04).
+   * Fires on map load and (debounced ~300ms) on every `moveend` so the DPM layer
+   * can request only the polygons in view.
+   */
+  onViewportBoundsChange?: (bounds: [number, number, number, number]) => void;
 }
 
-export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: Props) {
+/** Debounce window for viewport-bounds tracking — coalesces a pan/zoom burst. */
+const VIEWPORT_DEBOUNCE_MS = 300;
+
+const EMPTY_DAMAGE: DamageFeatureCollection = { type: 'FeatureCollection', features: [] };
+const EMPTY_NASA_DPM: NasaDpmFeatureCollection = { type: 'FeatureCollection', features: [] };
+
+export function MapViewer({
+  activeLayerIds,
+  unavailableLayerIds = new Set(),
+  eonetFeatures = [],
+  showEonet = false,
+  eonetVisibleEpoch = null,
+  eonetActiveCategories,
+  eonetSelectedId,
+  onEonetSelect,
+  eonetCountry,
+  aidSiteFeatures = [],
+  showAidSites = false,
+  aidSiteActiveTipos,
+  usgsData = EMPTY_EARTHQUAKES,
+  funvisisData = EMPTY_EARTHQUAKES,
+  copernicusDamageData = EMPTY_DAMAGE,
+  copernicusGroundMovementData = EMPTY_DAMAGE,
+  copernicusAttribution = null,
+  nasaDpmData = EMPTY_NASA_DPM,
+  nasaAttribution = null,
+  nasaDisclaimer = null,
+  nasaDpmLoading = false,
+  nasaDpmWarming = false,
+  onViewportBoundsChange,
+}: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
-  
-  const [mapBounds, setMapBounds] = useState<[number, number, number, number] | null>(null);
+
+  // Debounced viewport-bounds emitter (15-04). Kept in refs so the latest
+  // callback is always used without re-subscribing map handlers on every render.
+  const boundsCbRef = useRef(onViewportBoundsChange);
+  boundsCbRef.current = onViewportBoundsChange;
+  const boundsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const emitBounds = useCallback((map: maplibregl.Map, immediate = false) => {
+    const cb = boundsCbRef.current;
+    if (!cb) return;
+    const send = () => {
+      const b = map.getBounds();
+      cb([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
+    };
+    if (boundsTimer.current) clearTimeout(boundsTimer.current);
+    if (immediate) send();
+    else boundsTimer.current = setTimeout(send, VIEWPORT_DEBOUNCE_MS);
+  }, []);
+
+  useEffect(() => () => {
+    if (boundsTimer.current) clearTimeout(boundsTimer.current);
+  }, []);
 
   const [hoverInfo, setHoverInfo] = useState<{
     longitude: number;
@@ -35,20 +139,24 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
   const activeLayersWithData = useMemo(() => {
     return layers.filter(l => 
       activeLayerIds.has(l.id) && 
-      (l.id === 'layer-earthquakes' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-sat-before' || l.id === 'layer-sat-after' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports')
+      (l.id === 'layer-earthquakes' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-sat-before' || l.id === 'layer-sat-after' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
     );
   }, [layers, activeLayerIds]);
 
-  const { featureCollection: nasaFeatures, loading: nasaLoading } = useArcGISFeatureLayer({
-    url: 'https://services7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_s1_likelydmgareas/FeatureServer/0',
-    bbox: mapBounds,
-    where: 'damage>0',
-    active: activeLayerIds.has('layer-nasa-sentinel-damage')
-  });
-
-  const onHover = useCallback((event: any) => {
+  const onFeatureClick = useCallback((event: any) => {
     const { features, lngLat } = event;
     const hoveredFeature = features && features[0];
+
+    // EONET circles and aid-site circles own their own popups (via useMap);
+    // don't let the generic catalog popup capture them.
+    if (
+      hoveredFeature &&
+      (hoveredFeature.layer?.id === EONET_LAYER_ID ||
+        hoveredFeature.layer?.id === AID_SITES_LAYER_ID)
+    ) {
+      setHoverInfo(null);
+      return;
+    }
 
     if (hoveredFeature) {
       setHoverInfo({
@@ -65,7 +173,11 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
 
   const onMapLoad = useCallback((e: any) => {
     const map = e.target;
-    
+
+    // Seed the viewport bounds immediately so the DPM layer can request only the
+    // polygons in the initial view without waiting for the first pan.
+    emitBounds(map, true);
+
     const icons = {
       'fault-reverse': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cG9seWdvbiBwb2ludHM9IjEsMTEgNiwxIDExLDExIiBmaWxsPSIjZjFjNDBmIiAvPgo8L3N2Zz4K',
       'fault-normal': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI1IiB5PSIxIiB3aWR0aD0iMiIgaGVpZ2h0PSIxMCIgZmlsbD0iI2YxYzQwZiIgLz4KPC9zdmc+Cg==',
@@ -96,19 +208,6 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
       };
       img.src = icons[icon as keyof typeof icons];
     });
-
-    if (map) {
-      const bounds = map.getBounds();
-      setMapBounds([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
-    }
-  }, []);
-
-  const onMapMoveEnd = useCallback((e: any) => {
-    const map = e.target;
-    if (map) {
-      const bounds = map.getBounds();
-      setMapBounds([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]);
-    }
   }, []);
 
   const renderLayers = (layersToRender: any[]) => {
@@ -116,7 +215,7 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
       if (layer.id === 'layer-copernicus-damage') {
         return (
           <React.Fragment key={layer.id}>
-            <Source id={`${layer.id}-buildings-src`} type="geojson" data="/data/copernicus/builtUp.geojson">
+            <Source id={`${layer.id}-buildings-src`} type="geojson" data={copernicusDamageData}>
               <MapLayer 
                 id={`${layer.id}-buildings-viz`}
                 type="fill"
@@ -170,7 +269,7 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
                 }}
               />
             </Source>
-            <Source id={`${layer.id}-roads-src`} type="geojson" data="/data/copernicus/transportation.geojson">
+            <Source id={`${layer.id}-roads-src`} type="geojson" data={copernicusDamageData}>
               <MapLayer 
                 id={`${layer.id}-roads-viz`}
                 type="line"
@@ -261,10 +360,10 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
         sourceUrl = '/data/faults.geojson';
       } else if (layer.id === 'layer-geologic-units') {
         sourceUrl = '/data/geologic_units.geojson';
-      } else if (layer.id === 'layer-copernicus-ground-movement') {
-        sourceUrl = '/data/copernicus/groundMovement.geojson';
       } else if (layer.id === 'layer-citizen-reports') {
         sourceUrl = '/data/citizen-reports.geojson';
+      } else if (layer.id === 'layer-verified-buildings') {
+        sourceUrl = `${API_BASE}/api/providers/prov-terremotovenezuela/geojson`;
       }
       
       const isRaster = layer.visualization?.type === 'raster';
@@ -287,10 +386,10 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
       const isSymbol = layer.visualization?.type === 'symbol';
       const isCircle = layer.visualization?.type === 'point' || (!isLine && !isFill && !isSymbol);
 
-      const circleRadius = (layer.id === 'layer-hospitals' || layer.id === 'layer-citizen-reports') ? 5 : [
+      const circleRadius = (layer.id === 'layer-hospitals' || layer.id === 'layer-citizen-reports' || layer.id === 'layer-verified-buildings') ? 5 : [
         'interpolate',
         ['exponential', 2],
-        ['get', 'mag'],
+        ['coalesce', ['get', 'mag'], 0],
         0, 0,
         2, 4,
         4, 10,
@@ -299,10 +398,20 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
       ];
 
       const isNasaLayer = layer.id === 'layer-nasa-sentinel-damage';
-      
-      const sourceProps = isNasaLayer 
-        ? { type: 'geojson' as const, data: nasaFeatures }
-        : { type: 'geojson' as const, data: sourceUrl };
+      // Dynamic layers read live gateway feeds instead of /data files.
+      const isUsgsLayer = layer.id === 'layer-earthquakes';
+      const isFunvisisLayer = layer.id === 'layer-funvisis';
+      const isGroundMovementLayer = layer.id === 'layer-copernicus-ground-movement';
+
+      const sourceProps = isNasaLayer
+        ? { type: 'geojson' as const, data: nasaDpmData }
+        : isUsgsLayer
+          ? { type: 'geojson' as const, data: usgsData }
+          : isFunvisisLayer
+            ? { type: 'geojson' as const, data: funvisisData }
+            : isGroundMovementLayer
+              ? { type: 'geojson' as const, data: copernicusGroundMovementData }
+              : { type: 'geojson' as const, data: sourceUrl };
 
       const isPlateBoundary = [
         "any",
@@ -456,6 +565,13 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
                   'hospital', '#1abc9c',
                   'veterinary', '#f39c12',
                   color
+                ] : layer.id === 'layer-verified-buildings' ? [
+                  'match',
+                  ['get', 'status'],
+                  'total', '#c0392b',
+                  'severo', '#e67e22',
+                  'parcial', '#f1c40f',
+                  color
                 ] : color,
                 'circle-radius': circleRadius as any,
                 'circle-stroke-width': 1,
@@ -491,13 +607,15 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
           ) : hoverInfo.feature.properties.category ? (
             <>
               <div style={{ fontWeight: 700, marginBottom: '2px' }}>{hoverInfo.feature.properties.name}</div>
-              <div style={{ color: '#475569', textTransform: 'capitalize' }}>Category: {hoverInfo.feature.properties.category.replace('_', ' ')}</div>
+              <div style={{ color: '#475569', textTransform: 'capitalize' }}>Category: {String(hoverInfo.feature.properties.category).replaceAll('_', ' ')}</div>
               <div style={{ color: '#475569' }}>Status: {hoverInfo.feature.properties.status}</div>
-              <div style={{ color: '#64748b', fontSize: '11px', marginTop: '4px', borderTop: '1px solid #e2e8f0', paddingTop: '4px' }}>
-                <a href={hoverInfo.feature.properties.source} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
-                  Verify at original source ↗
-                </a>
-              </div>
+              {safeHref(hoverInfo.feature.properties.source) && (
+                <div style={{ color: '#64748b', fontSize: '11px', marginTop: '4px', borderTop: '1px solid #e2e8f0', paddingTop: '4px' }}>
+                  <a href={safeHref(hoverInfo.feature.properties.source)!} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                    Verify at original source ↗
+                  </a>
+                </div>
+              )}
               <div style={{ color: '#94a3b8', fontSize: '10px', marginTop: '4px', fontStyle: 'italic' }}>
                 * aggregated citizen report
               </div>
@@ -564,10 +682,14 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
         mapLib={maplibregl as any}
         {...viewState}
         onMove={e => setViewState(e.viewState)}
-        onMoveEnd={onMapMoveEnd}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
-        interactiveLayerIds={getInteractiveIds(activeLayersWithData)}
-        onClick={onHover}
+        interactiveLayerIds={[
+          ...getInteractiveIds(activeLayersWithData),
+          ...(showEonet ? [EONET_LAYER_ID] : []),
+          ...(showAidSites ? [AID_SITES_LAYER_ID] : []),
+        ]}
+        onClick={onFeatureClick}
+        onMoveEnd={(e) => emitBounds(e.target as unknown as maplibregl.Map)}
         onMouseMove={(e) => {
           const { features } = e as any;
           if (features && features.length) {
@@ -583,17 +705,46 @@ export function MapViewer({ activeLayerIds, unavailableLayerIds = new Set() }: P
         style={{ width: '100%', height: '100%' }}
       >
         {renderLayers(activeLayersWithData)}
+        {showEonet && (
+          <EonetLayer
+            features={eonetFeatures}
+            visibleEpoch={eonetVisibleEpoch}
+            activeCategories={eonetActiveCategories}
+            selectedId={eonetSelectedId}
+            onSelect={onEonetSelect}
+            country={eonetCountry}
+          />
+        )}
+        {showAidSites && (
+          <AidSitesLayer features={aidSiteFeatures} activeTipos={aidSiteActiveTipos} />
+        )}
         {renderPopup()}
       </Map>
-      {nasaLoading && activeLayerIds.has('layer-nasa-sentinel-damage') && (
+      {(nasaDpmLoading || nasaDpmWarming) && activeLayerIds.has('layer-nasa-sentinel-damage') && (
         <div style={{
           position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.7)',
-          color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '12px'
+          color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '12px',
+          display: 'flex', alignItems: 'center', gap: '8px'
         }}>
-          Loading NASA Data...
+          <span style={{
+            width: 10, height: 10, borderRadius: '50%',
+            border: '2px solid rgba(255,255,255,0.35)', borderTopColor: '#fff',
+            display: 'inline-block', animation: 'nasa-dpm-spin 0.8s linear infinite'
+          }} />
+          {nasaDpmWarming ? 'Loading damage data…' : 'Loading NASA data…'}
+          <style>{'@keyframes nasa-dpm-spin{to{transform:rotate(360deg)}}'}</style>
         </div>
       )}
-      <CopernicusLegend activeLayerIds={activeLayerIds} />
+      <CopernicusLegend
+        activeLayerIds={activeLayerIds}
+        showEonet={showEonet}
+        eonetActiveCategories={eonetActiveCategories}
+        showAidSites={showAidSites}
+        aidSiteActiveTipos={aidSiteActiveTipos}
+        attribution={copernicusAttribution}
+        nasaAttribution={nasaAttribution}
+        nasaDisclaimer={nasaDisclaimer}
+      />
     </div>
   );
 }

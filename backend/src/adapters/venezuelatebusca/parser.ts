@@ -1,4 +1,12 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import { makeStatusMapper, normalizeGender } from '../person.js';
+
+const toStatus = makeStatusMapper({
+  missing: 'missing',
+  found: 'found',
+  deceased: 'deceased',
+  safe: 'safe',
+});
 
 /**
  * Searches the deeply nested object for any array named 'persons'.
@@ -30,13 +38,27 @@ export function findPersonsArray(obj: any, visited = new Set()): any[] {
 }
 
 /**
+ * The upstream source sometimes packs several transcribed name variants into a
+ * single `firstName`, separated by " / " (e.g.
+ * "Marialejandra / Rodriguez Maria Alejandra / Rodriguez Marialejandra").
+ * Keep only the first variant so the title and the search deep-link stay clean.
+ */
+function cleanName(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.split('/')[0].trim();
+}
+
+/**
  * Normalizes a single structural record from Venezuela Te Busca into the standard format.
  */
 export function normalizeRecord(record: any): NormalizedSearchResult {
-  // Combine first and last name safely
-  const parts = [];
-  if (record.firstName) parts.push(record.firstName);
-  if (record.lastName) parts.push(record.lastName);
+  // Combine first and last name safely, de-duplicating a last name that is
+  // already present at the end of the (cleaned) first name.
+  const first = cleanName(record.firstName);
+  const last = cleanName(record.lastName);
+  const parts: string[] = [];
+  if (first) parts.push(first);
+  if (last && !first.toLowerCase().endsWith(last.toLowerCase())) parts.push(last);
   const title = parts.length > 0 ? parts.join(' ') : 'Desconocido';
 
   // Build snippet using available descriptions/notes
@@ -55,7 +77,28 @@ export function normalizeRecord(record: any): NormalizedSearchResult {
     type: 'person',
     status: record.status || 'unknown',
     last_update: record.lastSeen,
-    thumbnail: record.photoUrl || undefined
+    thumbnail: record.photoUrl || undefined,
+    person: {
+      fullName: title,
+      firstName: record.firstName || undefined,
+      lastName: record.lastName || undefined,
+      cedula: record.idNumber || undefined,
+      age: typeof record.age === 'number' ? record.age : undefined,
+      gender: normalizeGender(record.gender),
+      status: record.hospitalName ? 'hospitalized' : toStatus(record.status),
+      rawStatus: record.status || undefined,
+      lastSeenLocation: record.lastSeen || undefined,
+      hospital: record.hospitalName || undefined,
+      description: record.description || record.foundNote || undefined,
+      photoUrl: record.photoUrl || undefined,
+      contact: record.reporter
+        ? {
+            name: record.reporter.name && record.reporter.name !== 'N/A' ? record.reporter.name : undefined,
+            phone: record.reporter.phone && record.reporter.phone !== 'N/A' ? record.reporter.phone : undefined,
+            email: record.reporter.email && record.reporter.email !== 'N/A' ? record.reporter.email : undefined,
+          }
+        : undefined,
+    }
   };
 }
 

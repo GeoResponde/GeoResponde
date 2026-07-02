@@ -1,0 +1,105 @@
+{
+  "title": "SYNTHETIC EONET Events (test fixture — invented ids, no real PII)",
+  "description": "Hand-crafted EONET v3 /events subset for parser/service tests. Array order deliberately differs from chronological order.",
+  "link": "https://eonet.gsfc.nasa.gov/api/v3/events",
+  "events": [
+    {
+      "id": "SYN_STORM_02",
+      "title": "Synthetic Tropical Storm Track",
+      "description": null,
+      "closed": null,
+      "categories": [{ "id": "severeStorms", "title": "Severe Storms" }],
+      "sources": [
+        { "id": "GDACS", "url": "https://example.test/gdacs/storm-02" }
+      ],
+      "geometry": [
+        {
+          "magnitudeValue": 45.0,
+          "magnitudeUnit": "kts",
+          "date": "2026-05-12T12:00:00Z",
+          "type": "Point",
+          "coordinates": [-64.2, 9.8]
+        },
+        {
+          "magnitudeValue": 40.0,
+          "magnitudeUnit": "kts",
+          "date": "2026-05-10T06:00:00Z",
+          "type": "Point",
+          "coordinates": [-63.1, 9.1]
+        },
+        {
+          "magnitudeValue": 50.0,
+          "magnitudeUnit": "kts",
+          "date": "2026-05-11T00:00:00Z",
+          "type": "Point",
+          "coordinates": [-63.7, 9.4]
+        }
+      ]
+    },
+    {
+      "id": "SYN_FLOOD_01",
+      "title": "Synthetic Flood",
+      "description": null,
+      "closed": null,
+      "categories": [{ "id": "floods", "title": "Floods" }],
+      "sources": [
+        { "id": "GDACS", "url": "https://example.test/gdacs/flood-01" }
+      ],
+      "geometry": [
+        {
+          "magnitudeValue": null,
+          "magnitudeUnit": null,
+          "date": "2026-01-15T20:00:00Z",
+          "type": "Point",
+          "coordinates": [-69.7, 9.0]
+        }
+      ]
+    },
+    {
+      "id": "SYN_QUAKE_DEAD",
+      "title": "Synthetic Earthquake (must be filtered out)",
+      "description": null,
+      "closed": "2018-09-30T00:00:00Z",
+      "categories": [{ "id": "earthquakes", "title": "Earthquakes" }],
+      "sources": [
+        { "id": "USGS_EHP", "url": "https://example.test/usgs/quake-dead" }
+      ],
+      "geometry": [
+        {
+          "magnitudeValue": 7.5,
+          "magnitudeUnit": "mww",
+          "date": "2018-09-28T10:00:00Z",
+          "type": "Point",
+          "coordinates": [119.8, -0.2]
+        }
+      ]
+    },
+    {
+      "id": "SYN_WILDFIRE_03",
+      "title": "Synthetic Wildfire (closed)",
+      "description": null,
+      "closed": "2026-03-20T00:00:00Z",
+      "categories": [{ "id": "wildfires", "title": "Wildfires" }],
+      "sources": [
+        { "id": "CEMS", "url": "https://example.test/cems/wildfire-03" }
+      ],
+      "geometry": [
+        {
+          "magnitudeValue": 5147.0,
+          "magnitudeUnit": "ha",
+          "date": "2026-03-01T00:00:00Z",
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-66.1, 8.2],
+              [-66.0, 8.2],
+              [-66.0, 8.3],
+              [-66.1, 8.3],
+              [-66.1, 8.2]
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

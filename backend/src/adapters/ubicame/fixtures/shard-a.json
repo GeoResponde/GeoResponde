@@ -1,0 +1,28 @@
+[
+  {
+    "source": "SYNTHETIC_TEST_FIXTURE",
+    "person_record_id": "LP-1",
+    "full_name": "Ana Prueba",
+    "age": "57",
+    "ext_venezuela_ci": "00000001",
+    "phone": "",
+    "last_known_location": "Refugio Central — Zona Este",
+    "hospital": "Hospital de Ejemplo",
+    "notes": "Sin observacion critica visible",
+    "status": "believed_alive",
+    "source_date": "2026-06-30T01:06:04Z"
+  },
+  {
+    "source": "SYNTHETIC_TEST_FIXTURE",
+    "person_record_id": "LP-2",
+    "full_name": "Andres Ejemplo",
+    "age": "31",
+    "ext_venezuela_ci": "00000002",
+    "phone": "",
+    "last_known_location": "Refugio Central — Zona Oeste",
+    "hospital": "Hospital de Ejemplo",
+    "notes": "Sin observacion critica visible",
+    "status": "believed_alive",
+    "source_date": "2026-06-30T01:06:04Z"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "status": "seeking_info",
+    "cedula_masked": null,
+    "display_name": "Ana Prueba",
+    "municipio": "Municipio Ejemplo",
+    "parroquia": "Parroquia Ficticia · Edificio de prueba",
+    "hospital_name": null,
+    "photo_path": null,
+    "source_date": "2020-01-01T10:00:00.000Z"
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "status": "found_alive",
+    "cedula_masked": "12••••78",
+    "display_name": "Carlos Ejemplo",
+    "municipio": "Municipio Sintetico",
+    "parroquia": "Parroquia de Datos Falsos",
+    "hospital_name": "Hospital Generico",
+    "photo_path": "https://example.com/foto-ejemplo.jpg",
+    "source_date": "2020-02-02T12:00:00.000Z"
+  }
+]

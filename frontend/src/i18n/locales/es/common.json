@@ -12,6 +12,7 @@
     "loading": "Cargando catálogo...",
     "error": "Error al cargar el catálogo.",
     "situationLayers": "Capas de Situación",
+    "liveSources": "Fuentes en vivo",
     "externalResources": "Recursos Externos",
     "categories": {
       "Earthquakes": "Sismos",
@@ -30,6 +31,94 @@
       "Pending Verification": "Pendiente de Verificación"
     }
   },
+  "situation": {
+    "eonet": {
+      "layerLabel": "Eventos NASA EONET",
+      "panelTitle": "Eventos de desastres naturales",
+      "panelSource": "NASA EONET",
+      "source": "Fuente",
+      "firstSeen": "Primera aparición",
+      "timelineLabel": "Línea de tiempo",
+      "listHeading": "Eventos por aparición",
+      "emptyList": "Aún no hay eventos para este corte.",
+      "controlsHeading": "Filtros",
+      "countryLabel": "País",
+      "categoriesLabel": "Categorías",
+      "legendHeading": "Leyenda",
+      "earthquakesOut": "Los sismos de EONET están fuera de alcance (inactivos 2015–2018). Para sismos en vivo, consulta el",
+      "usgsLink": "Programa de Amenazas Sísmicas del USGS",
+      "countries": {
+        "VE": "Venezuela"
+      },
+      "categories": {
+        "floods": "Inundaciones",
+        "wildfires": "Incendios forestales",
+        "severeStorms": "Tormentas severas",
+        "volcanoes": "Volcanes",
+        "landslides": "Deslizamientos"
+      }
+    },
+    "timeline": {
+      "heading": "Ventana temporal",
+      "advanced": "Datos avanzados",
+      "scrubberLabel": "Corte fino",
+      "presets": {
+        "today": "Hoy",
+        "week": "Últimos 7 días",
+        "month": "Último mes",
+        "all": "Histórico"
+      }
+    },
+    "sitios": {
+      "layerLabel": "Sitios de ayuda",
+      "badge": "Venezuela Reporta",
+      "tiposLabel": "Tipos",
+      "legendHeading": "Tipos de sitio de ayuda",
+      "estadoOperativo": "Estado operativo",
+      "necesidades": "Necesidades",
+      "frescura": "Actualización",
+      "viewRecord": "Ver ficha",
+      "untitled": "Sitio de ayuda",
+      "attribution": "Fuente: Venezuela Reporta",
+      "tipos": {
+        "acopio": "Centro de acopio",
+        "clinica": "Clínica",
+        "hospital": "Hospital",
+        "refugio": "Refugio",
+        "otro": "Otro"
+      }
+    },
+    "legend": {
+      "title": "Leyenda de capas",
+      "nasaTitle": "Daño Sentinel de la NASA",
+      "nasaSubtitle": "Probabilidad de daño",
+      "nasaHigh": "Alta (75%+)",
+      "nasaMedium": "Media (50%)",
+      "nasaLow": "Baja (25%)",
+      "groundMovementTitle": "Movimiento del terreno (LOS) (m)",
+      "builtUpTitle": "Área construida",
+      "destroyed": "Destruido",
+      "damaged": "Dañado",
+      "possiblyDamaged": "Posiblemente dañado",
+      "noVisibleDamage": "Sin daño visible",
+      "notAnalysed": "No analizado",
+      "transportTitle": "Red de transporte",
+      "highway": "Autopista",
+      "mainRoad": "Vía principal",
+      "localRoad": "Vía local",
+      "track": "Camino",
+      "damageNote": "* El rojo/naranja indica daño",
+      "faultsTitle": "Fallas tectónicas",
+      "plateBoundary": "Límite de placa",
+      "activeFault": "Falla activa",
+      "citizenTitle": "Reportes ciudadanos",
+      "missingPerson": "Persona desaparecida",
+      "foundPerson": "Persona encontrada",
+      "shelter": "Refugio",
+      "hospital": "Hospital",
+      "veterinary": "Veterinaria"
+    }
+  },
   "find": {
     "title": "Buscar Personas y Recursos",
     "subtitle": "Busca simultáneamente en múltiples organizaciones humanitarias confiables.",
@@ -39,21 +128,85 @@
     "buttonLoading": "Buscando...",
     "source": "Fuente",
     "type": "Tipo",
+    "viewList": "Lista",
+    "viewMap": "Mapa",
     "openResource": "Abrir Recurso Original ↗",
     "noResults": "No se encontraron resultados para \"{{query}}\". Intenta con otro término de búsqueda.",
     "error": "Error buscando proveedores"
   },
   "report": {
     "title": "Reportar Información",
-    "subtitle": "Reporta personas desaparecidas, edificios dañados y actualizaciones de emergencia a través de organizaciones confiables.",
-    "missingPerson": "Persona Desaparecida",
-    "foundPerson": "Persona Encontrada",
-    "damagedBuilding": "Edificio Dañado",
-    "shelterUpdate": "Actualización de Refugio",
-    "back": "← Volver a Categorías",
-    "redirectTitle": "Continúa en la plataforma oficial de reportes",
-    "redirectText": "Para asegurar la integridad de los datos y evitar la fragmentación, GeoResponde no almacena reportes directamente. Te redirigiremos a la plataforma de la organización autorizada donde tu reporte será manejado y verificado adecuadamente.",
-    "goToOfficial": "Ir a la Plataforma Oficial ↗"
+    "subtitle": "Componga un reporte estructurado y GeoResponde lo reenvía a las organizaciones confiables correspondientes.",
+    "topics": {
+      "missing-person": "Persona desaparecida",
+      "resource-need": "Necesidad de recursos",
+      "shelter-status": "Estado de refugio u hospital",
+      "building-damage": "Edificio dañado"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "age": "Edad",
+      "gender": "Género",
+      "lastSeenLocation": "Última ubicación conocida",
+      "lastSeenCoords": "Coordenadas de la última ubicación",
+      "cedula": "Número de cédula",
+      "reporterContact": "Su contacto",
+      "resourceType": "Tipo de recurso",
+      "location": "Ubicación",
+      "description": "Descripción",
+      "urgency": "Urgencia",
+      "facilityName": "Nombre del establecimiento",
+      "facilityType": "Tipo de establecimiento",
+      "locationCoords": "Coordenadas",
+      "capacityStatus": "Estado de capacidad",
+      "needs": "Necesidades",
+      "address": "Dirección",
+      "buildingType": "Tipo de edificación",
+      "damageLevel": "Nivel de daño"
+    },
+    "options": {
+      "male": "Masculino",
+      "female": "Femenino",
+      "other": "Otro",
+      "unknown": "Desconocido",
+      "shelter": "Refugio",
+      "hospital": "Hospital",
+      "open": "Abierto",
+      "full": "Lleno",
+      "closed": "Cerrado",
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta",
+      "critical": "Crítica",
+      "residential": "Residencial",
+      "commercial": "Comercial",
+      "public": "Público",
+      "mixed": "Uso mixto",
+      "minor": "Leve",
+      "moderate": "Moderado",
+      "severe": "Severo",
+      "destroyed": "Destruido"
+    },
+    "sensitiveHelper": "Información sensible: compártala solo si usted lo consiente. GeoResponde nunca la almacena.",
+    "coordsPlaceholder": "latitud, longitud",
+    "consent": {
+      "label": "Autorizo el reenvío de este reporte",
+      "text": "GeoResponde no almacena su reporte. Lo reenvía a los proveedores externos correspondientes y conserva únicamente un comprobante del envío."
+    },
+    "submit": "Enviar reporte",
+    "submitting": "Enviando...",
+    "result": {
+      "title": "Resultado del envío",
+      "mode": "Modo",
+      "status": "Estado",
+      "preview": "Esto es lo que se reenviaría:",
+      "networkError": "No se pudo enviar el reporte. Intente nuevamente."
+    },
+    "errors": {
+      "missing": "Este campo es obligatorio.",
+      "invalid": "Ingresa un valor válido.",
+      "formIncomplete": "Completa los campos obligatorios (*) para poder enviar."
+    }
   },
   "about": {
     "title": "GeoResponde",

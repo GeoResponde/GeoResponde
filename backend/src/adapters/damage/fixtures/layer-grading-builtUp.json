@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "name": "EMSR884_AOI01_GRA_PRODUCT_builtUpA_v1",
+  "crs": {
+    "type": "name",
+    "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "damage_gra": "Destroyed" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-67.5, 10.5],
+            [-67.5, 10.6],
+            [-67.4, 10.6],
+            [-67.4, 10.5],
+            [-67.5, 10.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "damage_gra": "Damaged" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-67.3, 10.7],
+            [-67.3, 10.8],
+            [-67.2, 10.8],
+            [-67.2, 10.7],
+            [-67.3, 10.7]
+          ]
+        ]
+      }
+    }
+  ]
+}

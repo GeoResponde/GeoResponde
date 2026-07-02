@@ -1,37 +1,138 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Activity, ShieldCheck } from 'lucide-react';
+import { bboxToEonetParam } from '@georesponde/shared';
 import { useCatalog } from '../hooks/useCatalog';
+import { useEonetEvents } from '../hooks/useEonetEvents';
+import { useAidSites } from '../hooks/useAidSites';
+import { useUsgsEarthquakes } from '../hooks/useUsgsEarthquakes';
+import { useFunvisisEarthquakes } from '../hooks/useFunvisisEarthquakes';
+import { useDamageLayer } from '../hooks/useDamageLayer';
+import { useNasaDpmLayer } from '../hooks/useNasaDpmLayer';
+import { EONET_CATEGORIES, appearanceRange } from '../lib/eonet';
+import { AID_SITE_TIPOS } from '../lib/sitios';
+import { presetToWindow, DEFAULT_TIME_PRESET, type TimePreset } from '../lib/timeWindow';
 import { MapViewer } from '../components/Map/MapViewer';
 import { Sidebar } from '../components/Sidebar/Sidebar';
+import { DynamicLayerToggle } from '../components/Sidebar/DynamicLayerToggle';
+import { TimeWindowControl } from '../components/Situation/TimeWindowControl';
+import { EonetControls } from '../components/Situation/EonetControls';
+import { AidSitesControls } from '../components/Situation/AidSitesControls';
+
+/** Dynamic earthquake layers fed by the gateway, not by static /data files. */
+const USGS_LAYER_ID = 'layer-earthquakes';
+const FUNVISIS_LAYER_ID = 'layer-funvisis';
 
 export function Situation() {
+  const { t } = useTranslation();
   const { layers } = useCatalog();
-  const [activeLayerIds, setActiveLayerIds] = useState<Set<string>>(new Set());
+  // USGS live quakes are the priority earthquake layer — ON by default.
+  const [activeLayerIds, setActiveLayerIds] = useState<Set<string>>(
+    () => new Set([USGS_LAYER_ID]),
+  );
   const [unavailableLayerIds, setUnavailableLayerIds] = useState<Set<string>>(new Set());
+  // EONET is complementary — opt-in.
+  const [showEonet, setShowEonet] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [visibleEpoch, setVisibleEpoch] = useState<number>(0);
+  const [country, setCountry] = useState('VE');
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(
+    () => new Set(EONET_CATEGORIES),
+  );
+  const [showSitios, setShowSitios] = useState(false);
+  const [activeTipos, setActiveTipos] = useState<Set<string>>(() => new Set(AID_SITE_TIPOS));
+
+  // Shared time window: presets drive the actual fetch window (default: 7 days).
+  const [preset, setPreset] = useState<TimePreset>(DEFAULT_TIME_PRESET);
+  const [advanced, setAdvanced] = useState(false);
+  const timeWindow = presetToWindow(preset);
+
+  const bbox = bboxToEonetParam(country);
+  const usgsActive = activeLayerIds.has(USGS_LAYER_ID);
+  const funvisisActive = activeLayerIds.has(FUNVISIS_LAYER_ID);
+  // Copernicus EMS damage layers are served live by the gateway route.
+  const damageActive = activeLayerIds.has('layer-copernicus-damage');
+  const groundMovementActive = activeLayerIds.has('layer-copernicus-ground-movement');
+  // NASA ARIA DPM (damaged structures) served live by the gateway route (NASA-02).
+  const nasaDpmActive = activeLayerIds.has('layer-nasa-sentinel-damage');
+
+  const { features: eonetFeatures } = useEonetEvents(
+    country,
+    [...activeCategories],
+    timeWindow.eonetStart,
+  );
+  const { features: aidSiteFeatures } = useAidSites(showSitios);
+  const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, timeWindow.quakeStart);
+  const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, timeWindow.quakeStart);
+  const { collection: copernicusDamageData, attribution: copernicusAttribution } = useDamageLayer(
+    'grading',
+    damageActive,
+  );
+  const { collection: groundMovementData } = useDamageLayer('ground-movement', groundMovementActive);
+  // Current map viewport, tracked (debounced) so the DPM layer requests only the
+  // polygons in view (15-04). `[minLng,minLat,maxLng,maxLat]`.
+  const [mapBounds, setMapBounds] = useState<[number, number, number, number] | null>(null);
+  const {
+    collection: nasaDpmData,
+    attribution: nasaAttribution,
+    disclaimer: nasaDisclaimer,
+    loading: nasaDpmLoading,
+    source: nasaDpmSource,
+  } = useNasaDpmLayer(nasaDpmActive, mapBounds);
+  const range = appearanceRange(eonetFeatures);
+
+  const toggleCategory = (id: string) => {
+    setActiveCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleTipo = (id: string) => {
+    setActiveTipos((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  // When a new dataset loads (country/category/window refetch), reset the
+  // scrubber cutoff to the latest first-appearance so all events show initially.
+  useEffect(() => {
+    if (range.max !== null) setVisibleEpoch(range.max);
+  }, [range.max]);
 
   useEffect(() => {
-    // Determine which layers are missing their datasets
+    // Determine which STATIC layers are missing their datasets. The dynamic
+    // earthquake layers (USGS, FUNVISIS) are served by the gateway and are never
+    // "unavailable" here.
     const checkAvailability = async () => {
       const newUnavailable = new Set<string>();
-      
+
       for (const layer of layers) {
-        let sourceUrl = '/data/earthquakes.geojson';
-        if (layer.id === 'layer-funvisis') sourceUrl = '/data/funvisis-earthquakes.geojson';
-        else if (layer.id === 'layer-hospitals') sourceUrl = '/data/hospitals.geojson';
+        // Gateway-served layers (USGS, FUNVISIS, Copernicus damage +
+        // ground-movement) are never "unavailable" via a /data HEAD probe.
+        if (
+          layer.id === USGS_LAYER_ID ||
+          layer.id === FUNVISIS_LAYER_ID ||
+          layer.id === 'layer-copernicus-damage' ||
+          layer.id === 'layer-copernicus-ground-movement'
+        )
+          continue;
+
+        let sourceUrl = '';
+        if (layer.id === 'layer-hospitals') sourceUrl = '/data/hospitals.geojson';
         else if (layer.id === 'layer-faults') sourceUrl = '/data/faults.geojson';
         else if (layer.id === 'layer-geologic-units') sourceUrl = '/data/geologic_units.geojson';
-        else if (layer.id === 'layer-copernicus-ground-movement') sourceUrl = '/data/copernicus/groundMovement.geojson';
         else if (layer.id === 'layer-citizen-reports') sourceUrl = '/data/citizen-reports.geojson';
-        else if (layer.id === 'layer-nasa-sentinel-damage') sourceUrl = ''; // dynamic
-        else if (layer.visualization?.type === 'raster') sourceUrl = layer.visualization.url;
-        else if (layer.id === 'layer-earthquakes') sourceUrl = '/data/earthquakes.geojson';
-        else sourceUrl = '';
-        
+
         if (sourceUrl && sourceUrl.startsWith('/data/')) {
           try {
             const res = await fetch(sourceUrl, { method: 'HEAD' });
-            if (!res.ok) {
-              newUnavailable.add(layer.id);
-            }
+            if (!res.ok) newUnavailable.add(layer.id);
           } catch (e) {
             newUnavailable.add(layer.id);
           }
@@ -40,13 +141,11 @@ export function Situation() {
       setUnavailableLayerIds(newUnavailable);
     };
 
-    if (layers.length > 0) {
-      checkAvailability();
-    }
+    if (layers.length > 0) checkAvailability();
   }, [layers]);
 
   const toggleLayer = (id: string) => {
-    setActiveLayerIds(prev => {
+    setActiveLayerIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -54,17 +153,82 @@ export function Situation() {
     });
   };
 
+  const timeWindowSlot = (
+    <TimeWindowControl
+      preset={preset}
+      onPreset={setPreset}
+      advanced={advanced}
+      onToggleAdvanced={setAdvanced}
+      min={range.min}
+      max={range.max}
+      value={visibleEpoch}
+      onScrub={setVisibleEpoch}
+    />
+  );
+
+  const dynamicSourcesSlot = (
+    <>
+      <DynamicLayerToggle
+        icon={Activity}
+        label={t('situation.eonet.layerLabel')}
+        description={t('situation.eonet.panelTitle')}
+        badge={t('situation.eonet.panelSource')}
+        active={showEonet}
+        onToggle={() => setShowEonet((v) => !v)}
+      >
+        <EonetControls
+          country={country}
+          onCountry={setCountry}
+          activeCategories={activeCategories}
+          onToggleCategory={toggleCategory}
+        />
+      </DynamicLayerToggle>
+
+      <DynamicLayerToggle
+        icon={ShieldCheck}
+        label={t('situation.sitios.layerLabel')}
+        badge={t('situation.sitios.badge')}
+        active={showSitios}
+        onToggle={() => setShowSitios((v) => !v)}
+      >
+        <AidSitesControls activeTipos={activeTipos} onToggleTipo={toggleTipo} />
+      </DynamicLayerToggle>
+    </>
+  );
+
   return (
     <div style={{ display: 'flex', flex: 1, position: 'relative' }}>
-      <MapViewer 
-        activeLayerIds={activeLayerIds} 
-        setUnavailableLayerIds={setUnavailableLayerIds} 
-        unavailableLayerIds={unavailableLayerIds} 
-      />
-      <Sidebar 
-        activeLayerIds={activeLayerIds} 
-        onToggleLayer={toggleLayer} 
+      <MapViewer
+        activeLayerIds={activeLayerIds}
         unavailableLayerIds={unavailableLayerIds}
+        eonetFeatures={eonetFeatures}
+        showEonet={showEonet}
+        eonetVisibleEpoch={showEonet && advanced ? visibleEpoch : null}
+        eonetActiveCategories={showEonet ? activeCategories : undefined}
+        eonetSelectedId={selectedId}
+        onEonetSelect={setSelectedId}
+        eonetCountry={showEonet ? country : undefined}
+        aidSiteFeatures={aidSiteFeatures}
+        showAidSites={showSitios}
+        aidSiteActiveTipos={showSitios ? activeTipos : undefined}
+        usgsData={usgsData}
+        funvisisData={funvisisData}
+        copernicusDamageData={copernicusDamageData}
+        copernicusGroundMovementData={groundMovementData}
+        copernicusAttribution={copernicusAttribution}
+        nasaDpmData={nasaDpmData}
+        nasaAttribution={nasaAttribution}
+        nasaDisclaimer={nasaDisclaimer}
+        nasaDpmLoading={nasaDpmLoading}
+        nasaDpmWarming={nasaDpmActive && nasaDpmSource === 'warming'}
+        onViewportBoundsChange={setMapBounds}
+      />
+      <Sidebar
+        activeLayerIds={activeLayerIds}
+        onToggleLayer={toggleLayer}
+        unavailableLayerIds={unavailableLayerIds}
+        timeWindowSlot={timeWindowSlot}
+        dynamicSourcesSlot={dynamicSourcesSlot}
       />
     </div>
   );

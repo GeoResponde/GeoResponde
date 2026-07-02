@@ -8,7 +8,7 @@ GeoResponde
 
 <p align="center">
 
-<b>Open Geospatial Situation Room</b>
+<b>Open Federated Geospatial Situation Room</b>
 
 Connecting Scientific Intelligence with Humanitarian Response.
 
@@ -16,7 +16,7 @@ Connecting Scientific Intelligence with Humanitarian Response.
 
 <p align="center">
 
-<a href="https://georesponde.vercel.app">🌐 Live Demo</a> •
+<a href="https://www.georesponde.app">🌐 Live Demo</a>
 <a href="./CONTRIBUTING.md">Contributing</a> •
 <a href="./docs">Documentation</a>
 
@@ -42,7 +42,9 @@ Instead of creating another isolated database, GeoResponde federates trusted inf
 
 # What is GeoResponde?
 
-GeoResponde is an open-source **Geospatial Situation Room**.
+GeoResponde is an open-source federated humanitarian platform that connects trusted organizations instead of replacing them.
+
+The platform combines scientific intelligence, federated humanitarian search and federated reporting into a single operational environment designed for emergency response.
 
 It combines three complementary capabilities:
 
@@ -78,24 +80,45 @@ It connects them.
 
 ---
 
-## Report
+### Report
 
 Operations
 
-*(Currently in development)*
+GeoResponde now includes a federated reporting workflow capable of routing structured reports to trusted humanitarian providers.
 
-GeoResponde will provide a federated reporting workflow capable of routing structured reports to the appropriate humanitarian organizations instead of creating another isolated reporting platform.
+Current report types include:
 
+- Missing persons
+- Building damage
+- Shelter / Hospital status
+- Resource needs
+
+Provider integrations are currently being tested.
 ---
 
-# Current Integrations
+## Current Integrations
 
-| Provider | Status |
-|----------|--------|
-| Venezuela Te Busca | ✅ Operational |
-| TerremotoVenezuela.com | 🚧 Official API integration in progress |
+## Humanitarian Providers
 
-More providers are continuously being added.
+- Venezuela Te Busca
+- TerremotoVenezuela
+- Venezuela Reporta
+- Hazlo Hoy
+- Patitas a Salvo
+- Venezuela Busca
+- Encuéntralos
+- (16+ federated providers)
+
+## Scientific Sources
+
+- USGS
+- NASA EONET
+- Sentinel-derived products
+- Copernicus-derived products
+- FUNVISIS
+- GEM Global Active Faults Database
+
+The platform continues to expand through the Provider SDK.
 
 ---
 
@@ -147,11 +170,15 @@ Its architecture is intentionally designed to support future disasters, humanita
         Situation      Find       Report
              │            │           │
 
- Scientific Intelligence  Humanitarian Network  Operations
+ Scientific Intelligence  Humanitarian Federation
 
                  │
 
           Provider Gateway
+
+                 │
+
+          Provider Registry
 
                  │
 
@@ -162,14 +189,30 @@ Its architecture is intentionally designed to support future disasters, humanita
 
 ---
 
+# Current Capabilities
+
+- Federated Search
+- Federated Reporting
+- Provider Registry
+- Provider SDK
+- Situation Room
+- Scientific Intelligence Layers
+- Provider Health Monitoring
+- PFIF Export
+---
+
 # Technology
 
-- React
+- - React
 - TypeScript
 - Fastify
 - MapLibre
+- Railway
+- Vercel
 - pnpm Workspace
-- Provider Gateway Architecture
+- Provider Registry
+- Provider SDK
+- PFIF
 
 ---
 
@@ -197,15 +240,17 @@ http://localhost:3001
 
 # Roadmap
 
-Current priorities include:
+# Roadmap
 
+Current priorities
+
+- Community onboarding
 - Additional humanitarian providers
-- Official provider API integrations
-- Federated reporting
-- Scientific intelligence layers
-- Improved contributor tooling
-- Provider SDK
-- Provider templates
+- Scientific layers
+- Open Humanitarian Interface (OHI)
+- Emergency Exchange Protocol (EEP)
+- Common provider submission API
+- Mobile optimization
 
 ---
 
@@ -220,11 +265,30 @@ GeoResponde welcomes contributions from:
 - Emergency managers
 - Volunteers
 
-See:
-
+New contributors should read 
 ```
 CONTRIBUTING.md
-```
+``` 
+and `docs/community/ways-to-contribute.md`
+before opening a Pull Request.
+
+---
+
+## Current Release
+
+**v0.5.0-alpha**
+
+This release introduces the federated architecture that serves as the foundation for GeoResponde's next stage.
+
+Highlights:
+
+- Provider Registry
+- Federated Search
+- Federated Reporting
+- Submission Router
+- Provider SDK
+- Situation Room redesign
+- Community contribution framework
 
 ---
 

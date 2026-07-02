@@ -1,0 +1,14 @@
+{
+  "id": "rep-synthetic-vr-0001",
+  "topic": "missing-person",
+  "createdAt": "2026-07-01T00:00:00.000Z",
+  "fields": {
+    "fullName": "Ana Prueba",
+    "age": 34,
+    "gender": "female",
+    "lastSeenLocation": "Caracas",
+    "cedula": "00099887",
+    "reporterContact": "tel:+000"
+  },
+  "consent": { "targets": ["prov-venezuelareporta"], "acknowledgedAt": "2026-07-01T00:00:00.000Z" }
+}

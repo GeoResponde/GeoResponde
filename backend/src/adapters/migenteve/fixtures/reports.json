@@ -1,0 +1,45 @@
+{
+  "reports": [
+    {
+      "id": "a1b2c3",
+      "status": "perdido",
+      "pet_name": "Nube",
+      "species": "Perro",
+      "sex": "Hembra",
+      "size": "Mediano",
+      "breed": "Mestizo",
+      "color": "Blanco y marrón",
+      "city": "Caracas",
+      "zone": "Chacao",
+      "lat": 10.4998,
+      "lng": -66.8517,
+      "details": "Se escapó cerca de la plaza. Lleva collar rojo.",
+      "photo_url": "/uploads/nube.jpg",
+      "created_at": 1719792000000
+    },
+    {
+      "id": "d4e5f6",
+      "status": "encontrado",
+      "pet_name": "Pelusa",
+      "species": "Gato",
+      "sex": "Macho",
+      "size": "Pequeño",
+      "breed": "Siamés",
+      "color": "Crema",
+      "city": "Maracaibo",
+      "zone": "La Lago",
+      "lat": 999,
+      "lng": null,
+      "details": "Apareció en un jardín, muy asustado.",
+      "photo_url": "https://cdn.example.org/pelusa.png",
+      "created_at": 1719878400000
+    }
+  ],
+  "mapPoints": [],
+  "pagination": {
+    "total": 2,
+    "page": 1,
+    "limit": 20,
+    "totalPages": 1
+  }
+}

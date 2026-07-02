@@ -76,6 +76,7 @@
   confidence: Official
   refreshFrequency: Static
   enabled: false
+  attribution: '© European Union, 2026, Copernicus EMS (EMSR884)'
   visualization:
     type: mixed
 
@@ -87,6 +88,7 @@
   confidence: Official
   refreshFrequency: Static
   enabled: false
+  attribution: '© European Union, 2026, Copernicus EMS (EMSR884)'
   visualization:
     type: fill
 
@@ -98,6 +100,8 @@
   confidence: Official
   refreshFrequency: Static
   enabled: false
+  attribution: 'ARIA / NASA-JPL / Caltech, contains modified Copernicus Sentinel-1 data (ESA). Building footprints © Overture Maps Foundation.'
+  disclaimer: 'Experimental — not validated for operational use.'
   visualization:
     type: fill
 
@@ -112,3 +116,16 @@
   visualization:
     type: raster
     url: 'https://tiledimageservices7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_sentinel1_unwrappedInterferogram/ImageServer/tile/{z}/{y}/{x}'
+
+- id: layer-verified-buildings
+  name:
+    en: Field-Verified Buildings (TerremotoVenezuela)
+    es: Edificios Verificados en Terreno (TerremotoVenezuela)
+  datasetIds: []
+  category: Humanitarian
+  confidence: Official
+  refreshFrequency: Real-time
+  enabled: true
+  visualization:
+    type: point
+    color: "#f39c12"

@@ -1,6 +1,17 @@
 import js from "@eslint/js";
 
 export default [
+  {
+    // Never lint build output, dependencies or generated assets.
+    ignores: [
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/node_modules/**",
+      "public/**",
+      "**/*.min.js",
+    ],
+  },
   js.configs.recommended,
   {
     rules: {

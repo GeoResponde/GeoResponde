@@ -4,6 +4,6 @@ authors:
   - family-names: "Contributors"
     given-names: "GeoResponde"
 title: "GeoResponde: Open-source Geospatial Situation Room"
-version: 0.2.0-alpha
-date-released: 2026-06-29
+version: 0.5.0-alpha
+date-released: 2026-07-02
 url: "https://github.com/georesponde/georesponde"

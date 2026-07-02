@@ -1,0 +1,47 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "nombre": "Ana Prueba",
+      "edad": 40,
+      "sexo": "femenino",
+      "descripcion": "Descripcion de ejemplo, datos sinteticos.",
+      "foto": null,
+      "ultima_ubicacion": "Ciudad Ejemplo, municipio de prueba",
+      "ultima_lat": null,
+      "ultima_lng": null,
+      "ultima_vez": "2020-01-01T10:00:00.000Z",
+      "reporta_contacto": null,
+      "estado": "desaparecido",
+      "creado": "2020-01-01T11:00:00.000Z",
+      "cedula": "00000001",
+      "pv_por": null,
+      "pv_contacto": null,
+      "pv_lugar": null,
+      "pv_salud": null,
+      "pv_relacion": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "nombre": "Carlos Ejemplo",
+      "edad": 25,
+      "sexo": "masculino",
+      "descripcion": "Segundo registro sintetico para pruebas.",
+      "foto": "https://example.com/foto-ejemplo.jpg",
+      "ultima_ubicacion": "Pueblo Ficticio",
+      "ultima_lat": 10.5,
+      "ultima_lng": -66.9,
+      "ultima_vez": "2020-02-02T12:00:00.000Z",
+      "reporta_contacto": null,
+      "estado": "encontrado",
+      "creado": "2020-02-02T13:00:00.000Z",
+      "cedula": "00000002",
+      "pv_por": null,
+      "pv_contacto": null,
+      "pv_lugar": null,
+      "pv_salud": null,
+      "pv_relacion": null
+    }
+  ],
+  "total": 2
+}

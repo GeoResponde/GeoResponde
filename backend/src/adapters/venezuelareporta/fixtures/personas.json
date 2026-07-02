@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "atribucion": "Venezuela Reporta — venezuelareporta.org",
+  "generado_at": "2026-07-01T00:00:00.000Z",
+  "total": 2,
+  "limit": 10,
+  "offset": 0,
+  "personas": [
+    {
+      "id": "ejemplo-1",
+      "status": "buscando",
+      "nombre": "Ana Prueba",
+      "cedula": "00••••01",
+      "genero": "femenino",
+      "edad": 34,
+      "ciudad": "Ciudad Ejemplo",
+      "zona": "Zona Norte",
+      "ultima_vez": "Terminal de Ejemplo",
+      "descripcion": "Descripcion sintetica de prueba",
+      "foto_url": null,
+      "menor": false,
+      "origen": null,
+      "verificado": false,
+      "verificado_por": null,
+      "verificado_at": null,
+      "created_at": "2026-06-30T12:00:00.000000+00:00",
+      "ficha_url": "https://venezuelareporta.org/reporte/ejemplo-1"
+    },
+    {
+      "id": "ejemplo-2",
+      "status": "a_salvo",
+      "nombre": "Luis Ejemplo",
+      "cedula": "00••••02",
+      "genero": "masculino",
+      "edad": null,
+      "ciudad": "Ciudad Ejemplo",
+      "zona": null,
+      "ultima_vez": null,
+      "descripcion": null,
+      "foto_url": null,
+      "menor": true,
+      "origen": "reporte_web",
+      "verificado": true,
+      "verificado_por": null,
+      "verificado_at": null,
+      "created_at": "2026-06-29T08:30:00.000000+00:00",
+      "ficha_url": "https://venezuelareporta.org/reporte/ejemplo-2"
+    }
+  ]
+}

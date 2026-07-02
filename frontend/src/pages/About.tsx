@@ -79,11 +79,11 @@ export function About() {
   });
 
   return (
-    <div style={containerStyle}>
+    <div className="about-container" style={{...containerStyle, minHeight: 0}}>
       <div style={contentStyle}>
         
         <header style={headerStyle}>
-          <img src={logo} alt="GeoResponde Logo" style={{ height: '192px', marginBottom: '16px' }} />
+          <img src={logo} className="about-logo" alt="GeoResponde Logo" style={{ height: 'auto', maxHeight: '192px', marginBottom: '16px' }} />
           <h1 style={titleStyle}>{t('about.title')}</h1>
           <p style={subtitleStyle}>{t('about.subtitle')}</p>
         </header>

@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "atribucion": "Venezuela Reporta",
+  "total": 2,
+  "personas": [
+    {
+      "id": "ingreso-syn-001",
+      "nombre": "Ana Prueba",
+      "cedula": "12••••34",
+      "edad": 40,
+      "sexo": "femenino",
+      "procedencia": "Municipio Sintetico",
+      "ubicacion": "Hospital Central Sintetico",
+      "recopilado_de": "lista manual",
+      "fuente": "Cruz Sintetica",
+      "ficha_url": "https://venezuelareporta.org/ingresos/ingreso-syn-001",
+      "created_at": "2026-07-01T08:00:00Z"
+    },
+    {
+      "id": "ingreso-syn-002",
+      "nombre": "Carlos Ejemplo",
+      "cedula": null,
+      "edad": 27,
+      "sexo": "masculino",
+      "procedencia": null,
+      "ubicacion": "Clinica Sintetica Norte",
+      "recopilado_de": "OCR",
+      "fuente": "Voluntariado Sintetico",
+      "ficha_url": null,
+      "created_at": "2026-07-01T09:30:00Z"
+    }
+  ]
+}
