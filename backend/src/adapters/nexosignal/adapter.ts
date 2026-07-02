@@ -5,12 +5,8 @@ import { parseNexoSignalResponse, NexoSignalItem } from './parser.js';
 
 const API_BASE = 'https://gqnvienuqsrzdhpjeiyl.supabase.co/rest/v1/ninos_encontrados';
 
-/**
- * Supabase publishable key. This is a public, embeddable anon-style key that the
- * site itself ships to the browser; it grants read-only access to the exposed
- * `ninos_encontrados` table. Safe to keep in source.
- */
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Wpao1fOWuLUgarryL7KNDA_YVxfjzA-';
+const SUPABASE_PUBLISHABLE_KEY = process.env.NEXOSIGNAL_PUBLISHABLE_KEY;
+if (!SUPABASE_PUBLISHABLE_KEY) throw new Error('Missing NEXOSIGNAL_PUBLISHABLE_KEY env var');
 
 export class NexoSignalAdapter implements BaseAdapter {
   provider: HumanitarianProvider;
