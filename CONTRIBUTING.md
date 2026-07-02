@@ -20,3 +20,5 @@ Adding a new humanitarian or scientific provider is the most common way to contr
 5. **Validation**: Save raw response payloads in your provider's `fixtures/` directory and write Vitest tests to prevent future regressions.
 6. **Registration**: Export an Adapter class that implements `BaseAdapter`, instantiate it, and register it in `backend/src/gateway/ProviderGateway.ts` and `public/catalog/providers.json`.
 7. **Testing**: Spin up the development server and verify the integration through the developer endpoint `/api/dev/inspect/:id`.
+
+- For a detailed step-by-step guide, see [docs/community/onboarding.md](./docs/community/onboarding.md)
