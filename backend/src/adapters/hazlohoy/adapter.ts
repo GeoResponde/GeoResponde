@@ -1,6 +1,7 @@
 import { BaseAdapter } from '../BaseAdapter.js';
 import { HumanitarianProvider, NormalizedSearchResult, Report, SubmissionResult } from '@georesponde/shared';
 import { extractMarkers, normalizeMarkers } from './parser.js';
+import { fetchHtml } from '../../transports/scrape/client.js';
 
 const RSC_URL = 'https://terremoto.hazlohoy.org/';
 
@@ -21,8 +22,8 @@ export class HazloHoyAdapter implements BaseAdapter {
     try {
       console.log(`[HazloHoyAdapter] Fetching RSC payload for query: "${query}"`);
 
-      const response = await fetch(RSC_URL, { headers: { RSC: '1' } });
-      const raw = await response.text();
+      const $ = await fetchHtml(RSC_URL, { headers: { RSC: '1' } });
+      const raw = $.html();
 
       const markers = extractMarkers(raw);
       const results = normalizeMarkers(markers, query);
