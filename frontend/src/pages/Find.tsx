@@ -70,6 +70,13 @@ export function Find() {
     setHasSearched(true);
     try {
       const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
+      
+      if (!res.ok) {
+        console.error(`Search request failed: ${res.status} ${res.statusText}`);
+        alert(t("find.serviceUnavailable"));
+        return;
+      }
+
       const data = await res.json();
       setResults(data);
     } catch (err) {

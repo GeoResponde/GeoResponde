@@ -1,298 +1,299 @@
 {
-  "nav": {
-    "situation": "Situation",
-    "find": "Find",
-    "report": "Report",
-    "about": "About"
-  },
-  "sidebar": {
-    "title": "GeoResponde",
-    "subtitle": "Open Geospatial Situation Room",
-    "currentEvent": "Current Event: Venezuela Earthquake 2026",
-    "loading": "Loading catalog...",
-    "error": "Failed to load catalog.",
-    "situationLayers": "Situation Layers",
-    "liveSources": "Live Sources",
-    "externalResources": "External Resources",
-    "categories": {
-      "Earthquakes": "Earthquakes",
-      "Hazards": "Hazards",
-      "Satellite": "Satellite",
-      "Geology": "Geology",
-      "Infrastructure": "Infrastructure",
-      "Humanitarian": "Humanitarian",
-      "Logistics": "Logistics",
-      "Community": "Community"
-    },
-    "confidence": {
-      "Official": "Official",
-      "Community Verified": "Community Verified",
-      "Verified": "Verified",
-      "Pending Verification": "Pending Verification"
-    }
-  },
-  "situation": {
-    "eonet": {
-      "layerLabel": "NASA EONET Events",
-      "panelTitle": "Natural-disaster events",
-      "panelSource": "NASA EONET",
-      "source": "Source",
-      "firstSeen": "First seen",
-      "timelineLabel": "Timeline",
-      "listHeading": "Events by appearance",
-      "emptyList": "No events yet for this cutoff.",
-      "controlsHeading": "Filters",
-      "countryLabel": "Country",
-      "categoriesLabel": "Categories",
-      "legendHeading": "Legend",
-      "earthquakesOut": "EONET earthquakes are out of scope (dead 2015–2018). For live earthquakes, see the",
-      "usgsLink": "USGS Earthquake Hazards Program",
-      "countries": {
-        "VE": "Venezuela"
-      },
-      "categories": {
-        "floods": "Floods",
-        "wildfires": "Wildfires",
-        "severeStorms": "Severe Storms",
-        "volcanoes": "Volcanoes",
-        "landslides": "Landslides"
-      }
-    },
-    "timeline": {
-      "heading": "Time window",
-      "advanced": "Advanced data",
-      "scrubberLabel": "Fine cutoff",
-      "presets": {
-        "today": "Today",
-        "week": "Last 7 days",
-        "month": "Last month",
-        "all": "Historical"
-      }
-    },
-    "sitios": {
-      "layerLabel": "Aid sites",
-      "badge": "Venezuela Reporta",
-      "tiposLabel": "Types",
-      "legendHeading": "Aid site types",
-      "estadoOperativo": "Operational status",
-      "necesidades": "Needs",
-      "frescura": "Freshness",
-      "viewRecord": "View record",
-      "untitled": "Aid site",
-      "attribution": "Source: Venezuela Reporta",
-      "tipos": {
-        "acopio": "Collection center",
-        "clinica": "Clinic",
-        "hospital": "Hospital",
-        "refugio": "Shelter",
-        "otro": "Other"
-      }
-    },
-    "legend": {
-      "title": "Layer Legend",
-      "nasaTitle": "NASA Sentinel Damage",
-      "nasaSubtitle": "Probability of damage",
-      "nasaHigh": "High (75%+)",
-      "nasaMedium": "Medium (50%)",
-      "nasaLow": "Low (25%)",
-      "groundMovementTitle": "Ground Movement (LOS) (m)",
-      "builtUpTitle": "Built Up Area",
-      "destroyed": "Destroyed",
-      "damaged": "Damaged",
-      "possiblyDamaged": "Possibly damaged",
-      "noVisibleDamage": "No visible damage",
-      "notAnalysed": "Not Analysed",
-      "transportTitle": "Transportation Network",
-      "highway": "Highway",
-      "mainRoad": "Main road",
-      "localRoad": "Local road",
-      "track": "Track",
-      "damageNote": "* Red/Orange indicates damage",
-      "faultsTitle": "Tectonic Faults",
-      "plateBoundary": "Plate Boundary",
-      "activeFault": "Active Fault",
-      "citizenTitle": "Citizen Reports",
-      "missingPerson": "Missing Person",
-      "foundPerson": "Found Person",
-      "shelter": "Shelter",
-      "hospital": "Hospital",
-      "veterinary": "Veterinary"
-    }
-  },
-  "find": {
-    "title": "Find People & Resources",
-    "subtitle": "Search simultaneously across multiple trusted humanitarian organizations.",
-    "placeholder": "Search people, buildings, hospitals, shelters...",
-    "examples": "Quick examples:",
-    "button": "Search",
-    "buttonLoading": "Searching...",
-    "source": "Source",
-    "type": "Type",
-    "viewList": "List",
-    "viewMap": "Map",
-    "openResource": "Open Original Resource ↗",
-    "noResults": "No results found for \"{{query}}\". Try a different search term.",
-    "error": "Error searching providers"
-  },
-  "report": {
-    "title": "Report Information",
-    "subtitle": "Compose a structured report and GeoResponde forwards it to the right trusted organizations.",
-    "topics": {
-      "missing-person": "Missing Person",
-      "resource-need": "Resource Need",
-      "shelter-status": "Shelter or Hospital Status",
-      "building-damage": "Damaged Building"
-    },
-    "fields": {
-      "fullName": "Full name",
-      "age": "Age",
-      "gender": "Gender",
-      "lastSeenLocation": "Last seen location",
-      "lastSeenCoords": "Last seen coordinates",
-      "cedula": "ID number (cédula)",
-      "reporterContact": "Your contact",
-      "resourceType": "Resource type",
-      "location": "Location",
-      "description": "Description",
-      "urgency": "Urgency",
-      "facilityName": "Facility name",
-      "facilityType": "Facility type",
-      "locationCoords": "Coordinates",
-      "capacityStatus": "Capacity status",
-      "needs": "Needs",
-      "address": "Address",
-      "buildingType": "Building type",
-      "damageLevel": "Damage level"
-    },
-    "options": {
-      "male": "Male",
-      "female": "Female",
-      "other": "Other",
-      "unknown": "Unknown",
-      "shelter": "Shelter",
-      "hospital": "Hospital",
-      "open": "Open",
-      "full": "Full",
-      "closed": "Closed",
-      "low": "Low",
-      "medium": "Medium",
-      "high": "High",
-      "critical": "Critical",
-      "residential": "Residential",
-      "commercial": "Commercial",
-      "public": "Public",
-      "mixed": "Mixed use",
-      "minor": "Minor",
-      "moderate": "Moderate",
-      "severe": "Severe",
-      "destroyed": "Destroyed"
-    },
-    "sensitiveHelper": "Sensitive information — share it only if you consent. It is never stored by GeoResponde.",
-    "coordsPlaceholder": "latitude, longitude",
-    "consent": {
-      "label": "I authorize forwarding this report",
-      "text": "GeoResponde does not store your report. It forwards it to the appropriate external providers and keeps only a receipt of the submission."
-    },
-    "submit": "Submit report",
-    "submitting": "Submitting...",
-    "result": {
-      "title": "Submission result",
-      "mode": "Mode",
-      "status": "Status",
-      "preview": "This is what would be forwarded:",
-      "networkError": "The report could not be submitted. Please try again."
-    },
-    "errors": {
-      "missing": "This field is required.",
-      "invalid": "Please enter a valid value.",
-      "formIncomplete": "Complete the required fields (*) to enable submit."
-    }
-  },
-  "about": {
-    "title": "GeoResponde",
-    "subtitle": "Open Geospatial Situation Room",
-    "mission": {
-      "title": "Mission",
-      "p1": "GeoResponde connects scientific intelligence and humanitarian information into a unified operational picture during disasters.",
-      "p2": "Instead of creating another isolated database, GeoResponde federates trusted information from existing organizations while preserving data ownership."
-    },
-    "whyExists": {
-      "title": "Why GeoResponde Exists",
-      "p1": "During disasters information becomes fragmented.",
-      "p2": "Families search multiple websites.",
-      "p3": "Organizations duplicate efforts.",
-      "p4": "Scientists and responders often work with disconnected systems.",
-      "p5": "GeoResponde exists to connect those worlds."
-    },
-    "howItWorks": {
-      "title": "How it Works",
-      "p1": "Three pillars:",
-      "pillar1": "Situation",
-      "pillar1sub": "- Scientific Intelligence",
-      "p1_1": "Earthquakes",
-      "p1_2": "Geology",
-      "p1_3": "Satellite products",
-      "p1_4": "Hazards",
-      "pillar2": "Find",
-      "pillar2sub": "- Humanitarian Network",
-      "p2_1": "Federated search",
-      "p2_2": "Missing persons",
-      "p2_3": "Hospitals",
-      "p2_4": "Shelters",
-      "p2_5": "Resources",
-      "pillar3": "Report",
-      "pillar3sub": "- Operations",
-      "p3_1": "Federated incident reporting",
-      "p3_2": "Coming soon"
-    },
-    "openSource": {
-      "title": "Open Source",
-      "p1": "GeoResponde is developed as an open-source project because disaster response benefits from transparency, collaboration and interoperability.",
-      "p2": "Everyone can inspect the code. Organizations remain owners of their own data."
-    },
-    "status": {
-      "title": "Current Status",
-      "situation": "Situation",
-      "beta": "Beta",
-      "find": "Find",
-      "experimental": "Experimental",
-      "report": "Report",
-      "inDev": "In Development"
-    },
-    "developedBy": {
-      "title": "Developed By",
-      "contributors": "GeoResponde Contributors",
-      "author": "Project initiated by Daniel (Napo) Arraiz.",
-      "community": "Community contributions are welcome."
-    },
-    "principles": {
-      "title": "Our Principles",
-      "p1_title": "Federation over duplication:",
-      "p1_text": "We connect existing systems instead of creating competing databases.",
-      "p2_title": "Data ownership remains with providers:",
-      "p2_text": "Organizations always remain the authoritative source.",
-      "p3_title": "Open by default:",
-      "p3_text": "Transparency builds trust.",
-      "p4_title": "Science supports humanitarian response:",
-      "p4_text": "Scientific intelligence should improve operational decisions.",
-      "p5_title": "Interoperability first:",
-      "p5_text": "Open standards enable collaboration."
-    },
-    "disclaimer": {
-      "title": "Data Disclaimer",
-      "p1": "GeoResponde does not own humanitarian records.",
-      "p2": "GeoResponde federates publicly available or provider-authorized information.",
-      "p3": "Every provider remains responsible for its own data.",
-      "p4": "Critical information should always be confirmed with the originating organization."
-    },
-    "philosophy": {
-      "title": "Provider Philosophy",
-      "subtitle": "GeoResponde prioritizes:",
-      "li1": "Official APIs",
-      "li2": "Provider authorization",
-      "li3": "Proper attribution",
-      "li4": "Direct links back to providers",
-      "li5": "Avoiding unnecessary duplication"
-    }
-  }
+    "nav":  {
+                "situation":  "Situation",
+                "find":  "Find",
+                "report":  "Report",
+                "about":  "About"
+            },
+    "sidebar":  {
+                    "title":  "GeoResponde",
+                    "subtitle":  "Open Geospatial Situation Room",
+                    "currentEvent":  "Current Event: Venezuela Earthquake 2026",
+                    "loading":  "Loading catalog...",
+                    "error":  "Failed to load catalog.",
+                    "situationLayers":  "Situation Layers",
+                    "liveSources":  "Live Sources",
+                    "externalResources":  "External Resources",
+                    "categories":  {
+                                       "Earthquakes":  "Earthquakes",
+                                       "Hazards":  "Hazards",
+                                       "Satellite":  "Satellite",
+                                       "Geology":  "Geology",
+                                       "Infrastructure":  "Infrastructure",
+                                       "Humanitarian":  "Humanitarian",
+                                       "Logistics":  "Logistics",
+                                       "Community":  "Community"
+                                   },
+                    "confidence":  {
+                                       "Official":  "Official",
+                                       "Community Verified":  "Community Verified",
+                                       "Verified":  "Verified",
+                                       "Pending Verification":  "Pending Verification"
+                                   }
+                },
+    "situation":  {
+                      "eonet":  {
+                                    "layerLabel":  "NASA EONET Events",
+                                    "panelTitle":  "Natural-disaster events",
+                                    "panelSource":  "NASA EONET",
+                                    "source":  "Source",
+                                    "firstSeen":  "First seen",
+                                    "timelineLabel":  "Timeline",
+                                    "listHeading":  "Events by appearance",
+                                    "emptyList":  "No events yet for this cutoff.",
+                                    "controlsHeading":  "Filters",
+                                    "countryLabel":  "Country",
+                                    "categoriesLabel":  "Categories",
+                                    "legendHeading":  "Legend",
+                                    "earthquakesOut":  "EONET earthquakes are out of scope (dead 2015–2018). For live earthquakes, see the",
+                                    "usgsLink":  "USGS Earthquake Hazards Program",
+                                    "countries":  {
+                                                      "VE":  "Venezuela"
+                                                  },
+                                    "categories":  {
+                                                       "floods":  "Floods",
+                                                       "wildfires":  "Wildfires",
+                                                       "severeStorms":  "Severe Storms",
+                                                       "volcanoes":  "Volcanoes",
+                                                       "landslides":  "Landslides"
+                                                   }
+                                },
+                      "timeline":  {
+                                       "heading":  "Time window",
+                                       "advanced":  "Advanced data",
+                                       "scrubberLabel":  "Fine cutoff",
+                                       "presets":  {
+                                                       "today":  "Today",
+                                                       "week":  "Last 7 days",
+                                                       "month":  "Last month",
+                                                       "all":  "Historical"
+                                                   }
+                                   },
+                      "sitios":  {
+                                     "layerLabel":  "Aid sites",
+                                     "badge":  "Venezuela Reporta",
+                                     "tiposLabel":  "Types",
+                                     "legendHeading":  "Aid site types",
+                                     "estadoOperativo":  "Operational status",
+                                     "necesidades":  "Needs",
+                                     "frescura":  "Freshness",
+                                     "viewRecord":  "View record",
+                                     "untitled":  "Aid site",
+                                     "attribution":  "Source: Venezuela Reporta",
+                                     "tipos":  {
+                                                   "acopio":  "Collection center",
+                                                   "clinica":  "Clinic",
+                                                   "hospital":  "Hospital",
+                                                   "refugio":  "Shelter",
+                                                   "otro":  "Other"
+                                               }
+                                 },
+                      "legend":  {
+                                     "title":  "Layer Legend",
+                                     "nasaTitle":  "NASA Sentinel Damage",
+                                     "nasaSubtitle":  "Probability of damage",
+                                     "nasaHigh":  "High (75%+)",
+                                     "nasaMedium":  "Medium (50%)",
+                                     "nasaLow":  "Low (25%)",
+                                     "groundMovementTitle":  "Ground Movement (LOS) (m)",
+                                     "builtUpTitle":  "Built Up Area",
+                                     "destroyed":  "Destroyed",
+                                     "damaged":  "Damaged",
+                                     "possiblyDamaged":  "Possibly damaged",
+                                     "noVisibleDamage":  "No visible damage",
+                                     "notAnalysed":  "Not Analysed",
+                                     "transportTitle":  "Transportation Network",
+                                     "highway":  "Highway",
+                                     "mainRoad":  "Main road",
+                                     "localRoad":  "Local road",
+                                     "track":  "Track",
+                                     "damageNote":  "* Red/Orange indicates damage",
+                                     "faultsTitle":  "Tectonic Faults",
+                                     "plateBoundary":  "Plate Boundary",
+                                     "activeFault":  "Active Fault",
+                                     "citizenTitle":  "Citizen Reports",
+                                     "missingPerson":  "Missing Person",
+                                     "foundPerson":  "Found Person",
+                                     "shelter":  "Shelter",
+                                     "hospital":  "Hospital",
+                                     "veterinary":  "Veterinary"
+                                 }
+                  },
+    "find":  {
+                 "title":  "Find People \u0026 Resources",
+                 "subtitle":  "Search simultaneously across multiple trusted humanitarian organizations.",
+                 "placeholder":  "Search people, buildings, hospitals, shelters...",
+                 "examples":  "Quick examples:",
+                 "button":  "Search",
+                 "buttonLoading":  "Searching...",
+                 "source":  "Source",
+                 "type":  "Type",
+                 "viewList":  "List",
+                 "viewMap":  "Map",
+                 "openResource":  "Open Original Resource ↗",
+                 "noResults":  "No results found for \"{{query}}\". Try a different search term.",
+                 "error":  "Error searching providers",
+                 "serviceUnavailable":  "The search service is temporarily unavailable. Please try again in a few moments."
+             },
+    "report":  {
+                   "title":  "Report Information",
+                   "subtitle":  "Compose a structured report and GeoResponde forwards it to the right trusted organizations.",
+                   "topics":  {
+                                  "missing-person":  "Missing Person",
+                                  "resource-need":  "Resource Need",
+                                  "shelter-status":  "Shelter or Hospital Status",
+                                  "building-damage":  "Damaged Building"
+                              },
+                   "fields":  {
+                                  "fullName":  "Full name",
+                                  "age":  "Age",
+                                  "gender":  "Gender",
+                                  "lastSeenLocation":  "Last seen location",
+                                  "lastSeenCoords":  "Last seen coordinates",
+                                  "cedula":  "ID number (cédula)",
+                                  "reporterContact":  "Your contact",
+                                  "resourceType":  "Resource type",
+                                  "location":  "Location",
+                                  "description":  "Description",
+                                  "urgency":  "Urgency",
+                                  "facilityName":  "Facility name",
+                                  "facilityType":  "Facility type",
+                                  "locationCoords":  "Coordinates",
+                                  "capacityStatus":  "Capacity status",
+                                  "needs":  "Needs",
+                                  "address":  "Address",
+                                  "buildingType":  "Building type",
+                                  "damageLevel":  "Damage level"
+                              },
+                   "options":  {
+                                   "male":  "Male",
+                                   "female":  "Female",
+                                   "other":  "Other",
+                                   "unknown":  "Unknown",
+                                   "shelter":  "Shelter",
+                                   "hospital":  "Hospital",
+                                   "open":  "Open",
+                                   "full":  "Full",
+                                   "closed":  "Closed",
+                                   "low":  "Low",
+                                   "medium":  "Medium",
+                                   "high":  "High",
+                                   "critical":  "Critical",
+                                   "residential":  "Residential",
+                                   "commercial":  "Commercial",
+                                   "public":  "Public",
+                                   "mixed":  "Mixed use",
+                                   "minor":  "Minor",
+                                   "moderate":  "Moderate",
+                                   "severe":  "Severe",
+                                   "destroyed":  "Destroyed"
+                               },
+                   "sensitiveHelper":  "Sensitive information — share it only if you consent. It is never stored by GeoResponde.",
+                   "coordsPlaceholder":  "latitude, longitude",
+                   "consent":  {
+                                   "label":  "I authorize forwarding this report",
+                                   "text":  "GeoResponde does not store your report. It forwards it to the appropriate external providers and keeps only a receipt of the submission."
+                               },
+                   "submit":  "Submit report",
+                   "submitting":  "Submitting...",
+                   "result":  {
+                                  "title":  "Submission result",
+                                  "mode":  "Mode",
+                                  "status":  "Status",
+                                  "preview":  "This is what would be forwarded:",
+                                  "networkError":  "The report could not be submitted. Please try again."
+                              },
+                   "errors":  {
+                                  "missing":  "This field is required.",
+                                  "invalid":  "Please enter a valid value.",
+                                  "formIncomplete":  "Complete the required fields (*) to enable submit."
+                              }
+               },
+    "about":  {
+                  "title":  "GeoResponde",
+                  "subtitle":  "Open Geospatial Situation Room",
+                  "mission":  {
+                                  "title":  "Mission",
+                                  "p1":  "GeoResponde connects scientific intelligence and humanitarian information into a unified operational picture during disasters.",
+                                  "p2":  "Instead of creating another isolated database, GeoResponde federates trusted information from existing organizations while preserving data ownership."
+                              },
+                  "whyExists":  {
+                                    "title":  "Why GeoResponde Exists",
+                                    "p1":  "During disasters information becomes fragmented.",
+                                    "p2":  "Families search multiple websites.",
+                                    "p3":  "Organizations duplicate efforts.",
+                                    "p4":  "Scientists and responders often work with disconnected systems.",
+                                    "p5":  "GeoResponde exists to connect those worlds."
+                                },
+                  "howItWorks":  {
+                                     "title":  "How it Works",
+                                     "p1":  "Three pillars:",
+                                     "pillar1":  "Situation",
+                                     "pillar1sub":  "- Scientific Intelligence",
+                                     "p1_1":  "Earthquakes",
+                                     "p1_2":  "Geology",
+                                     "p1_3":  "Satellite products",
+                                     "p1_4":  "Hazards",
+                                     "pillar2":  "Find",
+                                     "pillar2sub":  "- Humanitarian Network",
+                                     "p2_1":  "Federated search",
+                                     "p2_2":  "Missing persons",
+                                     "p2_3":  "Hospitals",
+                                     "p2_4":  "Shelters",
+                                     "p2_5":  "Resources",
+                                     "pillar3":  "Report",
+                                     "pillar3sub":  "- Operations",
+                                     "p3_1":  "Federated incident reporting",
+                                     "p3_2":  "Coming soon"
+                                 },
+                  "openSource":  {
+                                     "title":  "Open Source",
+                                     "p1":  "GeoResponde is developed as an open-source project because disaster response benefits from transparency, collaboration and interoperability.",
+                                     "p2":  "Everyone can inspect the code. Organizations remain owners of their own data."
+                                 },
+                  "status":  {
+                                 "title":  "Current Status",
+                                 "situation":  "Situation",
+                                 "beta":  "Beta",
+                                 "find":  "Find",
+                                 "experimental":  "Experimental",
+                                 "report":  "Report",
+                                 "inDev":  "In Development"
+                             },
+                  "developedBy":  {
+                                      "title":  "Developed By",
+                                      "contributors":  "GeoResponde Contributors",
+                                      "author":  "Project initiated by Daniel (Napo) Arraiz.",
+                                      "community":  "Community contributions are welcome."
+                                  },
+                  "principles":  {
+                                     "title":  "Our Principles",
+                                     "p1_title":  "Federation over duplication:",
+                                     "p1_text":  "We connect existing systems instead of creating competing databases.",
+                                     "p2_title":  "Data ownership remains with providers:",
+                                     "p2_text":  "Organizations always remain the authoritative source.",
+                                     "p3_title":  "Open by default:",
+                                     "p3_text":  "Transparency builds trust.",
+                                     "p4_title":  "Science supports humanitarian response:",
+                                     "p4_text":  "Scientific intelligence should improve operational decisions.",
+                                     "p5_title":  "Interoperability first:",
+                                     "p5_text":  "Open standards enable collaboration."
+                                 },
+                  "disclaimer":  {
+                                     "title":  "Data Disclaimer",
+                                     "p1":  "GeoResponde does not own humanitarian records.",
+                                     "p2":  "GeoResponde federates publicly available or provider-authorized information.",
+                                     "p3":  "Every provider remains responsible for its own data.",
+                                     "p4":  "Critical information should always be confirmed with the originating organization."
+                                 },
+                  "philosophy":  {
+                                     "title":  "Provider Philosophy",
+                                     "subtitle":  "GeoResponde prioritizes:",
+                                     "li1":  "Official APIs",
+                                     "li2":  "Provider authorization",
+                                     "li3":  "Proper attribution",
+                                     "li4":  "Direct links back to providers",
+                                     "li5":  "Avoiding unnecessary duplication"
+                                 }
+              }
 }
