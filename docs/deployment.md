@@ -33,8 +33,8 @@ on the health dashboard, its key may need re-extracting (documented per adapter)
 ## 2. Deploy the Frontend
 
 - Create a Vercel project with **root directory** `frontend/`.
-- Set the environment variable **`VITE_API_URL`** to the gateway URL from step 1
-  (e.g. `https://georesponde-gateway.vercel.app`). See `frontend/.env.example`.
+- **CRITICAL:** Set the environment variable **`VITE_API_URL`** in your deployment provider (e.g., Vercel Environment Variables) to the gateway URL from step 1 (e.g. `https://georesponde-gateway.vercel.app`).
+  - *Note: Vite requires this variable at **build time**. If it is missing, the application will fail fast during startup if the variable was missing during the build.*
 - Build command: `pnpm build`. Output directory: `dist`.
 - `frontend/vercel.json` already rewrites all routes to `index.html` (SPA).
 
