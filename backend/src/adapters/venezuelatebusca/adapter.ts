@@ -1,7 +1,6 @@
 import { BaseAdapter } from '../BaseAdapter.js';
 import { HumanitarianProvider, NormalizedSearchResult, Report, SubmissionResult } from '@georesponde/shared';
 import { fetchRemixSingleFetch } from '../../transports/remix/client.js';
-import { deserializeTurboStream } from '../../transports/remix/deserializer.js';
 import { parseVenezuelaTeBuscaStructural } from './parser.js';
 
 export class VenezuelaTeBuscaAdapter implements BaseAdapter {
@@ -15,14 +14,13 @@ export class VenezuelaTeBuscaAdapter implements BaseAdapter {
     try {
       console.log(`[VenezuelaTeBuscaAdapter] Fetching data for query: "${query}"`);
       
-      const stream = await fetchRemixSingleFetch(
+      const deserializedData = await fetchRemixSingleFetch(
         'https://venezuelatebusca.com', 
         'root', 
         { query },
         10000 // 10 second timeout
       );
 
-      const deserializedData = await deserializeTurboStream(stream);
       const normalizedResults = parseVenezuelaTeBuscaStructural(deserializedData);
 
       console.log(`[VenezuelaTeBuscaAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`);

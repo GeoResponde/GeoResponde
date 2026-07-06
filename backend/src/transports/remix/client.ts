@@ -1,9 +1,11 @@
-export async function fetchRemixSingleFetch(
+import { deserializeTurboStream } from './deserializer.js';
+
+export async function fetchRemixSingleFetch<T = unknown>(
   baseUrl: string,
   routeId: string,
   queryParams: Record<string, string>,
   timeoutMs: number = 5000
-): Promise<ReadableStream<Uint8Array>> {
+): Promise<T> {
   const url = new URL(baseUrl);
   
   // Remix Single Fetch V2 uses `_root.data` or similar for the data endpoint
@@ -36,7 +38,8 @@ export async function fetchRemixSingleFetch(
       throw new Error(`Remix Transport response has no body`);
     }
 
-    return res.body;
+    const deserializedData = await deserializeTurboStream(res.body);
+    return deserializedData as T;
   } finally {
     clearTimeout(timeout);
   }

@@ -3,7 +3,7 @@ import { decode } from 'turbo-stream';
 /**
  * Deserializes a Remix Single Fetch / TurboStream payload back into a standard JS object tree.
  */
-export async function deserializeTurboStream(stream: ReadableStream<Uint8Array>): Promise<any> {
+export async function deserializeTurboStream(stream: ReadableStream<Uint8Array>): Promise<unknown> {
   const textStream = stream.pipeThrough(new TextDecoderStream() as any) as unknown as ReadableStream<string>;
   const flatArray = await decode(textStream);
   
