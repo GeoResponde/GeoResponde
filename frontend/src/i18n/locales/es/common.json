@@ -133,15 +133,15 @@
                  "openResource":  "Abrir Recurso Original ‚Üó",
                  "noResults":  "No se encontraron resultados para \"{{query}}\". Intenta con otro t√©rmino de b√∫squeda.",
                  "error":  "Error buscando proveedores",
-                 "serviceUnavailable":  "El servicio de b˙squeda no est· disponible temporalmente. IntÈntalo nuevamente en unos minutos."
+                 "serviceUnavailable":  "El servicio de b√∫squeda no est√° disponible temporalmente. Int√©ntalo nuevamente en unos minutos."
              },
     "report":  {
-                   "underDevelopment": "El reporte federado est· en desarrollo activo. Si un reporte llega a un proveedor, y cÛmo lo hace, depende de las capacidades de ese proveedor.",
+                   "underDevelopment": "El reporte federado est√° en desarrollo activo. Si un reporte llega a un proveedor, y c√≥mo lo hace, depende de las capacidades de ese proveedor.",
                    "availability": {
                        "deliveredTo": "Este tipo de reporte se puede enviar a:",
-                       "none": "Ning˙n proveedor acepta este tipo de reporte por ahora, asÌ que todavÌa no se puede entregar. Tu reporte no ser· enviado.",
-                       "modeApi": "envÌo en vivo",
-                       "modeDeepLink": "redirecciÛn al proveedor"
+                       "none": "Ning√∫n proveedor acepta este tipo de reporte por ahora, as√≠ que todav√≠a no se puede entregar. Tu reporte no ser√° enviado.",
+                       "modeApi": "env√≠o en vivo",
+                       "modeDeepLink": "redirecci√≥n al proveedor"
                    },
                    "title":  "Reportar Informaci√≥n",
                    "subtitle":  "Componga un reporte estructurado y GeoResponde lo reenv√≠a a las organizaciones confiables correspondientes.",
