@@ -17,7 +17,8 @@ i18n
         common: esCommon,
       },
     },
-    fallbackLng: 'en',
+    lng: localStorage.getItem("i18nextLng") || 'es',
+    fallbackLng: 'es',
     defaultNS: 'common',
     interpolation: {
       escapeValue: false,

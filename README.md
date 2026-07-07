@@ -1,244 +1,140 @@
-<p align="center">
-  <img src="docs/GeoResponde.png" alt="GeoResponde" width="180">
-</p>
+<div align="center">
+  <img src="docs/GeoResponde.png" alt="GeoResponde Logo" width="180">
 
-<h1 align="center">
-GeoResponde
-</h1>
+  <h1>GeoResponde</h1>
 
-<p align="center">
+  <p>
+    <b>Open Federated Geospatial Situation Room</b><br>
+    Connecting Scientific Intelligence with Humanitarian Response.
+  </p>
 
-<b>Open Federated Geospatial Situation Room</b>
+  <p>
+    <a href="https://www.georesponde.app"><strong>🌐 Live Demo</strong></a> &nbsp;&bull;&nbsp;
+    <a href="./docs"><strong>📚 Documentation</strong></a> &nbsp;&bull;&nbsp;
+    <a href="./CONTRIBUTING.md"><strong>🤝 Contribute</strong></a>
+  </p>
 
-Connecting Scientific Intelligence with Humanitarian Response.
+  <p>
+    <img src="https://img.shields.io/badge/version-v0.5.0--alpha-blue.svg" alt="Version">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome">
+  </p>
+</div>
 
-</p>
+---
 
-<p align="center">
-
-<a href="https://www.georesponde.app">🌐 Live Demo</a>
-<a href="./CONTRIBUTING.md">Contributing</a> •
-<a href="./docs">Documentation</a>
-
-</p>
-
+## Table of Contents
+* [Why GeoResponde?](#why-georesponde)
+* [What is GeoResponde?](#what-is-georesponde)
+* [Design Principles](#design-principles)
+* [Architecture](#architecture)
+* [Current Capabilities](#current-capabilities)
+* [Tech Stack](#tech-stack)
+* [Getting Started](#getting-started)
+* [Roadmap](#roadmap)
+* [Contributing](#contributing)
+* [License](#license)
 ---
 
 # Why GeoResponde?
 
-When disasters happen, information becomes fragmented.
+When disasters strike, critical information becomes fragmented across different sources:
+ * Humanitarian organizations.
+ * Scientific geospatial intelligence.
+ * Governments, NGOs, volunteers, and affected families.
 
-Humanitarian organizations publish information on separate platforms.
-
-Scientists generate critical geospatial intelligence.
-
-Governments, NGOs, volunteers and affected families often need to search multiple websites to understand a rapidly evolving situation.
-
-GeoResponde exists to reconnect those pieces.
-
-Instead of creating another isolated database, GeoResponde federates trusted information from existing organizations into a single operational view while respecting data ownership.
+GeoResponde exists to reconnect these pieces. Instead of creating another isolated database, we consolidate trusted information into a single operational view while respecting data ownership. Our goal is to help everyone understand a rapidly evolving situation and make better decisions in a chaotic environment.
 
 ---
 
 # What is GeoResponde?
 
-GeoResponde is an open-source federated humanitarian platform that connects trusted organizations instead of replacing them.
+GeoResponde is an open-source platform that bridges the gap between scientific intelligence and humanitarian action. Rather than replacing existing systems, we integrate them into a single operational environment to accelerate emergency response.
 
-The platform combines scientific intelligence, federated humanitarian search and federated reporting into a single operational environment designed for emergency response.
+The platform provides three core capabilities:
 
-It combines three complementary capabilities:
-
-## Situation
-
-Scientific Intelligence
-
-- Earthquakes
-- Geological information
-- Active faults
-- Satellite-derived products
-- Hazard layers
-
----
-
-## Find
-
-Humanitarian Network
-
-Federated search across trusted humanitarian organizations.
-
-Examples include:
-
-- Missing persons
-- Hospitals
-- Shelters
-- Collection centers
-- Critical resources
-
-GeoResponde does not replace humanitarian databases.
-
-It connects them.
-
----
-
-### Report
-
-Operations
-
-GeoResponde now includes a federated reporting workflow capable of routing structured reports to trusted humanitarian providers.
-
-Current report types include:
-
-- Missing persons
-- Building damage
-- Shelter / Hospital status
-- Resource needs
-
-Provider integrations are currently being tested.
----
+* **Scientific Intelligence:** We consolidate hazard layers, satellite-derived products, and geological data (including earthquake activity and active faults) to provide a clear view of the disaster's physical impact.
+* **Federated Humanitarian Search:** We connect trusted databases to provide real-time information on critical resources, such as shelter availability, hospital status, and the location of missing persons.
+* **Operational Reporting:** We enable a structured workflow that routes reports on building damage, resource needs, and status updates directly to the relevant humanitarian providers.
 
 ## Current Integrations
 
-## Humanitarian Providers
+GeoResponde continuously expands its network through our Provider SDK. Currently, we federate data from:
 
-- Venezuela Te Busca
-- TerremotoVenezuela
-- Venezuela Reporta
-- Hazlo Hoy
-- Patitas a Salvo
-- Venezuela Busca
-- Encuéntralos
-- (16+ federated providers)
+* **Scientific Sources:** USGS, NASA EONET, FUNVISIS, the GEM Global Active Faults Database, and satellite-derived products from Sentinel and Copernicus.
+* **Humanitarian Providers:** Over 16+ active platforms, including regional initiatives like Venezuela Te Busca, TerremotoVenezuela, and Patitas a Salvo.
 
-## Scientific Sources
+## Design Principles
 
-- USGS
-- NASA EONET
-- Sentinel-derived products
-- Copernicus-derived products
-- FUNVISIS
-- GEM Global Active Faults Database
+GeoResponde is built on five core principles to ensure efficiency, trust, and scalability:
 
-The platform continues to expand through the Provider SDK.
+* **Federation over duplication:** Existing organizations already hold valuable data; we connect these systems instead of competing with them.
+* **Scientific intelligence for operational action:** Earth science must directly improve on-the-ground decision-making during crises.
+* **Data ownership remains with providers:** Organizations are the authoritative source of their information. GeoResponde only federates access; we do not appropriate data.
+* **Open by default:** Transparency, interoperability, and collaboration are essential to build trust among responders and communities.
+* **Reusable beyond a single disaster:** Initially developed in response to the 2026 Venezuela earthquake, our architecture is designed to scale and support emergency response efforts anywhere in the world.
 
----
+## Architecture
 
-# Design Principles
+GeoResponde operates on a modular, tiered architecture designed to securely connect user actions with federated data without creating local duplicates. The system is structured into four main layers:
 
-GeoResponde is built around a small number of core principles.
+* **Application Layer:** The user-facing modules that drive the core workflows (Situation, Find, and Report).
+* **Core Services:** The operational engines handling the logic for the *Scientific Intelligence* processing and the *Humanitarian Federation* routing.
+* **Integration Layer:** The backbone of the federation. It utilizes a **Provider Gateway** to manage API calls and data translation, paired with a **Provider Registry** that authenticates and manages the active list of trusted partners.
+* **External Sources:** The decentralized endpoints that maintain data ownership, encompassing Humanitarian Organizations, Scientific Agencies, and Public Data Sources.
 
-### Federation over duplication
+## Current Capabilities
 
-Existing organizations already maintain valuable information.
+GeoResponde provides a comprehensive suite of tools designed for crisis management and data integration:
 
-GeoResponde connects systems instead of competing with them.
+* **Federated Operations:** Federated Search and Reporting, fully supporting PFIF (People Finder Interchange Format) exports.
+* **Platform Management:** A robust Provider Registry, a dedicated Provider SDK, and real-time Provider Health Monitoring.
+* **Operational View:** A Situation Room that integrates multiple Scientific Intelligence Layers for spatial awareness.
 
----
+## Tech Stack
 
-### Scientific intelligence supports humanitarian response
+Our monorepo is built with modern, scalable tools to ensure fast development and reliable deployments:
 
-Earth science should directly improve operational decision making.
-
----
-
-### Data ownership remains with providers
-
-Organizations remain the authoritative source of their own information.
-
-GeoResponde only federates access.
-
----
-
-### Open by default
-
-Transparency, interoperability and collaboration build trust during emergencies.
-
----
-
-### Reusable beyond a single disaster
-
-GeoResponde was initially developed in response to the 2026 Venezuela earthquake.
-
-Its architecture is intentionally designed to support future disasters, humanitarian crises and emergency response efforts anywhere in the world.
-
----
-
-# Architecture
-
-```
-                 GeoResponde
-
-        Situation      Find       Report
-             │            │           │
-
- Scientific Intelligence  Humanitarian Federation
-
-                 │
-
-          Provider Gateway
-
-                 │
-
-          Provider Registry
-
-                 │
-
-    Humanitarian Organizations
-    Scientific Agencies
-    Public Data Sources
-```
-
----
-
-# Current Capabilities
-
-- Federated Search
-- Federated Reporting
-- Provider Registry
-- Provider SDK
-- Situation Room
-- Scientific Intelligence Layers
-- Provider Health Monitoring
-- PFIF Export
----
-
-# Technology
-
-- - React
-- TypeScript
-- Fastify
-- MapLibre
-- Railway
-- Vercel
-- pnpm Workspace
-- Provider Registry
-- Provider SDK
-- PFIF
-
----
+* **Frontend:** React, TypeScript, and MapLibre (deployed via Vercel).
+* **Backend:** Fastify and TypeScript (deployed via Railway).
+* **Tooling:** Managed as a pnpm workspace.
 
 # Getting Started
 
-```bash
-pnpm install
+### Prerequisites
 
-pnpm dev
-```
+* **Node.js**: v18 or higher.
+* **pnpm**: v8 or higher.
+* **Windows Users**: Run as Administrator in PowerShell: 
+  `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
-Frontend
+### Installation & Environment
 
-```
-http://localhost:5173
-```
+1. **Clone and Install:**
+   ```bash
+   pnpm install
+   ```
 
-Backend
+2. **Approve Build Scripts (if prompted):**
+   ```bash
+   pnpm approve-builds
+   ```
 
-```
-http://localhost:3001
-```
+3. **Build Internal Packages (Required for Monorepo):**
+   ```bash
+   pnpm -r build
+   ```
 
-For pointing the frontend at your local gateway with `VITE_API_URL` and avoiding CORS errors during development, see [Local Development and CORS](docs/local-development.md).
+4. **Environment Variables:**
+   ```bash
+   cp .env.example .env
+   # Ensure VITE_API_URL is set to http://localhost:3001
+   ```
 
----
+5. **Start Development:**
+   ```bash
+   pnpm dev
+   ```
 
 ## Deployment Notes
 
@@ -257,67 +153,42 @@ For the complete configuration, see the [Deployment Guide](docs/deployment.md).
 ---
 
 # Roadmap
+### Troubleshooting
 
-# Roadmap
-
-Current priorities
-
-- Community onboarding
-- Additional humanitarian providers
-- Scientific layers
-- Open Humanitarian Interface (OHI)
-- Emergency Exchange Protocol (EEP)
-- Common provider submission API
-- Mobile optimization
+* **"Module not found" or "ERR_MODULE_NOT_FOUND"**: Run `pnpm -r build` and try again.
+* **Permission Errors**: Verify your terminal execution policy (see Prerequisites).
 
 ---
 
-# Contributing
+## Roadmap
 
-GeoResponde welcomes contributions from:
+Our current development priorities focus on expanding the ecosystem and standardizing data exchange:
 
-- Developers
-- Humanitarian organizations
-- Scientists
-- GIS professionals
-- Emergency managers
-- Volunteers
+* **Ecosystem Expansion:** Onboarding new communities, adding humanitarian providers, and integrating more scientific layers.
+* **Standardization & APIs:** Developing the Open Humanitarian Interface (OHI), the Emergency Exchange Protocol (EEP), and a common provider submission API.
+* **User Experience:** Enhancing mobile optimization for on-the-ground usability.
 
-New contributors should read 
-```
-CONTRIBUTING.md
-``` 
-and `docs/community/ways-to-contribute.md`
-before opening a Pull Request.
+## Contributing
 
----
+GeoResponde welcomes contributions from everyone; whether you are a developer, scientist, emergency manager, or volunteer, your help is valuable. We deeply appreciate those who contribute their time for the greater good, whether you are a Git veteran or making your very first open-source contribution.
 
-## Current Release
+### Getting Involved
+1. Please read `CONTRIBUTING.md` and `docs/community/ways-to-contribute.md` before opening a Pull Request.
+2. Review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand the standards and expectations we uphold in our community.
 
-**v0.5.0-alpha**
+### Community and Support
+If you get stuck, find a bug, or want to propose a new feature:
+* **Issues:** Open a detailed ticket on our [GitHub Issues](#) page.
+* **Discussions:** Join the conversation in our [GitHub Discussions](#).
 
-This release introduces the federated architecture that serves as the foundation for GeoResponde's next stage.
+## Current Release: v0.5.0-alpha
 
-Highlights:
+This release introduces the federated architecture that serves as the foundation for GeoResponde's next stage. Key highlights include the Provider Registry, Federated Search and Reporting workflows, the Submission Router, the Provider SDK, a redesigned Situation Room, and our new community contribution framework.
 
-- Provider Registry
-- Federated Search
-- Federated Reporting
-- Submission Router
-- Provider SDK
-- Situation Room redesign
-- Community contribution framework
+## Acknowledgements
 
----
+GeoResponde would not exist without the humanitarian organizations, scientific institutions, and volunteers who openly share information during emergencies. Our goal is to amplify their work, not replace it.
 
-# License
+## License
 
 Released under the MIT License.
-
----
-
-# Acknowledgements
-
-GeoResponde would not exist without the humanitarian organizations, scientific institutions and volunteers who openly share information during emergencies.
-
-Our goal is to amplify their work—not replace it.
