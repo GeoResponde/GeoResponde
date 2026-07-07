@@ -240,6 +240,22 @@ For pointing the frontend at your local gateway with `VITE_API_URL` and avoiding
 
 ---
 
+## Deployment Notes
+
+GeoResponde is deployed as:
+
+- Frontend: Vercel
+- Backend: Railway
+
+Although the repository is a pnpm workspace, the frontend is deployed as an independent Vercel project.
+
+To include its workspace dependencies, override the Vercel Build Command with:
+`pnpm --filter @georesponde/frontend... build`
+
+For the complete configuration, see the [Deployment Guide](docs/deployment.md).
+
+---
+
 # Roadmap
 
 # Roadmap

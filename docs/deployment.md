@@ -32,11 +32,29 @@ on the health dashboard, its key may need re-extracting (documented per adapter)
 
 ## 2. Deploy the Frontend
 
-- Create a Vercel project with **root directory** `frontend/`.
-- **CRITICAL:** Set the environment variable **`VITE_API_URL`** in your deployment provider (e.g., Vercel Environment Variables) to the gateway URL from step 1 (e.g. `https://georesponde-gateway.vercel.app`).
-  - *Note: Vite requires this variable at **build time**. If it is missing, the application will fail fast during startup if the variable was missing during the build.*
-- Build command: `pnpm build`. Output directory: `dist`.
-- `frontend/vercel.json` already rewrites all routes to `index.html` (SPA).
+Create a Vercel project with the following configuration to correctly build the frontend and its required workspace packages in the pnpm monorepo.
+
+- **Framework Preset:** Vite
+- **Root Directory:** `frontend`
+- **Include files outside Root Directory:** Enabled
+- **Build Command:** `pnpm --filter @georesponde/frontend... build`
+- **Output Directory:** `dist`
+- **Install Command:** `pnpm install`
+
+### Required Environment Variables
+- **`VITE_API_URL`**: Set this to the gateway URL from step 1 (e.g. `https://georesponde-gateway.vercel.app`).
+  - *Note: Vite requires this variable at **build time**. If it is missing, the application will fail fast during startup.*
+
+### Why the Filtered Build Command?
+GeoResponde is a pnpm workspace monorepo. The frontend application depends on internal workspace packages (`@georesponde/shared`, `@georesponde/client`, etc.) which act as compiled libraries. 
+
+If you use the default `pnpm build` inside the frontend directory, these shared packages are not built first, causing TypeScript to fail with missing module errors. Overriding the build command to `pnpm --filter @georesponde/frontend... build` forces Vercel to build the frontend *and all of its workspace dependencies* in the correct topological order.
+
+### Troubleshooting an Incorrect Deployment
+If your Vercel deployment configuration is missing the settings above, you may observe the following symptoms:
+- **404 on deep links** (e.g., refreshing `/find`): Caused by an incorrect Framework Preset ("Other" instead of "Vite"), which disables Vercel's automatic SPA `index.html` fallback.
+- **`/src/main.tsx` served in production** or **MIME type errors**: Caused by an incorrect Output Directory or Root Directory.
+- **Missing workspace packages during build**: Caused by the "Include files outside Root Directory" toggle being disabled, or failing to override the build command to build the dependencies first.
 
 ## 3. Verify
 
