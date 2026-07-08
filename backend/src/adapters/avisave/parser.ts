@@ -5,7 +5,7 @@ import { NormalizedSearchResult } from '@georesponde/shared';
  * fields we consume are typed; the API may return more columns.
  */
 
-export interface Avisave {
+export interface AvisaveItem {
   id: string;
   title?: string | null;
   summary?: string | null;
@@ -14,7 +14,11 @@ export interface Avisave {
   photo_url?: string | null;
 }
 
-export function normalizeRecord(record: Avisave): NormalizedSearchResult {
+export interface AvisaveResponse {
+  data: AvisaveItem[];
+}
+
+export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
   return {
     provider: 'Avisave',
     provider_id: record.id,
@@ -29,15 +33,16 @@ export function normalizeRecord(record: Avisave): NormalizedSearchResult {
 }
 
 /**
- * Pure parser: maps Avisave's array response into normalized search
+ * Pure parser: maps AvisaveResponse into normalized search
  * results. Returns an empty array when the `data` is not an array.
  */
-export function parseAvisave(
-  response: Avisave[] | undefined | null,
+export function parseAvisaveResponse(
+  response: AvisaveResponse | null | undefined,
 ): NormalizedSearchResult[] {
-  if (!Array.isArray(response?.data)) {
+  const data = response?.data
+  if (!Array.isArray(data)) {
     return [];
   }
 
-  return response?.data.map(normalizeRecord);
+  return data.map(normalizeRecord);
 }
