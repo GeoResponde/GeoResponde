@@ -4,7 +4,7 @@ import * as path from 'path';
 import { parseAvisaveResponse } from '../parser.js';
 
 describe('Avisave Parser', () => {
-  const fixturePath = path.join(__dirname, '../fixtures/records.json');
+  const fixturePath = path.join(__dirname, '../fixtures/incidents.json');
   const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
 
   it('parses the fixture array into normalized results', () => {

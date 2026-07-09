@@ -238,8 +238,8 @@
     "id": "prov-avisave",
     "display_name": "Avisave",
     "website": "https://avisave.com",
-    "description": "A federated humanitarian provider",
-    "logo": "/logos/ushahidi.png",
+    "description": "An open platform focusing on public disaster incidents.",
+    "logo": "/logos/avisave.png",
     "status": "active",
     "adapter": "AvisaveAdapter",
     "capabilities": [
