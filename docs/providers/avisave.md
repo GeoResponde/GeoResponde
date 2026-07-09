@@ -6,7 +6,7 @@
 
 - **OpenAPI URL**: `https://api.avisave.com/api/public/openapi.json`
 
-- **Authentication**: None required. Public no-key API for external developers, search tools, civic responders, and agents.
+- **Authentication**: None required.
 
 - **Versioning**: v1
 
@@ -17,7 +17,6 @@
 - **Data format**: JSON (`application/json`)
 
 - **General observations**: The API is focused on public disaster incident summaries with minor personal data redaction. Evidence media is restricted from public responses. It provides semantic search capabilities across incident data and supports filtering by category, severity, and verification status.
-
 
 ## Endpoints
 
@@ -110,7 +109,6 @@
   - `429` - Rate limit exceeded (includes `Retry-After` header)
 
   - `503` - Rate limiting unavailable (Redis not configured)
-
 
 ## Data Model
 
@@ -214,7 +212,6 @@
 
     - Properties: `error` (string), `message` (string).
 
-
 ## Capabilities
 
 - [x] **Search**: Yes, via `GET /incidents` with `search` parameter. Provides public-safe keyword and semantic search across incident titles, summaries, locations, names, and public evidence labels/summaries.
@@ -247,10 +244,7 @@
 
 - [ ] **Update operations**: No direct PUT/PATCH endpoints exposed publicly.
 
-- [ ] **Create operations**: No POST endpoints exposed in public API.
-
-- [ ] **Delete operations**: No DELETE endpoints exposed in public API.
-
+- [ ] **Report Submission**: No, no POST endpoints exposed in public API.
 
 ## Mapping to GeoResponde
 
@@ -260,40 +254,21 @@
 
 - GeoResponde users can search by keywords, and the `search` parameter will handle full-text matching across relevant fields.
 
-- Category and severity filters allow GeoResponde to present faceted search options to users.
-
-- The `locale` parameter enables language-appropriate responses for Spanish-speaking users.
+- The `locale` parameter enables language-appropriate responses.
 
 ### Incident Data
 
 - Incident summaries can be normalized into GeoResponde's unified incident schema.
 
-- `IncidentLocation` provides all necessary geographic data for map display.
+- `IncidentLocation` provides all necessary geographic data for map display unless `label` is \[redacted\].
 
-- `category` maps to GeoResponde's incident type classification.
-
-- `severity` and `verification` status provide additional context for prioritization.
-
-### Evidence & Validation
-
-- Evidence arrays can be displayed as supporting information for each incident.
-
-- The upvote/downvote validation system provides social proof and can influence result ranking.
-
-- Evidence restrictions for minors are clearly marked and should be respected in GeoResponde's display.
-
-### Timeline & Relationships
-
-- `latestTimelineEvent` provides the most recent update, useful for displaying "last updated" information.
-
-- `linkedIncidentIds` allows GeoResponde to show related incidents and provide a more comprehensive view.
-
+- `severity`, `catagory`, and `verification` status provide additional context for prioritization.
 
 ## Search Strategy
 
 ### Workflow
 
-1. A user enters a query in GeoResponde (e.g., "hospital Caracas" or filters by category "Missing").
+1. A user enters a query in GeoResponde (e.g., "hospital Caracas" or city "Caracas").
 
 2. GeoResponde translates this into a live query: `GET /incidents?search=hospital Caracas&category=Medical&locale=es`.
 
@@ -322,7 +297,6 @@
 - **Read-Only**: The public API is read-only; report submission requires a different (likely authenticated) API endpoint not exposed in the public spec.
 
 - **Media Restrictions**: Evidence media is restricted from public responses, particularly for incidents involving minors.
-
 
 ## Provider Evaluation
 
@@ -357,7 +331,6 @@
 - **Evidence Restrictions**: While necessary for privacy, restricted evidence limits the richness of public incident data.
 
 - **Rate Limit Dependency**: Production use requires Redis configuration; without it, the API returns 503 errors.
-
 
 ## Future Collaboration
 
