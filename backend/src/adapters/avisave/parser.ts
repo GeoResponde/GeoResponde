@@ -1,4 +1,5 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
+import {match} from 'node:assert';
 
 /**
  * Shape of a single record returned by Avisave's public API. Only the
@@ -14,6 +15,16 @@ export interface Evidence {
   createdAt?: string | null;
 }
 
+export interface Location {
+  label: string,
+  locality?: string | undefined,
+  region?: string | undefined,
+  countryCode?: undefined,
+  latitude?: undefined,
+  longitude?: undefined,
+  precisionMeters?: undefined
+}
+
 export interface AvisaveItem {
   id: string;
   title?: string | null;
@@ -26,20 +37,42 @@ export interface AvisaveItem {
   catagory?: string | null;
   observedAt?: string | null;
   createdAt?: string | null;
-  location?: {
-    label: string,
-    locality?: string,
-    region?: string,
-    countryCode?: string,
-    latitude?: number,
-    longitude?: number,
-    precisionMeters?: number
-  } | null;
+  location?: Location | null;
   evidence?: Evidence[];
 }
 
 export interface AvisaveResponse {
   data: AvisaveItem[];
+}
+
+/*
+ * Avisave returns confidence as either "High", "Medium", "Low".
+ * Converts the strings to numbers that the nurmalizedRecords can use.
+ * Returns 0 otherwise
+*/
+function resolveConfidence(confidence: string | null | undefined): number {
+  switch(confidence){
+    case "High":
+      return 3
+    case "Medium":
+      return 2
+    case "Low":
+      return 1
+    default:
+      return 0
+  }
+}
+
+/*
+ * Returns the longitude and latitude from the location function
+ * Returns undefined if not present
+*/
+
+function resolveLocation(location: Location | null | undefined): [number, number] | undefined {
+  if(location?.longitude && location?.latitude){
+    return [location.longitude, location?.latitude]
+  }
+  return undefined
 }
 
 export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
@@ -50,11 +83,12 @@ export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
     title: record.title || 'No título',
     subtitle: record.summary || "",
     status: record.severity ?? undefined,
+    location: resolveLocation(record.location) ?? undefined,
+    confidence: resolveConfidence(record.confidence) ?? 0,
     last_update: record.updatedAt ?? undefined,
     url: `https://avisave.com/incidents/${record.id}`,
     metadata: {
       verification: record.verification,
-      confidence: record.confidence,
       location: record.location,
       observedAt: record.observedAt,
       createdAt: record.createdAt,
