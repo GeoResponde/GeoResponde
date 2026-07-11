@@ -52,7 +52,7 @@ docs/readme
 
 ## Adding a Provider
 
-Adding a new humanitarian or scientific provider is the most common way to contribute. Please follow this standard workflow to ensure your provider integrates correctly into the architecture. See also the [Provider Integration Template](docs/providers/provider-integration-template.md) for a fully worked reference (folder structure, required files, adapter/parser skeletons and a PR checklist) grounded in the existing adapters.
+Adding a new humanitarian or scientific provider is the most common way to contribute. Please follow this standard workflow to ensure your provider integrates correctly into the architecture. See also the [Provider Integration Template](docs/providers/provider-integration-template.md) for a fully worked reference (folder structure, required files, adapter/parser skeletons and a PR checklist) grounded in the existing adapters, and the [Provider SDK Reference](docs/providers/sdk-reference.md) for the `BaseAdapter`/`NormalizedSearchResult` contract, the shared transport helpers, and how registration works. `pnpm scaffold:provider <provider-id>` generates the adapter skeleton for you.
 
 1. **Investigation**: Inspect the target provider's network traffic. Identify the most robust data endpoint available (e.g. public API, JSON feed, Supabase endpoints, ArcGIS feature services). Official APIs should always be preferred. Web scraping (parsing HTML) should only be considered as a last resort when no official integration mechanism exists..
 2. **Transport Selection**: Determine if an existing transport in `backend/src/transports/` fits your needs (like `REST` or `Remix Single Fetch`). If not, implement a generic transport client that others can reuse.

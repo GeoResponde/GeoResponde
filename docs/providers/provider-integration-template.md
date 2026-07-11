@@ -1,6 +1,6 @@
 # Provider Integration Template
 
-This document is a reference template for integrating a new humanitarian data provider (for example, a missing persons registry, a shelter directory, or a similar civic dataset) into the GeoResponde backend. It is grounded in the existing adapters in the repository (`ayudavenezuela`, `hdx`, `encuentralos`, `reencuentra-ve`), so every pattern shown here already exists in production code. Use it alongside `CONTRIBUTING.md`, which documents the overall contribution workflow.
+This document is a reference template for integrating a new humanitarian data provider (for example, a missing persons registry, a shelter directory, or a similar civic dataset) into the GeoResponde backend. It is grounded in the existing adapters in the repository (`ayudavenezuela`, `hdx`, `encuentralos`, `reencuentra-ve`), so every pattern shown here already exists in production code. Use it alongside `CONTRIBUTING.md`, which documents the overall contribution workflow, and [`docs/providers/sdk-reference.md`](./sdk-reference.md), the API/type reference for the `BaseAdapter` contract, `NormalizedSearchResult`, transports, and registration — this file is the worked example, that one is the reference.
 
 If anything here conflicts with the code, the code wins. This file describes what the code does today, not an aspirational design.
 
@@ -165,6 +165,10 @@ registerAdapter('YourProviderAdapter', YourProviderAdapter);
 - [ ] PR opened from a fork, following the branching workflow in CONTRIBUTING.md
 
 ## Appendix: minimal copy-pasteable skeleton
+
+Run `pnpm scaffold:provider <provider-id>` to generate this exact skeleton on disk under
+`backend/src/adapters/<provider-id>/` instead of copy-pasting it by hand (see
+`docs/providers/sdk-reference.md`, section 6).
 
 ### `adapter.ts`
 

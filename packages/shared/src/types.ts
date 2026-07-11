@@ -6,7 +6,13 @@ export interface HumanitarianProvider {
   website: string;
   description: string;
   logo: string;
-  status: 'active' | 'inactive' | 'degraded';
+  /**
+   * `reference` marks a non-humanitarian, SDK-demonstration provider (e.g.
+   * `example-reference`) that exists to show how to wire up the adapter SDK.
+   * It is never a real data source and should be excluded from any
+   * production-facing provider listing.
+   */
+  status: 'active' | 'inactive' | 'degraded' | 'reference';
   adapter: string;
   capabilities: string[];
 }

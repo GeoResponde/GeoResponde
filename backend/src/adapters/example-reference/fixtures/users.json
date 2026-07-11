@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Ana Prueba",
+    "username": "ana.prueba",
+    "email": "ana.prueba@example.com",
+    "address": {
+      "street": "Calle Ejemplo",
+      "suite": "Apto. 1",
+      "city": "Ciudad Ficticia",
+      "zipcode": "00000",
+      "geo": {
+        "lat": "10.5000",
+        "lng": "-66.9000"
+      }
+    },
+    "phone": "000-000-0000",
+    "website": "example.com",
+    "company": {
+      "name": "Ejemplo Corp",
+      "catchPhrase": "Synergistic reference data",
+      "bs": "demonstrate the provider SDK"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Carlos Ejemplo",
+    "username": "carlos.ejemplo",
+    "email": "carlos.ejemplo@example.com",
+    "address": {
+      "street": "Avenida Ficticia",
+      "suite": "Suite 2",
+      "city": "Municipio Ejemplo",
+      "zipcode": "00001",
+      "geo": {
+        "lat": "8.6000",
+        "lng": "-70.2000"
+      }
+    },
+    "phone": "000-000-0001",
+    "website": "example.org",
+    "company": {
+      "name": "Referencia S.A.",
+      "catchPhrase": "Reusable adapter skeleton",
+      "bs": "showcase fixture-backed testing"
+    }
+  }
+]

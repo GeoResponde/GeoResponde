@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "catalog:build": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js build",
-    "catalog:validate": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js validate"
+    "catalog:validate": "pnpm --filter @georesponde/catalog run build && node packages/catalog/dist/cli.js validate",
+    "scaffold:provider": "node scripts/scaffold-provider.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

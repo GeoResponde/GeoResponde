@@ -233,5 +233,17 @@
     "capabilities": [
       "submission"
     ]
+  },
+  {
+    "id": "prov-example-reference",
+    "display_name": "Example Reference Provider",
+    "website": "https://jsonplaceholder.typicode.com/",
+    "description": "Non-production reference integration demonstrating the provider SDK against a stable public demo API. Not a real humanitarian source.",
+    "logo": "/logos/example-reference.png",
+    "status": "reference",
+    "adapter": "ExampleReferenceAdapter",
+    "capabilities": [
+      "search"
+    ]
   }
 ]
