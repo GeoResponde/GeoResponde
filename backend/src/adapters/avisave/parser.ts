@@ -1,5 +1,4 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
-import {match} from 'node:assert';
 
 /**
  * Shape of a single record returned by Avisave's public API. Only the
@@ -19,10 +18,10 @@ export interface Location {
   label: string,
   locality?: string | undefined,
   region?: string | undefined,
-  countryCode?: undefined,
-  latitude?: undefined,
-  longitude?: undefined,
-  precisionMeters?: undefined
+  countryCode?: string | undefined,
+  latitude?: number | undefined,
+  longitude?: number | undefined,
+  precisionMeters?: number | undefined
 }
 
 export interface AvisaveItem {
@@ -34,7 +33,7 @@ export interface AvisaveItem {
   photo_url?: string | null;
   verification?: string | null;
   confidence?: string | null;
-  catagory?: string | null;
+  category?: string | null;
   observedAt?: string | null;
   createdAt?: string | null;
   location?: Location | null;
@@ -46,7 +45,7 @@ export interface AvisaveResponse {
 }
 
 /*
- * Returns the longitude and latitude from the location function
+ * Returns the longitude and latitude from the location object
  * Returns undefined if not present
 */
 
@@ -61,7 +60,7 @@ export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
   return {
     provider: 'Avisave',
     provider_id: record.id,
-    type: 'Incident',
+    type: record.category ||'No Category',
     title: record.title || 'No título',
     subtitle: record.summary || "",
     status: record.severity ?? undefined,
@@ -74,7 +73,7 @@ export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
       observedAt: record.observedAt,
       confidence: record.confidence ?? null,
       createdAt: record.createdAt,
-      evidence: record.evidence
+      evidence: record.evidence,
     },
   };
 }

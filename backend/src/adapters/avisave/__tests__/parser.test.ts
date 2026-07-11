@@ -16,7 +16,7 @@ describe('Avisave Parser', () => {
 
   it('maps a redacted record correctly', () => {
     expect(first.provider).toBe('Avisave');
-    expect(first.type).toBe('Incident');
+    expect(first.type).toBe('Shelters');
     expect(first.title).toBeTruthy();
     expect(first.subtitle).toBeTruthy();
     expect(first.status).toBeTruthy();
@@ -27,7 +27,7 @@ describe('Avisave Parser', () => {
 
   it('maps an unredacted record correctly', () => {
       expect(second.provider).toBe('Avisave');
-      expect(second.type).toBe('Incident');
+      expect(second.type).toBe('Supplies');
       expect(second.title).toBeTruthy();
       expect(second.subtitle).toBeTruthy();
       expect(second.status).toBeTruthy();

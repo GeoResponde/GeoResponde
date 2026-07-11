@@ -18,7 +18,6 @@ export class AvisaveAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[Avisave] Fetching data for query: "${query}"`);
 
       const url = `${API_BASE}?search=${encodeURIComponent(query)}&limit=20`;
       const response = await fetchJson<AvisaveResponse>(url, { timeoutMs: 10000 });
@@ -26,12 +25,12 @@ export class AvisaveAdapter implements BaseAdapter {
       const normalizedResults = parseAvisaveResponse(response);
 
       console.log(
-        `[Avisave] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
+        `[Avisave] Extracted ${normalizedResults.length} normalized results`
       );
 
       return normalizedResults;
     } catch (error) {
-      console.error('[Avisave] Search failed:', error);
+      console.error('[Avisave] Search failed: (network/transport error)');
       return [];
     }
   }
