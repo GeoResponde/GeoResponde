@@ -46,24 +46,6 @@ export interface AvisaveResponse {
 }
 
 /*
- * Avisave returns confidence as either "High", "Medium", "Low".
- * Converts the strings to numbers that the nurmalizedRecords can use.
- * Returns 0 otherwise
-*/
-function resolveConfidence(confidence: string | null | undefined): number {
-  switch(confidence){
-    case "High":
-      return 3
-    case "Medium":
-      return 2
-    case "Low":
-      return 1
-    default:
-      return 0
-  }
-}
-
-/*
  * Returns the longitude and latitude from the location function
  * Returns undefined if not present
 */
@@ -84,13 +66,13 @@ export function normalizeRecord(record: AvisaveItem): NormalizedSearchResult {
     subtitle: record.summary || "",
     status: record.severity ?? undefined,
     location: resolveLocation(record.location) ?? undefined,
-    confidence: resolveConfidence(record.confidence) ?? 0,
     last_update: record.updatedAt ?? undefined,
     url: `https://avisave.com/incidents/${record.id}`,
     metadata: {
       verification: record.verification,
       location: record.location,
       observedAt: record.observedAt,
+      confidence: record.confidence ?? null,
       createdAt: record.createdAt,
       evidence: record.evidence
     },

@@ -1,8 +1,6 @@
-# Avisave Provider Discovery
-
 ## Overview
 
-- **API Base URL**: `https://avisave.com/api/public/`
+- **Relevant API URL**: `https://avisave.com/api/public/incidents`
 
 - **OpenAPI URL**: `https://api.avisave.com/api/public/openapi.json`
 
@@ -18,53 +16,10 @@
 
 - **General observations**: The API is focused on public disaster incident summaries with minor personal data redaction. Evidence media is restricted from public responses. It provides semantic search capabilities across incident data and supports filtering by category, severity, and verification status.
 
-## Endpoints
 
-### 1. `GET /`
+## Relevant Endpoint
 
-- **Description**: Get public API discovery metadata.
-
-- **Authentication required**: No
-
-- **Operation ID**: `getPublicApiIndex`
-
-- **Tags**: Discovery
-
-- **Parameters**: None
-
-- **Response structure**: Returns `PublicApiIndex` object containing name, version, description, authentication info, OpenAPI URL, endpoints list, rate limit configuration, and cache settings.
-
-- **Rate limit headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
-
-- **Error responses**:
-
-  - `429` - Rate limit exceeded (includes `Retry-After` header)
-
-  - `503` - Rate limiting unavailable (Redis not configured)
-
-### 2. `GET /openapi.json`
-
-- **Description**: Get the OpenAPI 3.1 schema for the public API. Use this endpoint to let external developers, search systems, and agents map the public API.
-
-- **Authentication required**: No
-
-- **Operation ID**: `getPublicOpenApiSpec`
-
-- **Tags**: Discovery
-
-- **Parameters**: None
-
-- **Response structure**: Returns the complete OpenAPI 3.1 specification as a JSON object.
-
-- **Rate limit headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
-
-- **Error responses**:
-
-  - `429` - Rate limit exceeded (includes `Retry-After` header)
-
-  - `503` - Rate limiting unavailable (Redis not configured)
-
-### 3. `GET /incidents`
+`GET /incidents`
 
 - **Description**: List and search public incident summaries. Returns public incident summaries with minor personal data redacted. Use search before submitting a new report to find existing missing-person reports, hospital rosters, shelters, support centers, road issues, supplies, and other incident information.
 
@@ -214,137 +169,38 @@
 
 ## Capabilities
 
-- [x] **Search**: Yes, via `GET /incidents` with `search` parameter. Provides public-safe keyword and semantic search across incident titles, summaries, locations, names, and public evidence labels/summaries.
+- Search via `GET /incidents` with `search` parameter. Provides public-safe keyword and semantic search across incident titles, summaries, locations, names, and public evidence labels/summaries.
 
-- [x] **Read operations**: Yes, fetching incident summaries with full filtering and pagination support.
+- Fetch incident summaries with full filtering and pagination support.
 
-- [x] **Filtering**: Yes, by `category`, `severity`, `verification` status, and generic `filter` parameter.
+- Filtering by `category`, `severity`, `verification` status, and generic `filter` parameter.
 
-- [x] **Pagination**: Yes, via `offset` and `limit` parameters (1-50 items per page, offset 0-10000).
+- Pagination via `offset` and `limit` parameters (1-50 items per page, offset 0-10000).
 
-- [x] **Geographic information**: Yes, via `IncidentLocation` with `latitude`, `longitude`, `locality`, `region`, `countryCode`, and `precisionMeters`.
+- Geographic information via `IncidentLocation` with `latitude`, `longitude`, `locality`, `region`, `countryCode`, and `precisionMeters`.
 
-- [x] **Categories**: Yes, supports 8 incident categories: Critical, Collapsed, Missing, Rescued, Medical, Roads, Shelters, Utilities, Supplies.
+- Supports 8 incident categories: Critical, Collapsed, Missing, Rescued, Medical, Roads, Shelters, Utilities, Supplies.
 
-- [x] **Severity levels**: Yes, supports Critical, High, Medium, Resolved.
+- Supports Severity levels, Critical, High, Medium, Resolved.
 
-- [x] **Verification status**: Yes, tracks VERIFIED, VERIFYING, NEEDS REVIEW.
+- Tracks verification statuses, VERIFIED, VERIFYING, NEEDS REVIEW.
 
-- [x] **Confidence levels**: Yes, tracks High, Medium, Low confidence.
+- Tracks High, Medium, and Low confidence.
 
-- [x] **Timeline tracking**: Yes, via `latestTimelineEvent` and linked incidents.
+- Timeline tracking via `latestTimelineEvent` and linked incidents.
 
-- [x] **Evidence handling**: Yes, with evidence arrays and restriction information for sensitive data.
+- Evidence handling with evidence arrays and restriction information for sensitive data.
 
-- [x] **Community validation**: Yes, via upvote/downvote system.
+- Community validation via upvote/downvote system.
 
-- [x] **Rate limiting**: Yes, with standard rate limit headers.
+- Rate limiting with standard rate limit headers.
 
-- [x] **Localization**: Yes, supports `es` and `en` locales.
+## Limitations
 
-- [ ] **Update operations**: No direct PUT/PATCH endpoints exposed publicly.
+- No direct PUT/PATCH endpoints exposed publicly.
 
-- [ ] **Report Submission**: No, no POST endpoints exposed in public API.
+- No POST endpoints exposed in public API.
 
-## Mapping to GeoResponde
+## Notes
 
-### Discovery & Search
-
-- The `GET /incidents` endpoint maps directly to GeoResponde's **Find** module for searching disaster incidents.
-
-- GeoResponde users can search by keywords, and the `search` parameter will handle full-text matching across relevant fields.
-
-- The `locale` parameter enables language-appropriate responses.
-
-### Incident Data
-
-- Incident summaries can be normalized into GeoResponde's unified incident schema.
-
-- `IncidentLocation` provides all necessary geographic data for map display unless `label` is \[redacted\].
-
-- `severity`, `catagory`, and `verification` status provide additional context for prioritization.
-
-## Search Strategy
-
-### Workflow
-
-1. A user enters a query in GeoResponde (e.g., "hospital Caracas" or city "Caracas").
-
-2. GeoResponde translates this into a live query: `GET /incidents?search=hospital Caracas&category=Medical&locale=es`.
-
-3. GeoResponde fetches the response and normalizes the `PublicIncidentSummary` objects into GeoResponde's unified schema.
-
-4. GeoResponde displays the results natively, badging them with the Avisave provider source.
-
-5. Users can view the normalized result, or click "Open Original Resource" to be directed to Avisave's platform (if URL structure is available).
-
-### Advanced Queries
-
-- **Category-specific search**: `GET /incidents?category=Missing&severity=Critical`
-
-- **Location-based search**: `GET /incidents?search=Caracas` (searches across location fields)
-
-- **Verification filter**: `GET /incidents?verification=VERIFIED` (only show verified incidents)
-
-- **Combined filters**: `GET /incidents?category=Shelters&severity=High&limit=50`
-
-### Limitations
-
-- **No Geospatial Queries**: The API does not support bounding box (`bbox`) or radius search parameters, making precise map-based discovery difficult. Workaround: Use keyword search with location names.
-
-- **No Full GeoJSON Export**: While incidents contain coordinates, there's no dedicated GeoJSON endpoint for bulk geospatial data retrieval.
-
-- **Read-Only**: The public API is read-only; report submission requires a different (likely authenticated) API endpoint not exposed in the public spec.
-
-- **Media Restrictions**: Evidence media is restricted from public responses, particularly for incidents involving minors.
-
-## Provider Evaluation
-
-### Strengths
-
-- **Comprehensive Incident Model**: The API covers a wide range of disaster incident types (8 categories) with detailed metadata.
-
-- **Strong Filtering Capabilities**: Supports filtering by category, severity, verification status, and free-text search.
-
-- **Internationalization**: Built-in locale support for Spanish and English.
-
-- **Pagination**: Well-implemented pagination with sensible defaults (20 items, max 50).
-
-- **Rate Limiting**: Proper rate limiting with standard headers for client awareness.
-
-- **Data Privacy**: Explicit handling of personal data redaction and evidence restrictions for minors.
-
-- **Validation System**: Community validation via upvote/downvote provides trust signals.
-
-- **Timeline Support**: Incident timelines allow users to understand incident progression.
-
-- **API Discovery**: Self-describing API with discovery endpoints and OpenAPI spec access.
-
-### Weaknesses
-
-- **Read-Only Public API**: No write operations (report submission) are available in the public API. This limits direct integration for reporting.
-
-- **No Geospatial Queries**: Lack of bounding box or radius search makes map-based discovery suboptimal.
-
-- **No GeoJSON Endpoint**: Would benefit from a dedicated geospatial export endpoint for mapping applications.
-
-- **Evidence Restrictions**: While necessary for privacy, restricted evidence limits the richness of public incident data.
-
-- **Rate Limit Dependency**: Production use requires Redis configuration; without it, the API returns 503 errors.
-
-## Future Collaboration
-
-Observations to discuss with the Avisave team for future API iterations:
-
-1. **Geospatial Search**: Adding `?lat=X&lng=Y&radius=Z` or `?bbox=...` parameters to `/incidents` would enable precise map-based queries, allowing GeoResponde to automatically fetch incidents in the user's current map view.
-
-2. **GeoJSON Export**: An endpoint like `GET /incidents/geojson` that returns a lightweight GeoJSON feature collection of all incidents (without pagination) would allow platforms like GeoResponde to easily render the entire dataset on map layers.
-
-3. **Public Report Submission**: Exposing a public (or rate-limited public) endpoint for submitting new incident reports would enable GeoResponde users to contribute data directly through the platform.
-
-4. **Webhook Support**: Implementing webhooks for new or updated incidents would enable real-time synchronization with GeoResponde.
-
-5. **Enhanced Filtering**: Adding filters for time ranges (e.g., `?createdAfter=`, `?updatedSince=`) and location boundaries would provide more precise data access.
-
-6. **Media Access**: Providing a mechanism for authorized access to evidence media (perhaps via OAuth or API keys) while maintaining privacy protections.
-
+- Since there is data that has been redacted in the API, the adapter has to accommodate for this. For instance, there are moments where the location from an incident's data will be redacted, leaving the location's longitude and latitude undefined. For this reason, the location of certain normalized search results will have to be left undefined.
