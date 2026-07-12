@@ -118,6 +118,96 @@
   display: none;
 }
 
+/* Find Page Desktop Styles */
+.find-container {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.find-title {
+  color: #fff;
+  margin-bottom: 16px;
+  font-size: 36px;
+}
+
+.find-subtitle {
+  color: #aaa;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.find-form {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.find-input {
+  flex: 1;
+  padding: 24px 32px;
+  font-size: 24px;
+  border-radius: 12px;
+  border: 2px solid #334155;
+  background-color: #0f172a;
+  color: #fff;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.find-input:focus {
+  border-color: #3498db;
+}
+
+.find-button {
+  padding: 0 40px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  border: none;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.find-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.find-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.find-example-button {
+  background: none;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  color: #38bdf8;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.find-example-button:hover {
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
 /* MOBILE RESPONSIVE STYLES */
 @media (max-width: 768px) {
   /* Sidebar Bottom Sheet */
@@ -180,9 +270,31 @@
     z-index: 9999;
   }
   
-  /* Find Page */
+  /* Find Page Mobile Overrides */
+  .find-container {
+    padding: 20px 16px;
+  }
+  .find-title {
+    font-size: 28px;
+  }
+  .find-subtitle {
+    font-size: 15px;
+  }
   .find-form {
     flex-direction: column !important;
+    gap: 12px;
+  }
+  .find-input {
+    padding: 16px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  .find-button {
+    padding: 16px;
+    font-size: 18px;
+    border-radius: 8px;
+    width: 100%;
   }
   
   /* Report Page */

@@ -104,51 +104,26 @@ export function Find() {
   };
 
   return (
-    <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', flex: 1, overflowY: 'auto', width: '100%' }}>
+    <div className="find-container">
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h1 style={{ color: '#fff', marginBottom: '16px', fontSize: '36px' }}>{t('find.title')}</h1>
-        <p style={{ color: '#aaa', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>
+        <h1 className="find-title">{t('find.title')}</h1>
+        <p className="find-subtitle">
           {t('find.subtitle')}
         </p>
       </div>
 
-      <form id="search-form" onSubmit={handleSearch} style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+      <form id="search-form" className="find-form" onSubmit={handleSearch}>
         <input 
           type="text" 
           placeholder={t('find.placeholder')}
           value={query}
           onChange={e => setQuery(e.target.value)}
-          style={{
-            flex: 1,
-            padding: '24px 32px',
-            fontSize: '24px',
-            borderRadius: '12px',
-            border: '2px solid #334155',
-            backgroundColor: '#0f172a',
-            color: '#fff',
-            outline: 'none',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#3498db'}
-          onBlur={(e) => e.target.style.borderColor = '#334155'}
+          className="find-input"
         />
         <button 
           type="submit"
           disabled={loading}
-          style={{
-            padding: '0 40px',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            borderRadius: '12px',
-            border: 'none',
-            backgroundColor: '#3498db',
-            color: '#fff',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s',
-            opacity: loading ? 0.7 : 1
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2980b9'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3498db'}
+          className="find-button"
         >
           {loading ? t('find.buttonLoading') : t('find.button')}
         </button>
@@ -160,18 +135,7 @@ export function Find() {
           <button 
             key={example}
             onClick={() => handleExampleClick(example)}
-            style={{
-              background: 'none',
-              border: '1px solid #334155',
-              borderRadius: '16px',
-              color: '#38bdf8',
-              cursor: 'pointer',
-              padding: '6px 12px',
-              fontSize: '14px',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.1)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            className="find-example-button"
           >
             {example}
           </button>
