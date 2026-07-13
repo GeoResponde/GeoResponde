@@ -22,15 +22,23 @@ function flatten(obj, prefix = '') {
   return keys;
 }
 
-/** Fails loudly if a locale bundle isn't valid UTF-8 (see issue #61 — a prior
- * reformat silently left the es bundle in Latin-1, corrupting accented
- * Spanish on load without ever failing this script). */
-function assertUtf8(locale) {
+/** (1) Fails loudly if a locale bundle isn't valid UTF-8 (see issue #61 — a prior
+ *      reformat silently left the es bundle in Latin-1, corrupting accented
+ *      Spanish on load without ever failing this script). 
+ * (2) Checks for common Spanish mojibake sequences (see issue #99 - Regression 
+ *     introduced while attempting to re-encode the Spanish bundle in PR #91).
+ **/
+function validateLocaleIntegrity(locale) {
   const file = resolve(localesDir, locale, 'common.json');
   const bytes = readFileSync(file);
-  const decoder = new TextDecoder('utf-8', { fatal: true });
-  try {
-    decoder.decode(bytes);
+  const decoder = new TextDecoder('utf-8', { fatal: true });  
+  try {    
+    const text = decoder.decode(bytes);
+    const mojibakeRegex = /[ÃÂâ][\u0080-\u00BF]/;
+    if (mojibakeRegex.test(text)) {
+      console.error(`i18n encoding FAILED — ${locale}/common.json contains mojibake characters.`);
+      process.exit(1);
+    }
   } catch {
     console.error(`i18n encoding FAILED — ${locale}/common.json is not valid UTF-8.`);
     process.exit(1);
@@ -38,7 +46,7 @@ function assertUtf8(locale) {
 }
 
 function loadKeys(locale) {
-  assertUtf8(locale);
+  validateLocaleIntegrity(locale);
   const file = resolve(localesDir, locale, 'common.json');
   return new Set(flatten(JSON.parse(readFileSync(file, 'utf8'))));
 }
