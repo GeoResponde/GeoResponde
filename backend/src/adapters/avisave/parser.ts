@@ -50,7 +50,7 @@ export interface AvisaveResponse {
 */
 
 function resolveLocation(location: Location | null | undefined): [number, number] | undefined {
-  if(location?.longitude && location?.latitude){
+  if (location?.longitude != null && location?.latitude != null) {
     return [location.longitude, location?.latitude]
   }
   return undefined
