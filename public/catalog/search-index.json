@@ -120,6 +120,12 @@
     "description": "NGO"
   },
   {
+    "id": "org-planet",
+    "title": "Planet Labs PBC",
+    "type": "organization",
+    "description": "PRIVATE"
+  },
+  {
     "id": "src-usgs-api",
     "title": "USGS Earthquake API (2.5+ M, 1 Day)",
     "type": "source"
@@ -227,6 +233,11 @@
   {
     "id": "src-citizen-reports",
     "title": "Citizen Crowdsourced Aggregation",
+    "type": "source"
+  },
+  {
+    "id": "src-planet-sourcecoop",
+    "title": "Planet Labs PBC via Source Cooperative",
     "type": "source"
   },
   {
@@ -344,6 +355,12 @@
     "description": "High-resolution global satellite basemap (Esri). Acquisition Date: May 1, 2026."
   },
   {
+    "id": "ds-satellite-after",
+    "title": "Planet Post-Event Imagery",
+    "type": "dataset",
+    "description": "High-resolution post-event satellite imagery acquired on June 26, 2026. Provided by Planet Labs PBC via Source Cooperative. Affected areas are highlighted on the map with a dashed boundary."
+  },
+  {
     "id": "ds-copernicus-buildings",
     "title": "Copernicus Damage Grading (Buildings)",
     "type": "dataset",
@@ -400,8 +417,8 @@
     "type": "layer"
   },
   {
-    "id": "layer-sat-before",
-    "title": "Esri World Imagery (Before)",
+    "id": "layer-satellite",
+    "title": "Satellite Imagery",
     "type": "layer"
   },
   {

@@ -89,3 +89,8 @@
   name: Volunteer Groups
   url: https://example.com/
   type: NGO
+
+- id: org-planet
+  name: Planet Labs PBC
+  url: https://planet.com
+  type: PRIVATE

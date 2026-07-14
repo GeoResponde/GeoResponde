@@ -134,5 +134,12 @@
     "name": "Citizen Crowdsourced Aggregation",
     "url": "https://venezuelatebusca.com/",
     "organizationId": "org-volunteer"
+  },
+  {
+    "id": "src-planet-sourcecoop",
+    "name": "Planet Labs PBC via Source Cooperative",
+    "url": "https://source.coop/planet/venezuela-earthquake-2026-06-24",
+    "organizationId": "org-planet",
+    "license": "CC-BY-NC-4.0"
   }
 ]

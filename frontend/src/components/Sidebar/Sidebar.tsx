@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 interface Props {
   activeLayerIds: Set<string>;
   onToggleLayer: (id: string) => void;
+  activeLayerVariants?: Record<string, string>;
+  onToggleLayerVariant?: (layerId: string, variantId: string) => void;
   unavailableLayerIds?: Set<string>;
   /** Shared time-window control, rendered above the layer list. */
   timeWindowSlot?: ReactNode;
@@ -16,6 +18,8 @@ interface Props {
 export function Sidebar({
   activeLayerIds,
   onToggleLayer,
+  activeLayerVariants = {},
+  onToggleLayerVariant,
   unavailableLayerIds = new Set(),
   timeWindowSlot,
   dynamicSourcesSlot,
@@ -39,6 +43,20 @@ export function Sidebar({
   
   // The ones that are scientific and shown by default directly under Situation Layers
   const scientificCategories = ['Scientific'];
+
+  const getDatasetForLayer = (layer: any) => {
+    if (!layer.datasetIds || layer.datasetIds.length === 0) return undefined;
+    
+    if (layer.visualization?.variants?.length > 0) {
+      const activeVariantId = activeLayerVariants[layer.id] || layer.visualization.variants[0].id;
+      const variantIndex = layer.visualization.variants.findIndex((v: any) => v.id === activeVariantId);
+      const targetDatasetId = layer.datasetIds[variantIndex !== -1 ? variantIndex : 0];
+      const found = datasets.find(d => d.id === targetDatasetId);
+      if (found) return found;
+    }
+    
+    return datasets.find(d => layer.datasetIds.includes(d.id));
+  };
 
   return (
     <>
@@ -86,9 +104,11 @@ export function Sidebar({
                   <LayerToggle 
                     key={layer.id} 
                     layer={layer}
-                    dataset={datasets.find(d => layer.datasetIds?.includes(d.id))}
+                    dataset={getDatasetForLayer(layer)}
                     isActive={activeLayerIds.has(layer.id)} 
                     onToggle={onToggleLayer}
+                    activeVariantId={activeLayerVariants[layer.id]}
+                    onToggleVariant={onToggleLayerVariant}
                     isUnavailable={unavailableLayerIds.has(layer.id)}
                   />
                 ))}
@@ -124,9 +144,11 @@ export function Sidebar({
                           <LayerToggle 
                             key={layer.id} 
                             layer={layer}
-                            dataset={datasets.find(d => layer.datasetIds?.includes(d.id))}
+                            dataset={getDatasetForLayer(layer)}
                             isActive={activeLayerIds.has(layer.id)} 
                             onToggle={onToggleLayer}
+                            activeVariantId={activeLayerVariants[layer.id]}
+                            onToggleVariant={onToggleLayerVariant}
                             isUnavailable={unavailableLayerIds.has(layer.id)}
                           />
                         ))}
@@ -198,6 +220,11 @@ export function Sidebar({
                 <li style={{ marginBottom: '6px' }}>
                   <a href="https://github.com/GEMScienceTools/gem-global-active-faults" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
                     ↗ GEM Global Active Faults Database
+                  </a>
+                </li>
+                <li style={{ marginBottom: '6px' }}>
+                  <a href="https://source.coop/planet/venezuela-earthquake-2026-06-24" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
+                    ↗ Planet Post-Event Imagery (Source Cooperative)
                   </a>
                 </li>
                 <li>

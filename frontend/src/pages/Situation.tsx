@@ -41,6 +41,7 @@ export function Situation() {
   );
   const [showSitios, setShowSitios] = useState(false);
   const [activeTipos, setActiveTipos] = useState<Set<string>>(() => new Set(AID_SITE_TIPOS));
+  const [activeLayerVariants, setActiveLayerVariants] = useState<Record<string, string>>({});
 
   // Shared time window: presets drive the actual fetch window (default: 7 days).
   const [preset, setPreset] = useState<TimePreset>(DEFAULT_TIME_PRESET);
@@ -147,10 +148,28 @@ export function Situation() {
   const toggleLayer = (id: string) => {
     setActiveLayerIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+        const layer = layers.find((l) => l.id === id);
+        if (layer?.visualization?.variants?.length > 0) {
+          setActiveLayerVariants((variants) => ({
+            ...variants,
+            // Preserve if already set, else default to first variant
+            [id]: variants[id] || layer.visualization.variants[0].id,
+          }));
+        }
+      }
       return next;
     });
+  };
+
+  const toggleLayerVariant = (layerId: string, variantId: string) => {
+    setActiveLayerVariants((prev) => ({
+      ...prev,
+      [layerId]: variantId,
+    }));
   };
 
   const timeWindowSlot = (
@@ -222,10 +241,13 @@ export function Situation() {
         nasaDpmLoading={nasaDpmLoading}
         nasaDpmWarming={nasaDpmActive && nasaDpmSource === 'warming'}
         onViewportBoundsChange={setMapBounds}
+        activeLayerVariants={activeLayerVariants}
       />
       <Sidebar
         activeLayerIds={activeLayerIds}
         onToggleLayer={toggleLayer}
+        activeLayerVariants={activeLayerVariants}
+        onToggleLayerVariant={toggleLayerVariant}
         unavailableLayerIds={unavailableLayerIds}
         timeWindowSlot={timeWindowSlot}
         dynamicSourcesSlot={dynamicSourcesSlot}

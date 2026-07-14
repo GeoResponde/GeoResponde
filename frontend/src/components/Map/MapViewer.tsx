@@ -65,6 +65,7 @@ interface Props {
    * can request only the polygons in view.
    */
   onViewportBoundsChange?: (bounds: [number, number, number, number]) => void;
+  activeLayerVariants?: Record<string, string>;
 }
 
 /** Debounce window for viewport-bounds tracking — coalesces a pan/zoom burst. */
@@ -97,6 +98,7 @@ export function MapViewer({
   nasaDpmLoading = false,
   nasaDpmWarming = false,
   onViewportBoundsChange,
+  activeLayerVariants = {},
 }: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
@@ -139,7 +141,7 @@ export function MapViewer({
   const activeLayersWithData = useMemo(() => {
     return layers.filter(l => 
       activeLayerIds.has(l.id) && 
-      (l.id === 'layer-earthquakes' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-sat-before' || l.id === 'layer-sat-after' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
+      (l.id === 'layer-earthquakes' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-satellite' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
     );
   }, [layers, activeLayerIds]);
 
@@ -368,16 +370,62 @@ export function MapViewer({
       
       const isRaster = layer.visualization?.type === 'raster';
       if (isRaster) {
+        let rasterUrl = layer.visualization.url;
+        let boundsGeoJson = null;
+
+        if (layer.visualization.variants?.length > 0) {
+          const selectedVariantId = activeLayerVariants[layer.id];
+          const variant = layer.visualization.variants.find((v: any) => v.id === selectedVariantId) || layer.visualization.variants[0];
+          rasterUrl = variant.url;
+
+          if (variant.bounds && variant.bounds.length === 4) {
+            const [minLng, minLat, maxLng, maxLat] = variant.bounds;
+            boundsGeoJson = {
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Polygon',
+                    coordinates: [[
+                      [minLng, minLat],
+                      [maxLng, minLat],
+                      [maxLng, maxLat],
+                      [minLng, maxLat],
+                      [minLng, minLat]
+                    ]]
+                  }
+                }
+              ]
+            };
+          }
+        }
+
         return (
-          <Source key={layer.id} id={layer.id} type="raster" tiles={[layer.visualization.url]} tileSize={256}>
-            <MapLayer
-              id={`${layer.id}-viz`}
-              type="raster"
-              paint={{
-                'raster-opacity': 1
-              }}
-            />
-          </Source>
+          <React.Fragment key={`${layer.id}-group`}>
+            <Source key={`${layer.id}-${rasterUrl}`} id={layer.id} type="raster" tiles={[rasterUrl]} tileSize={256}>
+              <MapLayer
+                id={`${layer.id}-viz`}
+                type="raster"
+                paint={{
+                  'raster-opacity': 1
+                }}
+              />
+            </Source>
+            {boundsGeoJson && (
+              <Source key={`${layer.id}-bounds-${rasterUrl}`} id={`${layer.id}-bounds`} type="geojson" data={boundsGeoJson}>
+                <MapLayer
+                  id={`${layer.id}-bounds-line`}
+                  type="line"
+                  paint={{
+                    'line-color': '#38bdf8',
+                    'line-width': 2,
+                    'line-dasharray': [2, 2]
+                  }}
+                />
+              </Source>
+            )}
+          </React.Fragment>
         );
       }
 

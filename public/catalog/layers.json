@@ -71,10 +71,11 @@
     }
   },
   {
-    "id": "layer-sat-before",
-    "name": "Esri World Imagery (Before)",
+    "id": "layer-satellite",
+    "name": "Satellite Imagery",
     "datasetIds": [
-      "ds-satellite-before"
+      "ds-satellite-before",
+      "ds-satellite-after"
     ],
     "category": "Scientific",
     "confidence": "Official",
@@ -82,7 +83,26 @@
     "enabled": false,
     "visualization": {
       "type": "raster",
-      "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+      "variants": [
+        {
+          "id": "before",
+          "label": "Before",
+          "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          "attribution": "© Esri World Imagery"
+        },
+        {
+          "id": "after",
+          "label": "After",
+          "url": "https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          "attribution": "© Planet Labs PBC (Placeholder via Esri Clarity)",
+          "bounds": [
+            -68.708208,
+            10.089957,
+            -66.742209,
+            10.725575
+          ]
+        }
+      ]
     }
   },
   {

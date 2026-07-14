@@ -108,6 +108,12 @@
       "name": "Volunteer Groups",
       "url": "https://example.com/",
       "type": "NGO"
+    },
+    {
+      "id": "org-planet",
+      "name": "Planet Labs PBC",
+      "url": "https://planet.com",
+      "type": "PRIVATE"
     }
   ],
   "sources": [
@@ -246,6 +252,13 @@
       "name": "Citizen Crowdsourced Aggregation",
       "url": "https://venezuelatebusca.com/",
       "organizationId": "org-volunteer"
+    },
+    {
+      "id": "src-planet-sourcecoop",
+      "name": "Planet Labs PBC via Source Cooperative",
+      "url": "https://source.coop/planet/venezuela-earthquake-2026-06-24",
+      "organizationId": "org-planet",
+      "license": "CC-BY-NC-4.0"
     }
   ],
   "datasets": [
@@ -398,6 +411,18 @@
       ]
     },
     {
+      "id": "ds-satellite-after",
+      "title": "Planet Post-Event Imagery",
+      "description": "High-resolution post-event satellite imagery acquired on June 26, 2026. Provided by Planet Labs PBC via Source Cooperative. Affected areas are highlighted on the map with a dashed boundary.",
+      "sourceId": "src-planet-sourcecoop",
+      "tags": [
+        "satellite",
+        "optical",
+        "after",
+        "damage"
+      ]
+    },
+    {
       "id": "ds-copernicus-buildings",
       "title": "Copernicus Damage Grading (Buildings)",
       "description": "Rapid mapping damage grading for built-up areas (Polygons and Points)",
@@ -535,10 +560,11 @@
       }
     },
     {
-      "id": "layer-sat-before",
-      "name": "Esri World Imagery (Before)",
+      "id": "layer-satellite",
+      "name": "Satellite Imagery",
       "datasetIds": [
-        "ds-satellite-before"
+        "ds-satellite-before",
+        "ds-satellite-after"
       ],
       "category": "Scientific",
       "confidence": "Official",
@@ -546,7 +572,26 @@
       "enabled": false,
       "visualization": {
         "type": "raster",
-        "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        "variants": [
+          {
+            "id": "before",
+            "label": "Before",
+            "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "© Esri World Imagery"
+          },
+          {
+            "id": "after",
+            "label": "After",
+            "url": "https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "© Planet Labs PBC (Placeholder via Esri Clarity)",
+            "bounds": [
+              -68.708208,
+              10.089957,
+              -66.742209,
+              10.725575
+            ]
+          }
+        ]
       }
     },
     {

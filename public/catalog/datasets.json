@@ -148,6 +148,18 @@
     ]
   },
   {
+    "id": "ds-satellite-after",
+    "title": "Planet Post-Event Imagery",
+    "description": "High-resolution post-event satellite imagery acquired on June 26, 2026. Provided by Planet Labs PBC via Source Cooperative. Affected areas are highlighted on the map with a dashed boundary.",
+    "sourceId": "src-planet-sourcecoop",
+    "tags": [
+      "satellite",
+      "optical",
+      "after",
+      "damage"
+    ]
+  },
+  {
     "id": "ds-copernicus-buildings",
     "title": "Copernicus Damage Grading (Buildings)",
     "description": "Rapid mapping damage grading for built-up areas (Polygons and Points)",
