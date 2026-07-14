@@ -12,6 +12,20 @@ import { HazloHoyAdapter } from './hazlohoy/adapter.js';
 import { ReencuentraVeAdapter } from './reencuentra-ve/adapter.js';
 import { SosVenezuelaAdapter } from './sosvenezuela/adapter.js';
 import { NexoSignalAdapter } from './nexosignal/adapter.js';
+import { HumanitarianProvider } from '@georesponde/shared';
+import { BaseAdapter } from './BaseAdapter.js';
+import { VenezuelaTeBuscaAdapter } from './venezuelatebusca/adapter.js';
+import { HdxAdapter } from './hdx/adapter.js';
+import { EncuentralosAdapter } from './encuentralos/adapter.js';
+import { UbicameAdapter } from './ubicame/adapter.js';
+import { BuscaEnListasAdapter } from './buscaenlistas/adapter.js';
+import { ApoyoSaluAdapter } from './apoyo-salu/adapter.js';
+import { VenezuelaReportaAdapter } from './venezuelareporta/adapter.js';
+import { DesaparecidosTerremotoAdapter } from './desaparecidos-terremoto/adapter.js';
+import { HazloHoyAdapter } from './hazlohoy/adapter.js';
+import { ReencuentraVeAdapter } from './reencuentra-ve/adapter.js';
+import { SosVenezuelaAdapter } from './sosvenezuela/adapter.js';
+import { NexoSignalAdapter } from './nexosignal/adapter.js';
 import { MiGenteVeAdapter } from './migenteve/adapter.js';
 import { TerremotoVenezuelaAdapter } from './terremotovenezuela/adapter.js';
 import { SismoVenezuelaAdapter } from './sismovenezuela/adapter.js';
@@ -19,6 +33,7 @@ import { AyudaVenezuelaAdapter } from './ayudavenezuela/adapter.js';
 import { UshahidiAdapter } from './ushahidi/adapter.js';
 import { IngresosAdapter } from './ingresos/adapter.js';
 import { AvisaveAdapter } from './avisave/adapter.js';
+import { TeBuscoAdapter } from './tebusco/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -77,3 +92,4 @@ registerAdapter('AyudaVenezuelaAdapter', AyudaVenezuelaAdapter);
 registerAdapter('UshahidiAdapter', UshahidiAdapter);
 registerAdapter('IngresosAdapter', IngresosAdapter);
 registerAdapter('AvisaveAdapter', AvisaveAdapter);
+registerAdapter('TeBuscoAdapter', TeBuscoAdapter);
