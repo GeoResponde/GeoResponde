@@ -27,7 +27,7 @@ export function normalizeRecord(record: TeBuscoRecord): NormalizedSearchResult {
       status: toStatus(record.state),
       rawStatus: record.state,
       lastSeenLocation: record.place || undefined,
-      notes: record.msg || undefined,
+      description: record.msg || undefined,
     },
     metadata: {
       by_who: record.by_who,
