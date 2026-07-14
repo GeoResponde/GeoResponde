@@ -204,3 +204,13 @@
   adapter: AvisaveAdapter
   capabilities:
     - search
+
+- id: prov-tebusco
+  display_name: Te Busco
+  website: https://tebusco.app/
+  description: Volunteer initiative for locating missing persons in Venezuela, federated via its public API.
+  logo: /logos/tebusco.png
+  status: active
+  adapter: TeBuscoAdapter
+  capabilities:
+    - search
