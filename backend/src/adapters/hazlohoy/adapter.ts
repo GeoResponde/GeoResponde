@@ -20,7 +20,7 @@ export class HazloHoyAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[HazloHoyAdapter] Fetching RSC payload for query: "${query}"`);
+      console.log(`[HazloHoyAdapter] Fetching RSC payload`);
 
       const $ = await fetchHtml(RSC_URL, { headers: { RSC: '1' } });
       const raw = $.html();
@@ -28,11 +28,11 @@ export class HazloHoyAdapter implements BaseAdapter {
       const markers = extractMarkers(raw);
       const results = normalizeMarkers(markers, query);
 
-      console.log(`[HazloHoyAdapter] Extracted ${results.length} results for query: "${query}"`);
+      console.log(`[HazloHoyAdapter] Extracted ${results.length} results`);
 
       return results;
-    } catch (error) {
-      console.error('[HazloHoyAdapter] Search failed:', error);
+    } catch {
+      console.error('[HazloHoyAdapter] Search failed (network/transport error)');
       return [];
     }
   }

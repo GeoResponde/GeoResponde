@@ -1,0 +1,97 @@
+{
+  "data": [
+    {
+      "id": "incident-fictional",
+      "url": "/incidents/incident-fictional",
+      "category": "Shelters",
+      "title": "Refugio Falso",
+      "lifecycle": "active",
+      "severity": "Medium",
+      "verification": "VERIFIED",
+      "confidence": "High",
+      "summary": "A fixture for testing",
+      "estimatedVictims": "706",
+      "recommendedAction": "No action needed",
+      "actionPriority": "none",
+      "location": {
+        "label": "[redacted]"
+      },
+      "observedAt": "2023-08-07T20:04:09.000Z",
+      "relativeTimeLabel": null,
+      "createdAt": "2023-08-07T20:05:13.683Z",
+      "updatedAt": "2023-08-07T20:05:13.683Z",
+      "latestTimelineEvent": {
+        "id": "incident-fictional-timeline-no-time",
+        "sequence": 3,
+        "observedAt": "2023-08-07T20:04:09.000Z",
+        "displayTime": "7 de agusto de 2023, 20:04",
+        "title": "TimelineEvent title",
+        "summary": "Timeline Event Summary",
+        "createdAt": "2026-08-07T20:05:13.735Z"
+      },
+      "linkedIncidentIds": [],
+      "evidence": [],
+      "evidenceRestriction": "null",
+      "validation": {
+        "upVotes": 0,
+        "downVotes": 0
+      }
+    },
+    {
+      "id": "other-incident-fictional",
+      "url": "/incidents/other-incident-fictional",
+      "category": "Supplies",
+      "title": "Running low on supplies",
+      "lifecycle": "active",
+      "severity": "High",
+      "verification": "VERIFIED",
+      "confidence": "Low",
+      "summary": "A fixture for testing",
+      "estimatedVictims": "706",
+      "recommendedAction": "No action needed",
+      "actionPriority": "none",
+      "location": {
+        "label": "Test",
+        "locality": "Jupiter",
+        "region": "The big red spot",
+        "countryCode": "XX",
+        "latitude": 39,
+        "longitude": -67,
+        "precisionMeters": 200
+      },
+      "observedAt": "2023-08-07T20:04:09.000Z",
+      "relativeTimeLabel": null,
+      "createdAt": "2023-08-07T20:05:13.683Z",
+      "updatedAt": "2023-08-07T20:05:13.683Z",
+      "latestTimelineEvent": {
+        "id": "incident-fictional-timeline-no-time",
+        "sequence": 3,
+        "observedAt": "2023-08-07T20:04:09.000Z",
+        "displayTime": "7 de agusto de 2023, 20:04",
+        "title": "TimelineEvent title",
+        "summary": "Timeline Event Summary",
+        "createdAt": "2026-08-07T20:05:13.735Z"
+      },
+      "linkedIncidentIds": [],
+      "evidence": [],
+      "evidenceRestriction": "null",
+      "validation": {
+        "upVotes": 0,
+        "downVotes": 0
+      }
+    }
+  ],
+  "pagination": {
+    "limit": 20,
+    "offset": 0,
+    "nextOffset": 20
+  },
+  "meta": {
+    "generatedAt": "2026-07-08T21:18:38.230Z",
+    "cacheTtlSeconds": 30,
+    "minorData": {
+      "included": false,
+      "redacted": false
+    }
+  }
+}

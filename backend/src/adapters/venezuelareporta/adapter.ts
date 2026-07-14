@@ -46,8 +46,8 @@ export class VenezuelaReportaAdapter implements BaseAdapter {
       console.log(`[VenezuelaReportaAdapter] Extracted ${normalizedResults.length} normalized results`);
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[VenezuelaReportaAdapter] Search failed:', error);
+    } catch {
+      console.error('[VenezuelaReportaAdapter] Search failed (network/transport error)');
       return [];
     }
   }

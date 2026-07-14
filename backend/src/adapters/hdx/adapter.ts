@@ -26,13 +26,13 @@ export class HdxAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[HdxAdapter] Fetching datasets for query: "${query}"`);
+      console.log(`[HdxAdapter] Fetching datasets`);
       const data = await fetchJson<HdxResponse>(this.buildUrl(query), { timeoutMs: 10000 });
       const results = parseHdxResponse(data);
-      console.log(`[HdxAdapter] Extracted ${results.length} results for query: "${query}"`);
+      console.log(`[HdxAdapter] Extracted ${results.length} results`);
       return results;
-    } catch (error) {
-      console.error('[HdxAdapter] Search failed:', error);
+    } catch {
+      console.error('[HdxAdapter] Search failed (network/transport error)');
       return [];
     }
   }

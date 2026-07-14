@@ -227,6 +227,15 @@ function isEmpty(value: unknown): boolean {
 }
 
 /**
+ * SEC-04: max characters accepted for a single text/textarea report field.
+ * Generous for legitimate use (a paragraph-length description easily fits)
+ * but caps the payload a client can force through to every matching
+ * submission-capable provider — without this, validateReport() only checked
+ * required-ness/type, so a near-1MB string passed straight through.
+ */
+const MAX_TEXT_LENGTH = 2000;
+
+/**
  * Validate a report's fields against its topic definition — the single source
  * of truth shared by the form (disable submit, show errors) and the gateway
  * route (reject with 400). Required fields must be non-empty; any provided
@@ -274,8 +283,15 @@ export function validateReport(
         if (!ok) errors[field.name] = 'invalid';
         break;
       }
+      case 'text':
+      case 'textarea': {
+        if (typeof value === 'string' && value.length > MAX_TEXT_LENGTH) {
+          errors[field.name] = 'invalid';
+        }
+        break;
+      }
       default:
-        break; // text/textarea: non-empty already satisfied
+        break;
     }
   }
 

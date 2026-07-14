@@ -26,13 +26,13 @@ export class ApoyoSaluAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[ApoyoSaluAdapter] Fetching missing persons for query: "${query}"`);
+      console.log(`[ApoyoSaluAdapter] Fetching missing persons`);
       const data = await fetchJson<ApoyoSaluResponse>(this.buildUrl(query), { timeoutMs: 10000 });
       const results = parseApoyoSaluResponse(data);
-      console.log(`[ApoyoSaluAdapter] Extracted ${results.length} results for query: "${query}"`);
+      console.log(`[ApoyoSaluAdapter] Extracted ${results.length} results`);
       return results;
-    } catch (error) {
-      console.error('[ApoyoSaluAdapter] Search failed:', error);
+    } catch {
+      console.error('[ApoyoSaluAdapter] Search failed (network/transport error)');
       return [];
     }
   }

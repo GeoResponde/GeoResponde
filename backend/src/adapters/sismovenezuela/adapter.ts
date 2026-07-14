@@ -20,15 +20,15 @@ export class SismoVenezuelaAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[SismoVenezuelaAdapter] Fetching feed for query: "${query}"`);
+      console.log(`[SismoVenezuelaAdapter] Fetching feed`);
       const data = await fetchJson<unknown>(FEED_API, { timeoutMs: 10000 });
       const results = parseSismoVenezuelaFeed(data, query);
       console.log(
-        `[SismoVenezuelaAdapter] Extracted ${results.length} results for query: "${query}"`,
+        `[SismoVenezuelaAdapter] Extracted ${results.length} results`,
       );
       return results;
-    } catch (error) {
-      console.error('[SismoVenezuelaAdapter] Search failed:', error);
+    } catch {
+      console.error('[SismoVenezuelaAdapter] Search failed (network/transport error)');
       return [];
     }
   }

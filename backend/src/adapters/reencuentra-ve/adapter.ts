@@ -32,10 +32,10 @@ export class ReencuentraVeAdapter implements BaseAdapter {
       const html = $.html();
       const results = parseReencuentraHtml(html);
 
-      console.log(`[ReencuentraVeAdapter] Extracted ${results.length} results for query: "${query}"`);
+      console.log(`[ReencuentraVeAdapter] Extracted ${results.length} results`);
       return results;
-    } catch (error) {
-      console.error('[ReencuentraVeAdapter] Search failed:', error);
+    } catch {
+      console.error('[ReencuentraVeAdapter] Search failed (network/transport error)');
       return [];
     }
   }

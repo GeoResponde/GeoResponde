@@ -32,8 +32,8 @@ export class UbicameAdapter implements BaseAdapter {
       const records = await fetchJson<UbicameRecord[]>(url, { timeoutMs: 10000 });
 
       return parseUbicameShard(records, query);
-    } catch (error) {
-      console.error('[UbicameAdapter] Search failed:', error);
+    } catch {
+      console.error('[UbicameAdapter] Search failed (network/transport error)');
       return [];
     }
   }

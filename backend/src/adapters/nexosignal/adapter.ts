@@ -21,7 +21,7 @@ export class NexoSignalAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[NexoSignalAdapter] Fetching data for query: "${query}"`);
+      console.log(`[NexoSignalAdapter] Fetching data`);
 
       // Read-only PostgREST GET: case-insensitive substring match on `nombre`,
       // newest first, capped at 20 rows.
@@ -40,12 +40,12 @@ export class NexoSignalAdapter implements BaseAdapter {
       const normalizedResults = parseNexoSignalResponse(response);
 
       console.log(
-        `[NexoSignalAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
+        `[NexoSignalAdapter] Extracted ${normalizedResults.length} normalized results`,
       );
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[NexoSignalAdapter] Search failed:', error);
+    } catch {
+      console.error('[NexoSignalAdapter] Search failed (network/transport error)');
       return [];
     }
   }

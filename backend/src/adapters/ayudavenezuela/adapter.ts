@@ -30,7 +30,7 @@ export class AyudaVenezuelaAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[AyudaVenezuelaAdapter] Fetching data for query: "${query}"`);
+      console.log(`[AyudaVenezuelaAdapter] Fetching data`);
 
       const q = encodeURIComponent(`*${query}*`);
       const url =
@@ -48,12 +48,12 @@ export class AyudaVenezuelaAdapter implements BaseAdapter {
       const normalizedResults = parseAyudaVenezuelaResponse(response);
 
       console.log(
-        `[AyudaVenezuelaAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
+        `[AyudaVenezuelaAdapter] Extracted ${normalizedResults.length} normalized results`,
       );
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[AyudaVenezuelaAdapter] Search failed:', error);
+    } catch {
+      console.error('[AyudaVenezuelaAdapter] Search failed (network/transport error)');
       return [];
     }
   }

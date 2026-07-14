@@ -37,8 +37,8 @@ export class DesaparecidosTerremotoAdapter implements BaseAdapter {
     try {
       const items = await fetchJson<any[]>(PLATAFORMAS_ENDPOINT, { timeoutMs: 8000 });
       return filterAndNormalizePlataformas(items, query);
-    } catch (error) {
-      console.error('[DesaparecidosTerremotoAdapter] Search failed:', error);
+    } catch {
+      console.error('[DesaparecidosTerremotoAdapter] Search failed (network/transport error)');
       return [];
     }
   }

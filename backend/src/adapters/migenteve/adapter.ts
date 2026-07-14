@@ -27,13 +27,13 @@ export class MiGenteVeAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[MiGenteVeAdapter] Fetching pet reports for query: "${query}"`);
+      console.log(`[MiGenteVeAdapter] Fetching pet reports`);
       const data = await fetchJson<MiGenteVeResponse>(this.buildUrl(query), { timeoutMs: 10000 });
       const results = parseMiGenteVeResponse(data);
-      console.log(`[MiGenteVeAdapter] Extracted ${results.length} results for query: "${query}"`);
+      console.log(`[MiGenteVeAdapter] Extracted ${results.length} results`);
       return results;
-    } catch (error) {
-      console.error('[MiGenteVeAdapter] Search failed:', error);
+    } catch {
+      console.error('[MiGenteVeAdapter] Search failed (network/transport error)');
       return [];
     }
   }

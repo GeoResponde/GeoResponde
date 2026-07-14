@@ -176,4 +176,25 @@ describe('validateReport', () => {
   it('fails closed for an unknown topic', () => {
     expect(validateReport('not-a-topic', { anything: 'x' }).ok).toBe(false);
   });
+
+  // SEC-04: a report field with no max length let an unbounded string through
+  // to every matching submission-capable provider.
+  it('rejects a text field over the max length', () => {
+    const v = validateReport('missing-person', { fullName: 'A'.repeat(2001) });
+    expect(v.errors.fullName).toBe('invalid');
+  });
+
+  it('rejects a textarea field over the max length', () => {
+    const v = validateReport('resource-need', {
+      resourceType: 'water',
+      location: 'Caracas',
+      description: 'A'.repeat(2001),
+    });
+    expect(v.errors.description).toBe('invalid');
+  });
+
+  it('accepts a text field right at the max length', () => {
+    const v = validateReport('missing-person', { fullName: 'A'.repeat(2000) });
+    expect(v.errors.fullName).toBeUndefined();
+  });
 });

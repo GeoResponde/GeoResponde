@@ -13,11 +13,30 @@
  *   CORS_ALLOWED_ORIGINS="https://a.app"  -> ["https://a.app"]
  *   CORS_ALLOWED_ORIGINS="https://a.app, https://b.app" -> ["https://a.app", "https://b.app"]
  */
+/**
+ * SEC-06: a production deploy that forgets to set `CORS_ALLOWED_ORIGINS` falls
+ * back to the permissive dev default silently — surface that with a visible
+ * warning instead, so it's a conscious choice rather than an oversight.
+ */
+function warnIfPermissiveInProduction(
+  env: NodeJS.ProcessEnv,
+  log: { warn: (msg: string) => void } = console,
+): void {
+  if (env.NODE_ENV === 'production') {
+    log.warn(
+      '[cors] CORS_ALLOWED_ORIGINS is unset in production — reflecting any request origin. Set it to a comma-separated allowlist to restrict this.',
+    );
+  }
+}
+
 export function resolveCorsOrigin(
   env: NodeJS.ProcessEnv = process.env,
 ): true | string[] {
   const raw = env.CORS_ALLOWED_ORIGINS?.trim();
-  if (!raw) return true;
+  if (!raw) {
+    warnIfPermissiveInProduction(env);
+    return true;
+  }
 
   const origins = raw
     .split(',')
@@ -26,5 +45,9 @@ export function resolveCorsOrigin(
 
   // A value that is only commas/whitespace carries no real origin; fall back to
   // the permissive dev default rather than silently blocking every request.
-  return origins.length > 0 ? origins : true;
+  if (origins.length === 0) {
+    warnIfPermissiveInProduction(env);
+    return true;
+  }
+  return origins;
 }

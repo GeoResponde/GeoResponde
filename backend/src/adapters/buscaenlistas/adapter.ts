@@ -17,8 +17,8 @@ export class BuscaEnListasAdapter implements BaseAdapter {
       const url = `${BASE_URL}/search?q=${encodeURIComponent(query)}`;
       const data = await fetchJson<any[]>(url, { timeoutMs: 10000 });
       return parseBuscaEnListasResponse(data);
-    } catch (error) {
-      console.error('[BuscaEnListasAdapter] Search failed:', error);
+    } catch {
+      console.error('[BuscaEnListasAdapter] Search failed (network/transport error)');
       return [];
     }
   }

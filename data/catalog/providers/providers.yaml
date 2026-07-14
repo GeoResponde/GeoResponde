@@ -194,3 +194,13 @@
   adapter: UshahidiAdapter
   capabilities:
     - submission
+
+- id: prov-avisave
+  display_name: Avisave
+  website: https://avisave.com/
+  description: An open platform focusing on public disaster incidents.
+  logo: /logos/avisave.png
+  status: active
+  adapter: AvisaveAdapter
+  capabilities:
+    - search

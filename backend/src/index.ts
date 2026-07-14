@@ -1,5 +1,7 @@
 import Fastify, { FastifyInstance } from 'fastify'
 import cors from '@fastify/cors'
+import helmet from '@fastify/helmet'
+import rateLimit from '@fastify/rate-limit'
 import { pathToFileURL } from 'url'
 import { resolveCorsOrigin } from './config/cors.js'
 import { REPORT_TOPICS, validateReport, type Report, type SubmissionReport, type ReportFieldError } from '@georesponde/shared'
@@ -67,6 +69,15 @@ function parseDryRun(query: unknown): boolean {
 export function buildApp(): FastifyInstance {
   const fastify = Fastify({ logger: true })
   fastify.register(cors, { origin: resolveCorsOrigin() })
+  // SEC-03: baseline security response headers (CSP, X-Content-Type-Options,
+  // X-Frame-Options, HSTS where applicable) on every response. This is a pure
+  // JSON/GeoJSON API, so the default CSP (no inline script/style needed) is safe.
+  fastify.register(helmet)
+  // SEC-02: throttle per client so a single caller can't cheaply amplify fan-out
+  // requests against /api/search (15+ providers) or /api/report (every
+  // submission-capable provider). Applies gateway-wide, not just those two
+  // routes — a stricter-than-required default is fine here.
+  fastify.register(rateLimit, { max: 60, timeWindow: '1 minute' })
 
   const gateway = new ProviderGateway()
   // Route audit-lite submission lines through Fastify's pino logger.
@@ -98,6 +109,13 @@ export function buildApp(): FastifyInstance {
     })
   }
 
+  // SEC-02: all routes below are wrapped in a nested register() so avvio boots
+  // them AFTER the rate-limit plugin above finishes registering its `onRoute`
+  // hook. Without this, buildApp()'s synchronous fastify.get(...) calls fire
+  // before the (asynchronously booted) rate-limit plugin has a chance to hook
+  // in, and every route silently ends up unlimited — confirmed by testing
+  // both orderings directly against @fastify/rate-limit 11.x.
+  fastify.register(async () => {
   fastify.get('/api/health', async () => ({ ok: true }))
 
   // Deploy/liveness routes (upstream). Root returns service info; /health is a
@@ -329,42 +347,50 @@ export function buildApp(): FastifyInstance {
     return gateway.submit(report as Report, { dryRun: parseDryRun(request.query) })
   })
 
-  // Generic provider inspector: works for any registered provider by catalog id
-  // (e.g. /api/dev/inspect/prov-hdx?q=venezuela). See CONTRIBUTING.md step 7.
-  fastify.get('/api/dev/inspect/:id', async (request) => {
-    await ensureReady()
-    const { id } = request.params as { id: string }
-    const query = (request.query as { q?: string }).q || 'Maria'
-    return gateway.inspect(id, query)
-  })
+  // SEC-01: these /api/dev/* diagnostic routes are unauthenticated by design
+  // (contributor tooling per CONTRIBUTING.md step 7) and expose internal
+  // adapter state + trigger live upstream requests on demand. That's fine for
+  // local/staging use, but must never be reachable in production — gate the
+  // whole block behind NODE_ENV so a production deploy never registers them.
+  if (process.env.NODE_ENV !== 'production') {
+    // Generic provider inspector: works for any registered provider by catalog id
+    // (e.g. /api/dev/inspect/prov-hdx?q=venezuela). See CONTRIBUTING.md step 7.
+    fastify.get('/api/dev/inspect/:id', async (request) => {
+      await ensureReady()
+      const { id } = request.params as { id: string }
+      const query = (request.query as { q?: string }).q || 'Maria'
+      return gateway.inspect(id, query)
+    })
 
-  fastify.get('/api/dev/inspect-legacy/venezuelatebusca', async (request, reply) => {
-    const query = (request.query as { q?: string }).q || 'Maria'
-    const diagnostic = {
-      rawRequestUrl: `https://venezuelatebusca.com/_root.data?query=${encodeURIComponent(query)}`,
-      httpStatus: 0,
-      normalizedResults: 0,
-      parserErrors: [] as string[],
-    }
-    try {
-      const adapter = new VenezuelaTeBuscaAdapter({
-        id: 'venezuela_te_busca',
-        display_name: 'Venezuela Te Busca',
-        description: 'Search missing persons across Venezuela.',
-        website: 'https://venezuelatebusca.com',
-        logo: '',
-        status: 'active',
-        adapter: 'VenezuelaTeBuscaAdapter',
-        capabilities: ['search'],
-      })
-      const results = await adapter.search(query)
-      diagnostic.httpStatus = 200
-      diagnostic.normalizedResults = results.length
-    } catch (err) {
-      diagnostic.httpStatus = 500
-      diagnostic.parserErrors.push(err instanceof Error ? err.message : String(err))
-    }
-    reply.send(diagnostic)
+    fastify.get('/api/dev/inspect-legacy/venezuelatebusca', async (request, reply) => {
+      const query = (request.query as { q?: string }).q || 'Maria'
+      const diagnostic = {
+        rawRequestUrl: `https://venezuelatebusca.com/_root.data?query=${encodeURIComponent(query)}`,
+        httpStatus: 0,
+        normalizedResults: 0,
+        parserErrors: [] as string[],
+      }
+      try {
+        const adapter = new VenezuelaTeBuscaAdapter({
+          id: 'venezuela_te_busca',
+          display_name: 'Venezuela Te Busca',
+          description: 'Search missing persons across Venezuela.',
+          website: 'https://venezuelatebusca.com',
+          logo: '',
+          status: 'active',
+          adapter: 'VenezuelaTeBuscaAdapter',
+          capabilities: ['search'],
+        })
+        const results = await adapter.search(query)
+        diagnostic.httpStatus = 200
+        diagnostic.normalizedResults = results.length
+      } catch (err) {
+        diagnostic.httpStatus = 500
+        diagnostic.parserErrors.push(err instanceof Error ? err.message : String(err))
+      }
+      reply.send(diagnostic)
+    })
+  }
   })
 
   return fastify

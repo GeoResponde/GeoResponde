@@ -12,7 +12,7 @@ export class VenezuelaTeBuscaAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[VenezuelaTeBuscaAdapter] Fetching data for query: "${query}"`);
+      console.log(`[VenezuelaTeBuscaAdapter] Fetching data`);
       
       const deserializedData = await fetchRemixSingleFetch(
         'https://venezuelatebusca.com', 
@@ -23,11 +23,11 @@ export class VenezuelaTeBuscaAdapter implements BaseAdapter {
 
       const normalizedResults = parseVenezuelaTeBuscaStructural(deserializedData);
 
-      console.log(`[VenezuelaTeBuscaAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`);
+      console.log(`[VenezuelaTeBuscaAdapter] Extracted ${normalizedResults.length} normalized results`);
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[VenezuelaTeBuscaAdapter] Search failed:', error);
+    } catch {
+      console.error('[VenezuelaTeBuscaAdapter] Search failed (network/transport error)');
       return [];
     }
   }

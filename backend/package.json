@@ -16,6 +16,8 @@
   "type": "module",
   "dependencies": {
     "@fastify/cors": "^11.2.0",
+    "@fastify/helmet": "^13.1.0",
+    "@fastify/rate-limit": "^11.1.0",
     "@georesponde/shared": "workspace:*",
     "cheerio": "^1.2.0",
     "fastify": "^5.8.5",

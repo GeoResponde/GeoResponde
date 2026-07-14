@@ -14,7 +14,7 @@ export class EncuentralosAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[EncuentralosAdapter] Fetching data for query: "${query}"`);
+      console.log(`[EncuentralosAdapter] Fetching data`);
 
       const url = `${API_BASE}?q=${encodeURIComponent(query)}&limit=10`;
       const response = await fetchJson<EncuentralosResponse>(url, { timeoutMs: 10000 });
@@ -22,12 +22,12 @@ export class EncuentralosAdapter implements BaseAdapter {
       const normalizedResults = parseEncuentralosResponse(response);
 
       console.log(
-        `[EncuentralosAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
+        `[EncuentralosAdapter] Extracted ${normalizedResults.length} normalized results`,
       );
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[EncuentralosAdapter] Search failed:', error);
+    } catch {
+      console.error('[EncuentralosAdapter] Search failed (network/transport error)');
       return [];
     }
   }

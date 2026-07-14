@@ -14,7 +14,7 @@ export class SosVenezuelaAdapter implements BaseAdapter {
 
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
-      console.log(`[SosVenezuelaAdapter] Fetching data for query: "${query}"`);
+      console.log(`[SosVenezuelaAdapter] Fetching data`);
 
       const url = `${API_BASE}?q=${encodeURIComponent(query)}&limit=20`;
       const response = await fetchJson<SosVenezuelaResponse | SosVenezuelaItem[]>(url, {
@@ -24,12 +24,12 @@ export class SosVenezuelaAdapter implements BaseAdapter {
       const normalizedResults = parseSosVenezuelaResponse(response);
 
       console.log(
-        `[SosVenezuelaAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
+        `[SosVenezuelaAdapter] Extracted ${normalizedResults.length} normalized results`,
       );
 
       return normalizedResults;
-    } catch (error) {
-      console.error('[SosVenezuelaAdapter] Search failed:', error);
+    } catch {
+      console.error('[SosVenezuelaAdapter] Search failed (network/transport error)');
       return [];
     }
   }
