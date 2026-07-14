@@ -1,0 +1,56 @@
+{
+  "buscadas": [
+    {
+      "id": "00000000-0000-0000-0000-0000000000a1",
+      "nombre_completo": "Ana Prueba",
+      "cedula": "V-12345678",
+      "edad": 53,
+      "descripcion": "desaparecido",
+      "ultima_ubicacion": "Estado Ejemplo, Municipio Ficticio",
+      "reportado_por": "Juan Ejemplo",
+      "contacto_reportante": "+58-412-123-4567",
+      "fecha_reporte": "2026-07-01T10:00:00Z",
+      "foto_filename": "ana_prueba.jpg"
+    },
+    {
+      "id": "00000000-0000-0000-0000-0000000000a2",
+      "nombre_completo": "Carlos Ejemplo",
+      "cedula": "E-87654321",
+      "edad": 32,
+      "descripcion": "desaparecido",
+      "ultima_ubicacion": "Ciudad Test, Urbanización Prueba",
+      "reportado_por": "María Test",
+      "contacto_reportante": "+58-414-987-6543",
+      "fecha_reporte": "2026-07-02T15:30:00Z",
+      "foto_filename": null
+    }
+  ],
+  "encontradas": [
+    {
+      "id": "00000000-0000-0000-0000-0000000000b1",
+      "nombre_completo": "Pedro Encontrado",
+      "cedula": "V-11223344",
+      "edad_aproximada": 45,
+      "descripcion_fisica": "Altura media, cabello oscuro",
+      "ubicacion_actual": "Hospital Central de Ejemplo",
+      "estado_salud": "estable",
+      "reportado_por": "Dr. Test",
+      "contacto_reportante": "+58-424-111-2222",
+      "fecha_reporte": "2026-07-03T08:00:00Z",
+      "foto_filename": "pedro_encontrado.jpg"
+    },
+    {
+      "id": "00000000-0000-0000-0000-0000000000b2",
+      "nombre_completo": "Luisa Recuperada",
+      "cedula": "V-44332211",
+      "edad_aproximada": 28,
+      "descripcion_fisica": "Baja estatura, cabello rubio",
+      "ubicacion_actual": "Refugio Temporal Test",
+      "estado_salud": "leve herida",
+      "reportado_por": "Enfermera Test",
+      "contacto_reportante": "+58-416-333-4444",
+      "fecha_reporte": "2026-07-03T14:00:00Z",
+      "foto_filename": "luisa_recuperada.jpg"
+    }
+  ]
+}

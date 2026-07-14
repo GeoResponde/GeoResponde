@@ -319,5 +319,18 @@
     "capabilities": [
       "search"
     ]
+  },
+  {
+    "id": "prov-estoyaquive",
+    "display_name": "Estoy Aquí VE",
+    "website": "https://estoyaquive.up.railway.app",
+    "description": "Missing person database for Venezuela that includes both missing and found persons and pets, via its public REST API.",
+    "logo": "/logos/estoyaquive.png",
+    "status": "active",
+    "adapter": "EstoyAquiVeAdapter",
+    "capabilities": [
+      "search",
+      "person_lookup"
+    ]
   }
 ]

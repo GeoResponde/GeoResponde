@@ -147,5 +147,11 @@
     "name": "Venezuela Rescate",
     "url": "https://venezuelarescate.com/",
     "type": "NGO"
+  },
+  {
+    "id": "prov-estoyaquive",
+    "name": "Estoy Aquí VE",
+    "url": "https://estoyaquive.up/railway.app/",
+    "type": "NGO"
   }
 ]
