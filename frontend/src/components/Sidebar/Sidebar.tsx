@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type ReactNode, useEffect } from 'react';
 import { useCatalog } from '../../hooks/useCatalog';
 import { LayerToggle } from './LayerToggle';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,22 @@ export function Sidebar({
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set(['Infrastructure', 'Humanitarian', 'Logistics', 'Community', 'Official']));
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [liveSourcesOpen, setLiveSourcesOpen] = useState(true);
+  const [externalOpen, setExternalOpen] = useState(true);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
 
   const toggleCategory = (category: string) => {
     setOpenCategories(prev => {
@@ -67,21 +83,19 @@ export function Sidebar({
       {mobileOpen ? 'Close Layers' : 'View Layers'}
     </button>
     <div className={`sidebar-container glass-panel animate-fade-in ${mobileOpen ? 'mobile-open' : ''}`}>
-      <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div 
+        className="sidebar-header" 
+        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: isMobile ? 'pointer' : 'default' }}
+        onClick={isMobile ? () => setMobileOpen(!mobileOpen) : undefined}
+      >
         <div>
           <h1 className="sidebar-title">{t('sidebar.title')}</h1>
           <p className="sidebar-subtitle">{t('sidebar.subtitle')}</p>
           <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px', fontStyle: 'italic' }}>{t('sidebar.currentEvent')}</p>
         </div>
-        {mobileOpen && (
-          <button 
-            className="mobile-nav-toggle"
-            onClick={() => setMobileOpen(false)}
-            style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer' }}
-          >
-            ✕
-          </button>
-        )}
+        <div className="mobile-chevron-indicator">
+          {mobileOpen ? '▼' : '▲'}
+        </div>
       </div>
       
       <div className="sidebar-content">
@@ -162,7 +176,12 @@ export function Sidebar({
               {dynamicSourcesSlot && (
                 <div style={{ marginTop: '20px' }}>
                   <div
+                    onClick={isMobile ? () => setLiveSourcesOpen(!liveSourcesOpen) : undefined}
                     style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      cursor: isMobile ? 'pointer' : 'default',
                       fontWeight: 'bold',
                       color: '#e2e8f0',
                       marginBottom: '12px',
@@ -170,18 +189,32 @@ export function Sidebar({
                       borderBottom: '1px solid rgba(255,255,255,0.1)',
                     }}
                   >
-                    {t('sidebar.liveSources')}
+                    <span>{t('sidebar.liveSources')}</span>
+                    {isMobile && <span>{liveSourcesOpen ? '▼' : '▶'}</span>}
                   </div>
-                  {dynamicSourcesSlot}
+                  {(!isMobile || liveSourcesOpen) && dynamicSourcesSlot}
                 </div>
               )}
             </div>
 
             <div style={{ marginTop: '20px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-              <div style={{ fontWeight: 'bold', color: '#e2e8f0', marginBottom: '8px' }}>
-                {t('sidebar.externalResources')}
+              <div
+                onClick={isMobile ? () => setExternalOpen(!externalOpen) : undefined}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: isMobile ? 'pointer' : 'default',
+                  fontWeight: 'bold',
+                  color: '#e2e8f0',
+                  marginBottom: '8px',
+                }}
+              >
+                <span>{t('sidebar.externalResources')}</span>
+                {isMobile && <span>{externalOpen ? '▼' : '▶'}</span>}
               </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.85rem' }}>
+              {(!isMobile || externalOpen) && (
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.85rem' }}>
                 <li style={{ marginBottom: '6px' }}>
                   <a href="https://drp-venezuela-disastersesriven.hub.arcgis.com/pages/aplicaciones#cu7yb5d6p" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
                     ↗ Esri Venezuela Disaster Hub
@@ -233,6 +266,7 @@ export function Sidebar({
                   </a>
                 </li>
               </ul>
+              )}
             </div>
           </>
         )}

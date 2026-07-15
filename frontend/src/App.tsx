@@ -10,9 +10,9 @@ import { Footer } from './components/layout/Footer';
 function App() {
   return (
     <Router>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', width: '100vw' }}>
         <TopNav />
-        <main style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+        <main className="app-main" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
           <Routes>
             <Route path="/" element={<Navigate to="/situation" replace />} />
             <Route path="/situation" element={<Situation />} />

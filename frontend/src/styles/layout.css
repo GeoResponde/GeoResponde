@@ -1,6 +1,6 @@
 .app-layout {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   position: relative;
 }
@@ -209,7 +209,20 @@
 }
 
 /* MOBILE RESPONSIVE STYLES */
+.mobile-chevron-indicator {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .mobile-chevron-indicator {
+    display: block !important;
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
   /* Sidebar Bottom Sheet */
   .sidebar-container {
     top: auto;
@@ -223,30 +236,23 @@
     border-left: none;
     border-right: none;
     border-top: 1px solid var(--border-subtle);
-    transform: translateY(100%);
+    transform: translateY(calc(100% - 48px));
     transition: transform 0.3s ease-in-out;
     z-index: 9999;
+    animation: none !important;
   }
   .sidebar-container.mobile-open {
-    transform: translateY(0);
+    transform: translateY(0) !important;
+  }
+  
+  .sidebar-header {
+    padding: 12px 24px !important;
+    cursor: grab;
   }
   
   /* Mobile Sidebar Toggle Button */
   .mobile-sidebar-toggle {
-    display: block !important;
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: var(--z-panel);
-    background: #0f172a;
-    border: 1px solid #334155;
-    padding: 12px 24px;
-    border-radius: 24px;
-    font-weight: bold;
-    color: #fff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    cursor: pointer;
+    display: none !important;
   }
 
   /* Top Nav */
