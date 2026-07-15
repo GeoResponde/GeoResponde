@@ -4,6 +4,8 @@
 
 This document is a reference template for integrating a new humanitarian data provider (for example, a missing persons registry, a shelter directory, or a similar civic dataset) into the GeoResponde backend. It is grounded in the existing adapters in the repository (`ayudavenezuela`, `hdx`, `encuentralos`, `reencuentra-ve`), so every pattern shown here already exists in production code. Use it alongside `CONTRIBUTING.md`, which documents the overall contribution workflow.
 
+**Important**: Before submitting your pull request, you must ensure your integration satisfies the [Provider Definition of Done](../contributing/provider-definition-of-done.md).
+
 If anything here conflicts with the code, the code wins. This file describes what the code does today, not an aspirational design.
 
 ## 1. Provider folder structure
@@ -156,167 +158,9 @@ registerAdapter('YourProviderAdapter', YourProviderAdapter);
 
 `adapter` must match the string you passed to `registerAdapter`. `capabilities` is a plain string array (`HumanitarianProvider.capabilities: string[]`); only add `"submission"` if the adapter actually implements a working submit flow and declares `submissionTopics`, since `isSubmissionCapable()` in `BaseAdapter.ts` checks both.
 
-## 8. Pull Request checklist
-
-For the full pre-PR self-check (search, attribution, license, health endpoint,
-CI), see the [Provider Testing Checklist](./testing-checklist.md). The items
-below are the adapter-specific mechanics this template walks through:
-
-- [ ] Fixtures are synthetic only, no real personal data anywhere in `fixtures/`
-- [ ] Parser unit tests pass (`npm run test` in `backend/`)
-- [ ] Catalog entry added to `public/catalog/providers.json` (and `data/catalog/providers/providers.yaml`)
-- [ ] Adapter registered in `backend/src/adapters/registry.ts`
-- [ ] Integration verified through the developer inspector endpoint (`GET /api/dev/inspect/:id`, per step 7 of "Adding a Provider" in CONTRIBUTING.md)
-- [ ] An official API or JSON/XHR endpoint was used instead of HTML scraping, unless no such source exists for this provider
-- [ ] PR opened from a fork, following the branching workflow in CONTRIBUTING.md
-
-## Appendix: minimal copy-pasteable skeleton
-
-### `adapter.ts`
-
-```ts
-import { BaseAdapter } from '../BaseAdapter.js';
-import { HumanitarianProvider, NormalizedSearchResult, Report, SubmissionResult } from '@georesponde/shared';
-import { fetchJson } from '../../transports/rest/client.js';
-import { parseYourProviderResponse, YourProviderItem } from './parser.js';
-
-const API_BASE = 'https://your-provider.example/api/records';
-
-/**
- * Adapter for Your Provider (https://your-provider.example/), a missing
- * persons registry exposing a public JSON endpoint.
- */
-export class YourProviderAdapter implements BaseAdapter {
-  provider: HumanitarianProvider;
-
-  constructor(providerConfig: HumanitarianProvider) {
-    this.provider = providerConfig;
-  }
-
-  async search(query: string): Promise<NormalizedSearchResult[]> {
-    try {
-      console.log(`[YourProviderAdapter] Fetching data for query: "${query}"`);
-
-      const url = `${API_BASE}?q=${encodeURIComponent(query)}&limit=20`;
-      const response = await fetchJson<YourProviderItem[]>(url, { timeoutMs: 10000 });
-
-      const normalizedResults = parseYourProviderResponse(response);
-
-      console.log(
-        `[YourProviderAdapter] Extracted ${normalizedResults.length} normalized results for query: "${query}"`,
-      );
-
-      return normalizedResults;
-    } catch (error) {
-      console.error('[YourProviderAdapter] Search failed:', error);
-      return [];
-    }
-  }
-
-  async submit(_report: Report): Promise<SubmissionResult> {
-    return { provider: this.provider.id, mode: 'dry-run', status: 'skipped' };
-  }
-}
-```
-
-### `parser.ts`
-
-```ts
-import { NormalizedSearchResult } from '@georesponde/shared';
-import { makeStatusMapper, normalizeGender } from '../person.js';
-
-/**
- * Shape of a single record returned by Your Provider's public API. Only the
- * fields we consume are typed; the API may return more columns.
- */
-export interface YourProviderItem {
-  id: string;
-  full_name?: string | null;
-  age?: number | null;
-  sex?: string | null;
-  status?: string | null;
-  last_seen_location?: string | null;
-  photo_url?: string | null;
-  updated_at?: string | null;
-}
-
-const toStatus = makeStatusMapper({
-  desaparecido: 'missing',
-  encontrado: 'found',
-});
-
-export function normalizeRecord(record: YourProviderItem): NormalizedSearchResult {
-  return {
-    provider: 'Your Provider Display Name',
-    provider_id: record.id,
-    type: 'person',
-    title: record.full_name || 'Desconocido',
-    status: record.status ?? undefined,
-    last_update: record.updated_at ?? undefined,
-    thumbnail: record.photo_url ?? undefined,
-    url: `https://your-provider.example/persona/${record.id}`,
-    person: {
-      fullName: record.full_name ?? undefined,
-      age: typeof record.age === 'number' ? record.age : undefined,
-      gender: normalizeGender(record.sex),
-      status: toStatus(record.status),
-      rawStatus: record.status ?? undefined,
-      lastSeenLocation: record.last_seen_location ?? undefined,
-      photoUrl: record.photo_url ?? undefined,
-    },
-    metadata: {},
-  };
-}
-
-/**
- * Pure parser: maps Your Provider's array response into normalized search
- * results. Returns an empty array when the input is not an array.
- */
-export function parseYourProviderResponse(
-  response: YourProviderItem[] | undefined | null,
-): NormalizedSearchResult[] {
-  if (!Array.isArray(response)) {
-    return [];
-  }
-
-  return response.map(normalizeRecord);
-}
-```
-
-### `__tests__/parser.test.ts`
-
-```ts
-import { describe, it, expect } from 'vitest';
-import * as fs from 'fs';
-import * as path from 'path';
-import { parseYourProviderResponse } from '../parser.js';
-
-describe('Your Provider Parser', () => {
-  const fixturePath = path.join(__dirname, '../fixtures/records.json');
-  const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
-
-  it('parses the fixture array into normalized results', () => {
-    const results = parseYourProviderResponse(fixture);
-    expect(results).toHaveLength(2);
-  });
-
-  it('maps the first record correctly', () => {
-    const [first] = parseYourProviderResponse(fixture);
-    expect(first.provider).toBe('Your Provider Display Name');
-    expect(first.type).toBe('person');
-    expect(first.title).toBeTruthy();
-  });
-
-  it('returns an empty array when input is not an array', () => {
-    expect(parseYourProviderResponse(undefined)).toEqual([]);
-    expect(parseYourProviderResponse(null)).toEqual([]);
-    expect(parseYourProviderResponse({} as any)).toEqual([]);
-  });
-});
-```
 
 
-## 9. Supabase / PostgREST Reference Implementations
+## 8. Supabase / PostgREST Reference Implementations
 
 When integrating with Supabase-backed frontend applications, follow these reference patterns established by je-ayuda-venezuela:
 
