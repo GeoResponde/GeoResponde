@@ -214,3 +214,16 @@
   adapter: TeBuscoAdapter
   capabilities:
     - search
+
+- id: src-aje-ayuda-venezuela
+  display_name: AJE Ayuda Venezuela
+  website: https://ajevenezuela.org/ayuda-venezuela
+  description: Volunteer Initiative covering collection centers, donations, and volunteers.
+  logo: /logos/aje.png
+  status: active
+  adapter: AjeAyudaVenezuelaAdapter
+  capabilities:
+    - search
+  config:
+    supabaseUrl: "https://jtrorjemdsuvfhxionva.supabase.co"
+    supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0cm9yamVtZHN1dmZoeGlvbnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDA4NjQsImV4cCI6MjA4Mjg3Njg2NH0.N1f7ZBLTs0WlcVEufvXgArVdvcu3UKOCh4135AWUzbY"

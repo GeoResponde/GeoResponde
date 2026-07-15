@@ -132,6 +132,12 @@
     "description": "NGO"
   },
   {
+    "id": "org-aje-ayuda-venezuela",
+    "title": "AJE Ayuda Venezuela",
+    "type": "organization",
+    "description": "NGO"
+  },
+  {
     "id": "src-usgs-api",
     "title": "USGS Earthquake API (2.5+ M, 1 Day)",
     "type": "source"

@@ -314,3 +314,13 @@ describe('Your Provider Parser', () => {
   });
 });
 ```
+
+
+## 9. Supabase / PostgREST Reference Implementations
+
+When integrating with Supabase-backed frontend applications, follow these reference patterns established by je-ayuda-venezuela:
+
+1. **Treat the Anon Key as Public Config**: Store the supabaseUrl and supabaseAnonKey inside providers.yaml configuration. Do not hardcode them.
+2. **Use Shared Transport**: The standard etchJson transport natively accepts custom headers. Pass pikey and Authorization: Bearer alongside your requests.
+3. **PostgREST Pagination**: Avoid fetching unlimited records. Pass Range: 0-99 and Range-Unit: items headers to use PostgREST native offset pagination.
+4. **Verify RLS via Anon Key**: Before implementation, always ensure the table allows anonymous SELECT operations. Never implement submissions unless the provider authorizes it, even if an RPC exists.

@@ -99,3 +99,7 @@
   name: Te Busco
   url: https://tebusco.app/
   type: NGO
+
+- id: org-aje-ayuda-venezuela
+  name: AJE Ayuda Venezuela
+  type: NGO

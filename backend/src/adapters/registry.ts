@@ -1,5 +1,6 @@
 import { HumanitarianProvider } from '@georesponde/shared';
 import { BaseAdapter } from './BaseAdapter.js';
+import { AjeAyudaVenezuelaAdapter } from './aje-ayuda-venezuela/adapter.js';
 import { VenezuelaTeBuscaAdapter } from './venezuelatebusca/adapter.js';
 import { HdxAdapter } from './hdx/adapter.js';
 import { EncuentralosAdapter } from './encuentralos/adapter.js';
@@ -79,3 +80,5 @@ registerAdapter('UshahidiAdapter', UshahidiAdapter);
 registerAdapter('IngresosAdapter', IngresosAdapter);
 registerAdapter('AvisaveAdapter', AvisaveAdapter);
 registerAdapter('TeBuscoAdapter', TeBuscoAdapter);
+
+registerAdapter('AjeAyudaVenezuelaAdapter', AjeAyudaVenezuelaAdapter);
