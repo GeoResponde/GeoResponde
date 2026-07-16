@@ -14,15 +14,15 @@ describe('AcopioVenezuelaAyudaParser', () => {
     const [first, second, third] = results;
 
     expect(first.title).toBe('Fundación Ficticia');
-    expect(first.description).toBe('Agua, alimentos no perecederos, ropa en buen estado');
-    expect(first.location).toBe('Avenida Siempre Viva 123, Caracas, Venezuela');
+    expect(first.subtitle).toBe('Agua, alimentos no perecederos, ropa en buen estado');
+    expect(first.metadata?.address).toBe('Avenida Siempre Viva 123, Caracas, Venezuela');
     expect(first.metadata?.photo).toBe('si');
     expect(first.metadata?.reported).toBe(false);
 
     expect(second.metadata?.photo).toBeUndefined(); // 'no' should be filtered out
     expect(second.metadata?.reported).toBe(true); // '1' is true
 
-    expect(third.location).toBe('Campus Universitario'); // Empty city/country omitted
+    expect(third.metadata?.address).toBe('Campus Universitario'); // Empty city/country omitted
     expect(third.metadata?.photo).toBeUndefined();
     expect(third.metadata?.reported).toBeUndefined();
   });

@@ -17,15 +17,18 @@ export function parseCollectionCenters(
       }
 
       const title = item['Quién'].trim();
-      const description = item['Qué reciben']?.trim() || 'No especificado';
+      const subtitle = item['Qué reciben']?.trim() || 'No especificado';
 
       const locationParts = [item['Dirección'], item['Ciudad '], item['País']]
         .filter((part): part is string => typeof part === 'string' && part.trim() !== '')
         .map((part) => part.trim());
       
-      const location = locationParts.join(', ') || undefined;
+      const address = locationParts.join(', ') || undefined;
 
       const metadata: Record<string, string | boolean> = {};
+      if (address) {
+        metadata.address = address;
+      }
       if (item['Contacto']?.trim()) {
         metadata.contact = item['Contacto'].trim();
       }
@@ -40,15 +43,14 @@ export function parseCollectionCenters(
       }
 
       const result: NormalizedSearchResult = {
-        id: `acopio-${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`,
+        provider_id: `acopio-${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`,
         provider: providerId,
         type: 'collection_center',
         title,
-        description,
-        location,
+        subtitle,
         url: 'https://acopiovenezuela.vercel.app/', // Provider doesn't expose per-item URLs
         metadata,
-        updatedAt: new Date().toISOString(), // Sheet2API doesn't provide timestamps per row
+        last_update: new Date().toISOString(), // Sheet2API doesn't provide timestamps per row
       };
 
       return result;

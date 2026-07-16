@@ -13,9 +13,11 @@ export class AcopioVenezuelaAyudaAdapter implements BaseAdapter {
   constructor(providerConfig: HumanitarianProvider) {
     this.provider = providerConfig;
     
+    // @ts-expect-error metadata is not fully typed yet
+    const metadata = providerConfig.metadata || {};
     // Configurable TTL from provider metadata, falling back to 5 minutes
-    const ttlMs = this.provider.metadata?.cacheTtlMs 
-      ? Number(this.provider.metadata.cacheTtlMs) 
+    const ttlMs = metadata.cacheTtlMs 
+      ? Number(metadata.cacheTtlMs) 
       : 5 * 60 * 1000;
       
     this.cache = new VolatileTtlCache({ ttlMs });
@@ -31,7 +33,9 @@ export class AcopioVenezuelaAyudaAdapter implements BaseAdapter {
         console.log(`[AcopioVenezuelaAyudaAdapter] CACHE MISS: Fetching data from upstream`);
         const startTime = Date.now();
         
-        const url = this.provider.config?.url;
+        // @ts-expect-error config is not fully typed yet
+        const config = this.provider.config || {};
+        const url = config.url;
         if (!url) {
           throw new Error('Missing URL in provider config');
         }
@@ -54,8 +58,7 @@ export class AcopioVenezuelaAyudaAdapter implements BaseAdapter {
       return allCenters.filter(center => {
         return (
           center.title.toLowerCase().includes(lowerQuery) ||
-          (center.description && center.description.toLowerCase().includes(lowerQuery)) ||
-          (center.location && center.location.toLowerCase().includes(lowerQuery))
+          (center.subtitle && center.subtitle.toLowerCase().includes(lowerQuery))
         );
       });
     } catch (e) {
