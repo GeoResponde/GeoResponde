@@ -227,3 +227,17 @@
   config:
     supabaseUrl: "https://jtrorjemdsuvfhxionva.supabase.co"
     supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0cm9yamVtZHN1dmZoeGlvbnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDA4NjQsImV4cCI6MjA4Mjg3Njg2NH0.N1f7ZBLTs0WlcVEufvXgArVdvcu3UKOCh4135AWUzbY"
+
+- id: src-acopiovenezuela
+  display_name: Centros de Acopio
+  website: https://acopiovenezuela.vercel.app/
+  description: Volunteer-led directory of collection centers and supply needs across Venezuela.
+  logo: /logos/acopiovenezuela.png
+  status: active
+  adapter: AcopioVenezuelaAyudaAdapter
+  capabilities:
+    - search
+  metadata:
+    cacheTtlMs: 300000
+  config:
+    url: "https://sheet2api.com/v1/asiBQJjRTh2I/copia-de-centros-de-acopio-terremoto-venezuela"

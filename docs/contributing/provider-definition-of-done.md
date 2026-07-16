@@ -19,7 +19,7 @@ This document serves as the canonical checklist for all new humanitarian provide
 
 ## Reusability (If Applicable)
 
-- [ ] **Provider SDK updated**: (Optional) If new reusable patterns (e.g., PostgREST pagination, specific OAuth flows) were discovered and generalized, they are documented in the Provider SDK (`docs/providers/provider-integration-template.md`) so future integrations can reuse them.
+- [ ] **Provider SDK updated**: If new reusable infrastructure (caching, shared transports, new generic utilities, pagination helpers, OAuth flows) was introduced, it is documented in the canonical **Provider SDK** (`docs/providers/provider-sdk.md`) so future integrations can reuse the exact same pattern before the PR is considered complete.
 
 ## Testing
 

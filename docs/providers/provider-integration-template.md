@@ -104,6 +104,10 @@ There is also `backend/src/transports/remix/client.ts` (with a companion `deseri
 
 An official JSON/XHR endpoint should always be preferred over scraping HTML. Both `fetchJson` and `fetchHtml` exist and are equally supported, but scraping is explicitly documented as a last resort for providers with no machine-readable data source.
 
+### Caching & Rate Limiting
+
+If your upstream API is rate-limited, fragile, or built on a free-tier service (like Sheet2API), **do not build custom caching logic**. Use the shared `VolatileTtlCache` utility. See the [Provider SDK](./provider-sdk.md) for detailed implementation instructions on how to cache normalized results safely at the adapter level.
+
 ## 5. Fixtures
 
 Fixtures must be synthetic. Real missing-person records carry personally identifiable information (full names, ages, physical descriptions, photos, contact details) that must never be committed to a public repository, even though federating that same data live at query time is fine, because GeoResponde only links back to the source and never persists it.

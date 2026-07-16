@@ -21,6 +21,7 @@ import { UshahidiAdapter } from './ushahidi/adapter.js';
 import { IngresosAdapter } from './ingresos/adapter.js';
 import { AvisaveAdapter } from './avisave/adapter.js';
 import { TeBuscoAdapter } from './tebusco/adapter.js';
+import { AcopioVenezuelaAyudaAdapter } from './acopio-venezuela-ayuda/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -82,3 +83,4 @@ registerAdapter('AvisaveAdapter', AvisaveAdapter);
 registerAdapter('TeBuscoAdapter', TeBuscoAdapter);
 
 registerAdapter('AjeAyudaVenezuelaAdapter', AjeAyudaVenezuelaAdapter);
+registerAdapter('AcopioVenezuelaAyudaAdapter', AcopioVenezuelaAyudaAdapter);

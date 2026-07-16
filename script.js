@@ -1,0 +1,1 @@
+const fs = require('fs'); const content = fs.readFileSync('c:/Users/napog/.gemini/antigravity/brain/73e21b17-58d6-402b-b470-ba31f0a9e8c8/scratch/centinela-index.js', 'utf8'); const regex = /collection\([^,]+,\s*['"]([^'"]+)['"]/g; let match; const colls = new Set(); while ((match = regex.exec(content)) !== null) { colls.add(match[1]); } console.log(Array.from(colls));

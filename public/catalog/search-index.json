@@ -138,6 +138,12 @@
     "description": "NGO"
   },
   {
+    "id": "org-acopiovenezuela",
+    "title": "Centros de Acopio Venezuela",
+    "type": "organization",
+    "description": "OTHER"
+  },
+  {
     "id": "src-usgs-api",
     "title": "USGS Earthquake API (2.5+ M, 1 Day)",
     "type": "source"

@@ -103,3 +103,8 @@
 - id: org-aje-ayuda-venezuela
   name: AJE Ayuda Venezuela
   type: NGO
+
+- id: org-acopiovenezuela
+  name: Centros de Acopio Venezuela
+  type: OTHER
+  website: https://acopiovenezuela.vercel.app/

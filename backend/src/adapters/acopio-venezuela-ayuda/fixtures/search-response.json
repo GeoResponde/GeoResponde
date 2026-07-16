@@ -1,0 +1,32 @@
+[
+  {
+    "Quién": "Fundación Ficticia",
+    "Qué reciben": "Agua, alimentos no perecederos, ropa en buen estado",
+    "Dirección": "Avenida Siempre Viva 123",
+    "Ciudad ": "Caracas",
+    "País": "Venezuela",
+    "Contacto": "@fundacionficticia / 0414-0000000",
+    "Foto": "si",
+    "reportado": "FALSE"
+  },
+  {
+    "Quién": "Grupo Scout Ficticio",
+    "Qué reciben": "Medicinas, gasas, alcohol",
+    "Dirección": "Parque Central",
+    "Ciudad ": "Valencia",
+    "País": "Venezuela",
+    "Contacto": "scouts@example.com",
+    "Foto": "no",
+    "reportado": "1"
+  },
+  {
+    "Quién": "Universidad Inventada",
+    "Qué reciben": "Insumos médicos",
+    "Dirección": "Campus Universitario",
+    "Ciudad ": "",
+    "País": "",
+    "Contacto": "",
+    "Foto": "",
+    "reportado": ""
+  }
+]
