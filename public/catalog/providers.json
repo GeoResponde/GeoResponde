@@ -291,5 +291,17 @@
     "config": {
       "url": "https://sheet2api.com/v1/asiBQJjRTh2I/copia-de-centros-de-acopio-terremoto-venezuela"
     }
+  },
+  {
+    "id": "prov-venezuelarescate",
+    "display_name": "Venezuela Rescate",
+    "website": "https://venezuelarescate.com",
+    "description": "Citizen network that allows users to search and report missing persons and urgent incidents.",
+    "logo": "/logos/venezuelarescate.png",
+    "status": "active",
+    "adapter": "VenezuelaRescateAdapter",
+    "capabilities": [
+      "search"
+    ]
   }
 ]

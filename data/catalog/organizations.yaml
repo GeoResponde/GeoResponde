@@ -108,3 +108,8 @@
   name: Centros de Acopio Venezuela
   type: OTHER
   website: https://acopiovenezuela.vercel.app/
+
+- id: prov-venezuela-rescate
+  name: Venezuela Rescate
+  url: https://venezuelarescate.com/
+  type: NGO

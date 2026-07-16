@@ -144,6 +144,12 @@
     "description": "OTHER"
   },
   {
+    "id": "prov-venezuela-rescate",
+    "title": "Venezuela Rescate",
+    "type": "organization",
+    "description": "NGO"
+  },
+  {
     "id": "src-usgs-api",
     "title": "USGS Earthquake API (2.5+ M, 1 Day)",
     "type": "source"
