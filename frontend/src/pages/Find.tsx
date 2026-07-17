@@ -168,61 +168,28 @@ export function Find() {
       {view === 'map' && results.length > 0 && <FindMap results={results} />}
 
       {view === 'list' && (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="search-results-list">
         {results.map((r, i) => (
-          <div key={i} style={{ 
-            backgroundColor: '#1e293b', 
-            padding: '24px', 
-            borderRadius: '12px',
-            borderLeft: '4px solid #3498db',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}>
-            <div>
-              <h3 style={{ margin: '0 0 8px 0', color: '#fff', fontSize: '24px' }}>{r.title}</h3>
-              <p style={{ margin: '0 0 12px 0', color: '#cbd5e1', fontSize: '16px' }}>{r.subtitle}</p>
+          <div key={i} className="search-result-card">
+            <div className="search-result-info">
+              <h3 className="search-result-title">{r.title}</h3>
+              <p className="search-result-subtitle">{r.subtitle}</p>
               {r.person && <PersonChips person={r.person} />}
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <span style={{ 
-                  backgroundColor: '#0f172a', 
-                  color: '#94a3b8', 
-                  padding: '4px 12px', 
-                  borderRadius: '16px', 
-                  fontSize: '12px', 
-                  fontWeight: 'bold',
-                  textTransform: 'capitalize'
-                }}>
+              <div className="search-result-metadata">
+                <span className="search-result-type-badge">
                   {t('find.type')}: {r.type}
                 </span>
-                <span style={{ 
-                  backgroundColor: 'transparent', 
-                  color: '#94a3b8', 
-                  fontSize: '14px', 
-                }}>
+                <span className="search-result-source">
                   {t('find.source')}: <strong style={{ color: '#fff' }}>{r.provider}</strong>
                 </span>
               </div>
             </div>
-            <div>
+            <div className="search-result-action">
               <a 
                 href={r.url} 
                 target="_blank" 
                 rel="noreferrer"
-                style={{
-                  display: 'inline-block',
-                  padding: '12px 24px',
-                  backgroundColor: '#334155',
-                  color: '#fff',
-                  textDecoration: 'none',
-                  borderRadius: '8px',
-                  fontWeight: 'bold',
-                  transition: 'background-color 0.2s',
-                  whiteSpace: 'nowrap'
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#475569'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#334155'}
+                className="search-result-button"
               >
                 {t('find.openResource')}
               </a>
