@@ -174,7 +174,10 @@ GeoResponde welcomes contributions from everyone; whether you are a developer, s
 
 ### Getting Involved
 1. Please read `CONTRIBUTING.md` and `docs/community/ways-to-contribute.md` before opening a Pull Request.
-2. Review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand the standards and expectations we uphold in our community.
+2. If you are adding a new data provider, please consult the canonical integration resources:
+   - [Provider Integration Template](docs/providers/provider-integration-template.md)
+   - [Provider Definition of Done](docs/contributing/provider-definition-of-done.md)
+3. Review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand the standards and expectations we uphold in our community.
 
 ### Community and Support
 If you get stuck, find a bug, or want to propose a new feature:

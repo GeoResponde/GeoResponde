@@ -1,5 +1,6 @@
 import { HumanitarianProvider } from '@georesponde/shared';
 import { BaseAdapter } from './BaseAdapter.js';
+import { AjeAyudaVenezuelaAdapter } from './aje-ayuda-venezuela/adapter.js';
 import { VenezuelaTeBuscaAdapter } from './venezuelatebusca/adapter.js';
 import { HdxAdapter } from './hdx/adapter.js';
 import { EncuentralosAdapter } from './encuentralos/adapter.js';
@@ -20,6 +21,7 @@ import { UshahidiAdapter } from './ushahidi/adapter.js';
 import { IngresosAdapter } from './ingresos/adapter.js';
 import { AvisaveAdapter } from './avisave/adapter.js';
 import { TeBuscoAdapter } from './tebusco/adapter.js';
+import { AcopioVenezuelaAyudaAdapter } from './acopio-venezuela-ayuda/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -79,3 +81,6 @@ registerAdapter('UshahidiAdapter', UshahidiAdapter);
 registerAdapter('IngresosAdapter', IngresosAdapter);
 registerAdapter('AvisaveAdapter', AvisaveAdapter);
 registerAdapter('TeBuscoAdapter', TeBuscoAdapter);
+
+registerAdapter('AjeAyudaVenezuelaAdapter', AjeAyudaVenezuelaAdapter);
+registerAdapter('AcopioVenezuelaAyudaAdapter', AcopioVenezuelaAyudaAdapter);

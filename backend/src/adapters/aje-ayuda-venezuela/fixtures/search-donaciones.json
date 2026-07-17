@@ -1,0 +1,27 @@
+[
+  {
+    "id": "33333333-3333-3333-3333-333333333333",
+    "organizacion": "Organización de Ayuda",
+    "descripcion": "Ayuda comunitaria",
+    "tipo_ayuda": "Médica",
+    "alcance": "nacional",
+    "link_oficial": "https://ayuda.org",
+    "datos_donacion": [
+      {
+        "banco": "Banco XYZ",
+        "cuenta": "0102-..."
+      }
+    ],
+    "contacto_telefono": "0212-1111111",
+    "contacto_whatsapp": "0414-2222222",
+    "contacto_email": "info@ayuda.org",
+    "logo_url": "https://ayuda.org/logo.png",
+    "estado": "activo",
+    "confirmado_por_aje": true,
+    "destacado": false,
+    "oculto": false,
+    "ultima_revision_at": "2026-07-12T12:00:00Z",
+    "created_at": "2026-07-12T10:00:00Z",
+    "updated_at": "2026-07-12T12:00:00Z"
+  }
+]
