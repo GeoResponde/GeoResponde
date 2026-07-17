@@ -382,6 +382,23 @@
     border-radius: 8px;
     width: 100%;
   }
+
+  .search-result-card {
+    padding: 16px;
+    gap: 16px;
+  }
+  .search-result-title {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .search-result-subtitle {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .search-result-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
   
   /* Report Page */
   .report-grid {
