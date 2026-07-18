@@ -5,6 +5,7 @@ import { Find } from './pages/Find';
 import { Report } from './pages/Report';
 import { About } from './pages/About';
 import { ProviderStatus } from './pages/Dev/ProviderStatus';
+import { Providers } from './pages/Providers';
 import { Footer } from './components/layout/Footer';
 
 function App() {
@@ -19,9 +20,9 @@ function App() {
             <Route path="/find" element={<Find />} />
             <Route path="/report" element={<Report />} />
             <Route path="/about" element={<About />} />
-            <Route path="/providers" element={<ProviderStatus />} />
-            {/* Kept for anyone with the old dev-only link bookmarked. */}
-            <Route path="/dev/providers" element={<Navigate to="/providers" replace />} />
+            <Route path="/providers" element={<Providers />} />
+            <Route path="/dev/providers" element={<ProviderStatus />} />
+            <Route path="/dev/health" element={<Navigate to="/dev/providers" replace />} />
           </Routes>
           <Footer />
         </main>

@@ -1,0 +1,148 @@
+.container {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #0f172a;
+  color: #e2e8f0;
+  padding: 40px 20px;
+  min-height: 0;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 24px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #f8fafc;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  border-color: #38bdf8;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.providerName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+  padding-right: 8px;
+}
+
+.statusWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #cbd5e1;
+  margin: 0 0 24px 0;
+  flex-grow: 1;
+}
+
+.linkButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #0f172a;
+  color: #38bdf8;
+  border: 1px solid #334155;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s, border-color 0.2s;
+  align-self: flex-start;
+  min-height: 40px; /* Touch friendly height */
+}
+
+.linkButton:hover {
+  background-color: #1e293b;
+  border-color: #38bdf8;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+/* Responsive Media Queries */
+@media (min-width: 480px) {
+  .cardHeader {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 36px;
+  }
+  .subtitle {
+    font-size: 18px;
+  }
+}

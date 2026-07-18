@@ -334,5 +334,13 @@
             "statelessNote": "El historial de salud vive en la memoria del gateway y se reinicia en cada redespliegue; si el gateway corre en más de una instancia, las lecturas pueden variar entre ellas. Es una vista en memoria de mejor esfuerzo, no un registro duradero.",
             "loading": "Cargando proveedores..."
         }
+    },
+    "providersList": {
+        "title": "Fuentes de Datos",
+        "subtitle": "Directorio de organizaciones humanitarias integradas que aportan datos a GeoResponde.",
+        "statusConnected": "Conectado",
+        "statusConnecting": "Conectando...",
+        "statusIssues": "Experimentando Problemas",
+        "visitWebsite": "Visitar Sitio Web"
     }
 }
