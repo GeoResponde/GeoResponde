@@ -7,7 +7,7 @@
 - **Categories:** Missing Persons
 
 ## Discovery
-Venezuela Rescate is a citizen network that allows users to search and report missing persons and urgent incidents.
+Venezuela Rescate is a citizen network that allows users to search and report missing and hospitalized persons. The application uses Vite/React for the frontend and uses an API from another website (https://rescate.ventatalk.com)
 
 ## API Details
 - **Endpoint Discovered:** `GET http://rescate.ventatalk.com/api/`
