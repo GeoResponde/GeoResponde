@@ -19,6 +19,8 @@
         - - get
           - mag
         - 2
+  timestampField: time
+  timestampFormat: epoch
 - id: layer-funvisis
   name: FUNVISIS Local Earthquakes
   datasetIds:
@@ -30,6 +32,8 @@
   visualization:
     type: points
     color: "#3498db"
+  timestampField: time
+  timestampFormat: epoch
 
 - id: layer-faults
   name: Tectonic Faults

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Activity, ShieldCheck } from 'lucide-react';
 import { bboxToEonetParam } from '@georesponde/shared';
@@ -9,7 +9,7 @@ import { useUsgsEarthquakes } from '../hooks/useUsgsEarthquakes';
 import { useFunvisisEarthquakes } from '../hooks/useFunvisisEarthquakes';
 import { useDamageLayer } from '../hooks/useDamageLayer';
 import { useNasaDpmLayer } from '../hooks/useNasaDpmLayer';
-import { EONET_CATEGORIES, appearanceRange } from '../lib/eonet';
+import { EONET_CATEGORIES } from '../lib/eonet';
 import { AID_SITE_TIPOS } from '../lib/sitios';
 import { presetToWindow, DEFAULT_TIME_PRESET, type TimePreset } from '../lib/timeWindow';
 import { MapViewer } from '../components/Map/MapViewer';
@@ -34,7 +34,7 @@ export function Situation() {
   // EONET is complementary — opt-in.
   const [showEonet, setShowEonet] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [visibleEpoch, setVisibleEpoch] = useState<number>(0);
+  const [visibleInterval, setVisibleInterval] = useState<[number, number]>([0, 0]);
   const [country, setCountry] = useState('VE');
   const [activeCategories, setActiveCategories] = useState<Set<string>>(
     () => new Set(EONET_CATEGORIES),
@@ -80,7 +80,40 @@ export function Situation() {
     loading: nasaDpmLoading,
     source: nasaDpmSource,
   } = useNasaDpmLayer(nasaDpmActive, mapBounds);
-  const range = appearanceRange(eonetFeatures);
+
+  const range = React.useMemo(() => {
+    let min = Infinity;
+    let max = -Infinity;
+
+    if (showEonet && eonetFeatures && eonetFeatures.length > 0) {
+      for (const f of eonetFeatures) {
+        const t = f.properties.firstDateEpoch;
+        if (t && t < min) min = t;
+        if (t && t > max) max = t;
+      }
+    }
+
+    if (usgsActive && usgsData && usgsData.features && usgsData.features.length > 0) {
+      for (const f of usgsData.features) {
+        const t = f.properties.time;
+        if (t && t < min) min = t;
+        if (t && t > max) max = t;
+      }
+    }
+
+    if (funvisisActive && funvisisData && funvisisData.features && funvisisData.features.length > 0) {
+      for (const f of funvisisData.features) {
+        const t = f.properties.time;
+        if (t && t < min) min = t;
+        if (t && t > max) max = t;
+      }
+    }
+
+    if (min === Infinity || max === -Infinity) {
+      return { min: null, max: null };
+    }
+    return { min, max };
+  }, [showEonet, eonetFeatures, usgsActive, usgsData, funvisisActive, funvisisData]);
 
   const toggleCategory = (id: string) => {
     setActiveCategories((prev) => {
@@ -103,8 +136,10 @@ export function Situation() {
   // When a new dataset loads (country/category/window refetch), reset the
   // scrubber cutoff to the latest first-appearance so all events show initially.
   useEffect(() => {
-    if (range.max !== null) setVisibleEpoch(range.max);
-  }, [range.max]);
+    if (range.min !== null && range.max !== null) {
+      setVisibleInterval([range.min, range.max]);
+    }
+  }, [range.min, range.max]);
 
   useEffect(() => {
     // Determine which STATIC layers are missing their datasets. The dynamic
@@ -180,8 +215,8 @@ export function Situation() {
       onToggleAdvanced={setAdvanced}
       min={range.min}
       max={range.max}
-      value={visibleEpoch}
-      onScrub={setVisibleEpoch}
+      interval={visibleInterval}
+      onRangeChange={setVisibleInterval}
     />
   );
 
@@ -220,9 +255,10 @@ export function Situation() {
       <MapViewer
         activeLayerIds={activeLayerIds}
         unavailableLayerIds={unavailableLayerIds}
+        globalTimeFilter={advanced ? visibleInterval : null}
         eonetFeatures={eonetFeatures}
         showEonet={showEonet}
-        eonetVisibleEpoch={showEonet && advanced ? visibleEpoch : null}
+        eonetVisibleInterval={showEonet && advanced ? visibleInterval : null}
         eonetActiveCategories={showEonet ? activeCategories : undefined}
         eonetSelectedId={selectedId}
         onEonetSelect={setSelectedId}

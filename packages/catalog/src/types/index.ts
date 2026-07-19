@@ -31,6 +31,8 @@ export interface Layer {
   refreshFrequency?: 'Real-time' | 'Hourly' | 'Daily' | 'Weekly' | 'Static';
   enabled: boolean;
   visualization?: Record<string, any>;
+  timestampField?: string;
+  timestampFormat?: 'epoch' | 'iso';
 }
 
 export interface SearchIndexEntry {

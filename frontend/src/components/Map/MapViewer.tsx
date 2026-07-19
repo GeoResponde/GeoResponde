@@ -4,6 +4,7 @@ import type { MapRef } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useCatalog } from '../../hooks/useCatalog';
+import { buildLayerFilter } from '../../lib/FilterPipeline';
 import { CopernicusLegend } from './CopernicusLegend';
 import { EonetLayer, EONET_LAYER_ID } from './EonetLayer';
 import { AidSitesLayer, AID_SITES_LAYER_ID } from './AidSitesLayer';
@@ -31,7 +32,8 @@ interface Props {
   unavailableLayerIds?: Set<string>;
   eonetFeatures?: RenderFeature[];
   showEonet?: boolean;
-  eonetVisibleEpoch?: number | null;
+  eonetVisibleInterval?: [number, number] | null;
+  globalTimeFilter?: [number, number] | null;
   eonetActiveCategories?: Set<string>;
   eonetSelectedId?: string | null;
   onEonetSelect?: (id: string | null) => void;
@@ -99,6 +101,8 @@ export function MapViewer({
   nasaDpmWarming = false,
   onViewportBoundsChange,
   activeLayerVariants = {},
+  globalTimeFilter = null,
+  eonetVisibleInterval = null,
 }: Props) {
   const { layers } = useCatalog();
   const mapRef = useRef<MapRef>(null);
@@ -482,6 +486,11 @@ export function MapViewer({
         return null;
       }
 
+      const activeFilters = {
+        timeRange: globalTimeFilter || undefined
+      };
+      const pipelineFilter = buildLayerFilter(layer, activeFilters);
+
       return (
         <Source key={layer.id} id={layer.id} {...sourceProps}>
           {isFill && (
@@ -530,9 +539,9 @@ export function MapViewer({
                     0.75, '#e60000'
                   ] : color,
                 'fill-opacity': layer.id === 'layer-geologic-units' ? 0.2 : 
-                                layer.id === 'layer-copernicus-ground-movement' ? 0.85 : 
                                 layer.id === 'layer-nasa-sentinel-damage' ? 0.6 : 0.4
               }}
+              {...(pipelineFilter ? { filter: pipelineFilter as never } : {})}
             />
           )}
           {isFill && layer.id !== 'layer-geologic-units' && layer.id !== 'layer-copernicus-ground-movement' && layer.id !== 'layer-nasa-sentinel-damage' && (
@@ -544,6 +553,7 @@ export function MapViewer({
                 'line-width': 1,
                 'line-opacity': 0.8
               }}
+              {...(pipelineFilter ? { filter: pipelineFilter as never } : {})}
             />
           )}
           {isLine && (
@@ -563,6 +573,7 @@ export function MapViewer({
                 ] : 2,
                 'line-opacity': 0.8
               }}
+              {...(pipelineFilter ? { filter: pipelineFilter as never } : {})}
             />
           )}
           {isLine && layer.id === 'layer-faults' && imagesLoaded && (
@@ -597,6 +608,7 @@ export function MapViewer({
                 'icon-ignore-placement': true,
                 'icon-offset': [0, -6]
               }}
+              {...(pipelineFilter ? { filter: pipelineFilter as never } : {})}
             />
           )}
           {isCircle && (
@@ -625,6 +637,7 @@ export function MapViewer({
                 'circle-stroke-width': 1,
                 'circle-stroke-color': '#fff'
               }}
+              {...(pipelineFilter ? { filter: pipelineFilter as never } : {})}
             />
           )}
         </Source>
@@ -756,7 +769,7 @@ export function MapViewer({
         {showEonet && (
           <EonetLayer
             features={eonetFeatures}
-            visibleEpoch={eonetVisibleEpoch}
+            visibleInterval={eonetVisibleInterval}
             activeCategories={eonetActiveCategories}
             selectedId={eonetSelectedId}
             onSelect={onEonetSelect}

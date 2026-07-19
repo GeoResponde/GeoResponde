@@ -39,6 +39,13 @@
       "visualization": {
         "type": "object",
         "additionalProperties": true
+      },
+      "timestampField": {
+        "type": "string"
+      },
+      "timestampFormat": {
+        "type": "string",
+        "enum": ["epoch", "iso"]
       }
     },
     "required": ["id", "name", "datasetIds", "category", "confidence", "enabled"]
