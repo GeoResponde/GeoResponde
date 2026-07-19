@@ -307,5 +307,15 @@
       "url": "https://zczxcjcdvhjgnoqxnlal.supabase.co/rest/v1/points",
       "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjenhjamNkdmhqZ25vcXhubGFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1MTMyNDIsImV4cCI6MjA5ODA4OTI0Mn0.PB446j2kfRPLUqsC_wiOzHN8zRzV3p_C7XtnP8GSti8"
     }
+    "id": "prov-venezuelarescate",
+    "display_name": "Venezuela Rescate",
+    "website": "https://venezuelarescate.com",
+    "description": "Citizen network that allows users to search and report missing persons and urgent incidents.",
+    "logo": "/logos/venezuelarescate.png",
+    "status": "active",
+    "adapter": "VenezuelaRescateAdapter",
+    "capabilities": [
+      "search"
+    ]
   }
 ]
