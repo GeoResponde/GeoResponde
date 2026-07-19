@@ -131,6 +131,12 @@
       "name": "Centros de Acopio Venezuela",
       "type": "OTHER",
       "website": "https://acopiovenezuela.vercel.app/"
+    },
+    {
+      "id": "org-juntosve",
+      "name": "JuntosVE",
+      "type": "NGO",
+      "website": "https://juntosve.org/"
     }
   ],
   "sources": [
@@ -982,6 +988,22 @@
       },
       "config": {
         "url": "https://sheet2api.com/v1/asiBQJjRTh2I/copia-de-centros-de-acopio-terremoto-venezuela"
+      }
+    },
+    {
+      "id": "src-juntosve",
+      "display_name": "JuntosVE",
+      "website": "https://juntosve.org/",
+      "description": "Map of shelters and assistance needs.",
+      "logo": "/logos/juntosve.png",
+      "status": "active",
+      "adapter": "JuntosVeAdapter",
+      "capabilities": [
+        "search"
+      ],
+      "config": {
+        "url": "https://zczxcjcdvhjgnoqxnlal.supabase.co/rest/v1/points",
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjenhjamNkdmhqZ25vcXhubGFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1MTMyNDIsImV4cCI6MjA5ODA4OTI0Mn0.PB446j2kfRPLUqsC_wiOzHN8zRzV3p_C7XtnP8GSti8"
       }
     }
   ]
