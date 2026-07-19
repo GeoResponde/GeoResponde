@@ -15,7 +15,7 @@ describe('VenezuelaRescate parser', () => {
       title: 'Ana Prueba',
       subtitle: 'Última Ubicación: Alguna playa',
       status: 'missing',
-      url: "https://rescate.ventatalk.com/api/buscar?nombre=Ana Prueba",
+      url: "https://venezuelarescate.com/buscar",
     });
 
     expect(results[0].person).toMatchObject({
@@ -47,7 +47,7 @@ describe('VenezuelaRescate parser', () => {
       title: "Ana Prueba",
       subtitle: "",
       thumbnail: undefined,
-      url: "https://rescate.ventatalk.com/api/pacientes/buscar?nombre=Ana Prueba",
+      url: "https://venezuelarescate.com/pacientes-en-hospitales",
     });
 
     expect(results[0].person).toMatchObject({
