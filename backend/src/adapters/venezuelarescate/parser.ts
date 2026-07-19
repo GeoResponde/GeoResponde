@@ -25,7 +25,7 @@ export function parseMissing(record: MissingItem): NormalizedSearchResult {
     subtitle: setMissingSubtitle(record.ultima_ubicacion) ?? undefined,
     status: toStatus(record.estado) ?? undefined,
     thumbnail: record.foto_url ?? undefined,
-    url: `https://rescate.ventatalk.com/api/buscar?nombre=${record.nombres_apellidos}`, //Provider does not change url when selecting a person
+    url: `https://venezuelarescate.com/buscar`, //Provider does not change url when selecting a person
     person: {
       fullName: record.nombres_apellidos ?? undefined,
       status: toStatus(record.estado),
@@ -55,7 +55,7 @@ export function parseHospitalized(record: HospitalizedItem): NormalizedSearchRes
     subtitle: record.observaciones || '',
     status: record.estado_paciente ?? undefined,
     thumbnail: record.foto_captura_url ?? undefined,
-    url: `https://rescate.ventatalk.com/api/pacientes/buscar?nombre=${record.nombres_apellidos}`, //Provider does not change url when selecting a person
+    url: `https://venezuelarescate.com/pacientes-en-hospitales`, //Provider does not change url when selecting a person
     person: {
       fullName: record.nombres_apellidos ?? undefined,
       rawStatus: record.estado_paciente ?? undefined,

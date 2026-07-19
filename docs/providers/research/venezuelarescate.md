@@ -94,7 +94,7 @@ The response is a JSON array of records with the following structure:
 - **Legal Info**: http://venezuelarescate.com/aviso-legal
 
 ## Implementation Notes
-- The provider does not change the URL when a person is selected. For now the URL for a each NormalizedSearchResult is a link to the API with the query matching the person's full name.
+- The provider does not change the URL when a person is selected. For now the URL for a each NormalizedSearchResult is a simply a link to the provider's corresponding search page.
 - The provider has multiple relevant endpoints. The adapter may need to be able to connect to more than one endpoint
 - Endpoints return id as a number. They need to be converted to strings to make the type match the NormalizedSearchResult type
 - Endpoints return age as a string which can be either a number or a brief description without revealing the exact age e.g. "adulto mayor".

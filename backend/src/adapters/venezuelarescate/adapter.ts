@@ -29,11 +29,11 @@ export class VenezuelaRescateAdapter implements BaseAdapter {
 
       const [missing, hospitalized] = await Promise.all([
         missingPromise.catch((e) => {
-          console.warn(`[AjeAyudaVenezuelaAdapter] Failed to fetch centros:`, e.message);
+          console.warn(`[VenezuelaRescateAdapter] Failed to fetch missing:`, e.message);
           return [];
         }),
         hospitalizedPromise.catch((e) => {
-          console.warn(`[AjeAyudaVenezuelaAdapter] Failed to fetch donaciones:`, e.message);
+          console.warn(`[VenezuelaRescateAdapter] Failed to fetch hospitalized:`, e.message);
           return [];
         }),
       ]);
