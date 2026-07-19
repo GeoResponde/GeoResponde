@@ -81,7 +81,6 @@ export function MapViewer({
   unavailableLayerIds = new Set(),
   eonetFeatures = [],
   showEonet = false,
-  eonetVisibleEpoch = null,
   eonetActiveCategories,
   eonetSelectedId,
   onEonetSelect,
