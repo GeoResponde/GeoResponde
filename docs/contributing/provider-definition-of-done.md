@@ -37,7 +37,7 @@ This document serves as the canonical checklist for all new humanitarian provide
 
 - [ ] **Documentation updated**: The research document (`docs/providers/research/[provider].md`) reflects the final integration strategy and actual capabilities built.
 - [ ] **Federated Search UI verification**: The provider's results appear correctly in the search UI alongside other providers.
-- [ ] **Provider Health Dashboard verification**: The provider registers on `/dev/providers` (the health dashboard) and displays correct status (not stuck in "warming up" or erroring on first probe).
+- [ ] **Provider Health Dashboard verification**: The provider registers on `/dev/providers` (the health dashboard), which is also aliased via a redirect from `/dev/health`), and displays correct status (not stuck in "warming up" or erroring on first probe).
 - [ ] **Live search works**: The search functionality is spot-checked live (e.g. through `GET /api/dev/inspect/:id`) to ensure it returns actual results and doesn't silently fail.
 - [ ] **Failure isolation verification**: A failure or timeout in this provider does not crash the Provider Gateway or block other providers.
 - [ ] **Production inspection**: Ensure that no submission workflows were implemented unless explicitly authorized by the provider.

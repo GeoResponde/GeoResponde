@@ -74,7 +74,7 @@ If your Vercel deployment configuration is missing the settings above, you may o
 
 - Open the deployed frontend, go to **Find**, search a name — results should load
   from the deployed gateway (not localhost).
-- Open `/dev/providers` — the health dashboard should show providers as Live.
+- Open `/dev/providers` — the health dashboard should show providers as Live. *(Note: Accessing `/dev/health` will also redirect you automatically to `/dev/providers`)*.
 
 ## CORS
 

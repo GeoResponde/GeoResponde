@@ -185,7 +185,8 @@ frontend/src/pages/{Situation,Find,Report}
 | `/api/funvisis/earthquakes` | `GET` | Cached read-proxy to FUNVISIS / SismosVE |
 | `/api/damage/copernicus/:product` | `GET` | Cached read-proxy to Copernicus EMS damage products |
 | `/api/damage/nasa/dpm` | `GET` | Cached read-proxy to NASA ARIA damage proxy map |
-
+| `/dev/providers`| `GET` |  (Frontend) Developer diagnostics and health telemetry dashboard |
+| `/dev/health` | `GET` |  (Frontend) Redirects automatically to `/dev/providers`|
 ---
 
 ## Notes

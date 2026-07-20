@@ -68,3 +68,9 @@ This keeps local development open and low-friction while letting a deployment re
 - **Frontend and backend on different ports is fine in dev.** With `CORS_ALLOWED_ORIGINS` unset the gateway reflects your origin, so a mismatched port is not the problem. If you set the variable locally, remember it now restricts origins, and your frontend origin must be in the list.
 - **A CORS error after deploying** usually means `CORS_ALLOWED_ORIGINS` is set on the server but does not include the exact frontend origin (scheme, host, and port must all match). Add the exact origin to the list.
 - **`VITE_API_URL` pointing at the wrong place** looks like a CORS or network error in the browser console. Confirm it matches where the backend is actually listening.
+
+
+## Diagnostics & Telemetry Dashboard
+You can view real-time latency graphs, adapter IDs, and failure statistics by visiting the developer health dashboard:
+* **Canonical URL**: `http://localhost:5173/dev/providers`
+* **Redirect URL**: `http://localhost:5173/dev/health` (redirects automatically to `/dev/providers`)
