@@ -11,6 +11,17 @@
     ]
   },
   {
+    "id": "ds-earthquakes-geofon",
+    "title": "GEOFON Earthquakes (GFZ-Potsdam)",
+    "description": "Live global seismic events from the GEOFON network.",
+    "sourceId": "src-geofon-api",
+    "tags": [
+      "earthquake",
+      "seismic",
+      "global"
+    ]
+  },
+  {
     "id": "dataset-aftershocks",
     "title": "Recorded Aftershocks (USGS)",
     "description": "Recorded aftershocks in Venezuela since June 23, 2026",

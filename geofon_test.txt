@@ -1,0 +1,6 @@
+#EventID|Time|Latitude|Longitude|Depth/km|Author|Catalog|Contributor|ContributorID|MagType|Magnitude|MagAuthor|EventLocationName|EventType
+gfz2026obob|2026-07-20T01:44:15.14|6.767|-73.026|156.8|||GFZ|gfz2026obob|mb|4.65||Northern Colombia|earthquake
+gfz2026obkx|2026-07-20T00:09:21.26|52.055|158.459|10.0|||GFZ|gfz2026obkx|mb|4.75||Near East Coast of Kamchatka|earthquake
+gfz2026obeb|2026-07-19T20:41:06.44|41.797|75.805|10.0|||GFZ|gfz2026obeb|mb|4.51||Kyrgyzstan|earthquake
+gfz2026obbr|2026-07-19T19:28:55.22|53.231|159.559|10.0|||GFZ|gfz2026obbr|mb|4.76||Near East Coast of Kamchatka|earthquake
+gfz2026oayg|2026-07-19T17:45:13.86|14.123|-92.942|10.0|||GFZ|gfz2026oayg|M|5.41||Near Coast of Chiapas, Mexico|earthquake

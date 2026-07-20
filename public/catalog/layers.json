@@ -28,6 +28,34 @@
     "timestampFormat": "epoch"
   },
   {
+    "id": "layer-geofon",
+    "name": "GEOFON Earthquakes",
+    "datasetIds": [
+      "ds-earthquakes-geofon"
+    ],
+    "format": "geojson",
+    "category": "Scientific",
+    "confidence": "Official",
+    "refreshFrequency": "Hourly",
+    "enabled": false,
+    "visualization": {
+      "type": "circle",
+      "paint": {
+        "circle-color": "#9b59b6",
+        "circle-radius": [
+          "*",
+          [
+            "get",
+            "mag"
+          ],
+          2
+        ]
+      }
+    },
+    "timestampField": "time",
+    "timestampFormat": "epoch"
+  },
+  {
     "id": "layer-funvisis",
     "name": "FUNVISIS Local Earthquakes",
     "datasetIds": [

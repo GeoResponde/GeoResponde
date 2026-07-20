@@ -31,7 +31,7 @@ flowchart TB
   subgraph EXT["External Sources"]
     direction TB
     HUM["Humanitarian orgs<br />Venezuela Te Busca · TerremotoVenezuela<br />SOS Venezuela · HDX · Ushahidi"]:::external
-    SCI["Scientific agencies<br />USGS · NASA EONET / ARIA<br />Copernicus EMS · FUNVISIS"]:::external
+    SCI["Scientific agencies<br />USGS · GEOFON · NASA EONET / ARIA<br />Copernicus EMS · FUNVISIS"]:::external
   end
 
   ADAPT["Provider Adapters<br />backend/src/adapters/*<br />transport + parser, per source"]:::adapter
@@ -126,7 +126,7 @@ backend/src/gateway/idempotency.ts
 
 ### Fastify HTTP Layer
 
-Exposes `/api/search`, `/api/report`, `/api/providers`, plus dedicated cached read-proxy routes for USGS, EONET, FUNVISIS, Copernicus and NASA damage layers — each with its own TTL cache and required attribution headers, degrading gracefully instead of erroring.
+Exposes `/api/search`, `/api/report`, `/api/providers`, plus dedicated cached read-proxy routes for USGS, GEOFON, EONET, FUNVISIS, Copernicus and NASA damage layers — each with its own TTL cache and required attribution headers, degrading gracefully instead of erroring.
 
 ```
 backend/src/index.ts — buildApp()
@@ -181,6 +181,7 @@ frontend/src/pages/{Situation,Find,Report}
 | `/api/providers` | `GET` | Lists active providers from the catalog with live adapter status |
 | `/api/providers/:id/geojson` | `GET` | GeoJSON layer for a single provider |
 | `/api/usgs/earthquakes` | `GET` | Cached read-proxy to USGS earthquake feed |
+| `/api/geofon/earthquakes` | `GET` | Cached read-proxy to GEOFON earthquake feed |
 | `/api/eonet/events` | `GET` | Cached read-proxy to NASA EONET natural events |
 | `/api/funvisis/earthquakes` | `GET` | Cached read-proxy to FUNVISIS / SismosVE |
 | `/api/damage/copernicus/:product` | `GET` | Cached read-proxy to Copernicus EMS damage products |

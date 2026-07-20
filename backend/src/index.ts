@@ -12,6 +12,7 @@ import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
 import { fetchEonetEvents } from './adapters/eonet/service.js'
 import { fetchAidSites } from './adapters/sitios/service.js'
 import { fetchUsgsEarthquakes } from './adapters/usgs/service.js'
+import { fetchGeofonEarthquakes } from './adapters/geofon/service.js'
 import { fetchFunvisisEarthquakes } from './adapters/funvisis/service.js'
 import { fetchCopernicusProduct } from './adapters/damage/service.js'
 import { fetchNasaDpm, warmNasaDpm } from './adapters/damage/nasa.js'
@@ -233,6 +234,15 @@ export function buildApp(): FastifyInstance {
     const result = await fetchUsgsEarthquakes({ bbox, start })
     reply.header('X-USGS-Source', result.source)
     reply.header('X-Attribution', 'USGS')
+    return result.collection
+  })
+
+  // Situation map scientific layer for GEOFON (GFZ-Potsdam).
+  fastify.get('/api/geofon/earthquakes', async (request, reply) => {
+    const { bbox, start } = request.query as { bbox?: string; start?: string }
+    const result = await fetchGeofonEarthquakes({ bbox, start })
+    reply.header('X-GEOFON-Source', result.source)
+    reply.header('X-Attribution', 'GEOFON (GFZ-Potsdam)')
     return result.collection
   })
 

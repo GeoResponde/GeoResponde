@@ -41,8 +41,10 @@ interface Props {
   aidSiteFeatures?: AidSiteRenderFeature[];
   showAidSites?: boolean;
   aidSiteActiveTipos?: Set<string>;
-  /** Live USGS earthquakes feeding the `layer-earthquakes` catalog layer. */
+  /** Live USGS earthquakes feeding `layer-earthquakes`. */
   usgsData?: EarthquakeFeatureCollection;
+  /** Live GEOFON earthquakes feeding `layer-geofon`. */
+  geofonData?: EarthquakeFeatureCollection;
   /** Live FUNVISIS (via SismosVE) earthquakes feeding `layer-funvisis`. */
   funvisisData?: EarthquakeFeatureCollection;
   /** Live Copernicus GRA grading (buildings + roads) feeding `layer-copernicus-damage`. */
@@ -89,6 +91,7 @@ export function MapViewer({
   showAidSites = false,
   aidSiteActiveTipos,
   usgsData = EMPTY_EARTHQUAKES,
+  geofonData = EMPTY_EARTHQUAKES,
   funvisisData = EMPTY_EARTHQUAKES,
   copernicusDamageData = EMPTY_DAMAGE,
   copernicusGroundMovementData = EMPTY_DAMAGE,
@@ -144,7 +147,7 @@ export function MapViewer({
   const activeLayersWithData = useMemo(() => {
     return layers.filter(l => 
       activeLayerIds.has(l.id) && 
-      (l.id === 'layer-earthquakes' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-satellite' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
+      (l.id === 'layer-earthquakes' || l.id === 'layer-geofon' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-satellite' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
     );
   }, [layers, activeLayerIds]);
 
@@ -355,9 +358,11 @@ export function MapViewer({
       }
       
       let sourceUrl = '/data/earthquakes.geojson';
-      let color = layer.visualization?.color || '#e74c3c';
+      let color = layer.visualization?.color || (layer.visualization?.paint as any)?.['circle-color'] || '#95a5a6';
       
-      if (layer.id === 'layer-funvisis') {
+      if (layer.id === 'layer-copernicus-damage') {
+        sourceUrl = '/data/hospitals.geojson';
+      } else if (layer.id === 'layer-funvisis') {
         sourceUrl = '/data/funvisis-earthquakes.geojson';
       } else if (layer.id === 'layer-hospitals') {
         sourceUrl = '/data/hospitals.geojson';
@@ -451,6 +456,7 @@ export function MapViewer({
       const isNasaLayer = layer.id === 'layer-nasa-sentinel-damage';
       // Dynamic layers read live gateway feeds instead of /data files.
       const isUsgsLayer = layer.id === 'layer-earthquakes';
+      const isGeofonLayer = layer.id === 'layer-geofon';
       const isFunvisisLayer = layer.id === 'layer-funvisis';
       const isGroundMovementLayer = layer.id === 'layer-copernicus-ground-movement';
 
@@ -458,11 +464,13 @@ export function MapViewer({
         ? { type: 'geojson' as const, data: nasaDpmData }
         : isUsgsLayer
           ? { type: 'geojson' as const, data: usgsData }
-          : isFunvisisLayer
-            ? { type: 'geojson' as const, data: funvisisData }
-            : isGroundMovementLayer
-              ? { type: 'geojson' as const, data: copernicusGroundMovementData }
-              : { type: 'geojson' as const, data: sourceUrl };
+          : isGeofonLayer
+            ? { type: 'geojson' as const, data: geofonData }
+            : isFunvisisLayer
+              ? { type: 'geojson' as const, data: funvisisData }
+              : isGroundMovementLayer
+                ? { type: 'geojson' as const, data: copernicusGroundMovementData }
+                : { type: 'geojson' as const, data: sourceUrl };
 
       const isPlateBoundary = [
         "any",

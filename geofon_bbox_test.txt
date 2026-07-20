@@ -1,0 +1,6 @@
+#EventID|Time|Latitude|Longitude|Depth/km|Author|Catalog|Contributor|ContributorID|MagType|Magnitude|MagAuthor|EventLocationName|EventType
+gfz2026obob|2026-07-20T01:44:15.14|6.767|-73.026|156.8|||GFZ|gfz2026obob|mb|4.65||Northern Colombia|earthquake
+gfz2026ntvd|2026-07-15T20:13:40.15|6.652|-73.056|163.8|||GFZ|gfz2026ntvd|mb|4.73||Northern Colombia|earthquake
+gfz2026neih|2026-07-07T08:41:39.86|10.765|-62.812|133.6|||GFZ|gfz2026neih|mb|4.53||Near Coast of Venezuela|earthquake
+gfz2026mpww|2026-06-29T11:01:02.91|10.761|-66.849|10.0|||GFZ|gfz2026mpww|mb|4.73||Near Coast of Venezuela|earthquake
+gfz2026mnwx|2026-06-28T08:46:10.36|10.575|-68.366|10.0|||GFZ|gfz2026mnwx|mb|4.64||Near Coast of Venezuela|earthquake

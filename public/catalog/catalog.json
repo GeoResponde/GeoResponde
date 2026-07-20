@@ -11,6 +11,11 @@
       "type": "GOV"
     },
     {
+      "id": "org-gfz",
+      "name": "GFZ German Research Centre for Geosciences",
+      "type": "ACADEMIC"
+    },
+    {
       "id": "org-copernicus-ems",
       "name": "Copernicus EMS",
       "type": "GOV"
@@ -151,6 +156,13 @@
       "name": "USGS Earthquake API (2.5+ M, 1 Day)",
       "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
       "organizationId": "org-usgs",
+      "license": "Public Domain"
+    },
+    {
+      "id": "src-geofon-api",
+      "name": "GEOFON FDSN Event Web Service",
+      "url": "https://geofon.gfz-potsdam.de/fdsnws/event/1/",
+      "organizationId": "org-gfz",
       "license": "Public Domain"
     },
     {
@@ -296,6 +308,17 @@
       "title": "Recent Earthquakes (M2.5+, Last 24h)",
       "description": "Automatically updated GeoJSON feed of recent global seismic activity.",
       "sourceId": "src-usgs-api",
+      "tags": [
+        "earthquake",
+        "seismic",
+        "global"
+      ]
+    },
+    {
+      "id": "ds-earthquakes-geofon",
+      "title": "GEOFON Earthquakes (GFZ-Potsdam)",
+      "description": "Live global seismic events from the GEOFON network.",
+      "sourceId": "src-geofon-api",
       "tags": [
         "earthquake",
         "seismic",
@@ -532,6 +555,34 @@
         "type": "circle",
         "paint": {
           "circle-color": "#e74c3c",
+          "circle-radius": [
+            "*",
+            [
+              "get",
+              "mag"
+            ],
+            2
+          ]
+        }
+      },
+      "timestampField": "time",
+      "timestampFormat": "epoch"
+    },
+    {
+      "id": "layer-geofon",
+      "name": "GEOFON Earthquakes",
+      "datasetIds": [
+        "ds-earthquakes-geofon"
+      ],
+      "format": "geojson",
+      "category": "Scientific",
+      "confidence": "Official",
+      "refreshFrequency": "Hourly",
+      "enabled": false,
+      "visualization": {
+        "type": "circle",
+        "paint": {
+          "circle-color": "#9b59b6",
           "circle-radius": [
             "*",
             [

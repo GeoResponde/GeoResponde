@@ -7,6 +7,13 @@
     "license": "Public Domain"
   },
   {
+    "id": "src-geofon-api",
+    "name": "GEOFON FDSN Event Web Service",
+    "url": "https://geofon.gfz-potsdam.de/fdsnws/event/1/",
+    "organizationId": "org-gfz",
+    "license": "Public Domain"
+  },
+  {
     "id": "src-aftershocks-placeholder",
     "name": "Source for Aftershocks",
     "url": "https://example.com/placeholder",

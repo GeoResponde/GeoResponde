@@ -10,6 +10,11 @@
     "type": "GOV"
   },
   {
+    "id": "org-gfz",
+    "name": "GFZ German Research Centre for Geosciences",
+    "type": "ACADEMIC"
+  },
+  {
     "id": "org-copernicus-ems",
     "name": "Copernicus EMS",
     "type": "GOV"

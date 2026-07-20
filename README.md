@@ -61,7 +61,7 @@ The platform provides three core capabilities:
 
 GeoResponde continuously expands its network through our Provider SDK. Currently, we federate data from:
 
-* **Scientific Sources:** USGS, NASA EONET, FUNVISIS, the GEM Global Active Faults Database, and satellite-derived products from Sentinel and Copernicus.
+* **Scientific Sources:** USGS, GEOFON, NASA EONET, FUNVISIS, the GEM Global Active Faults Database, and satellite-derived products from Sentinel and Copernicus.
 * **Humanitarian Providers:** Over 16+ active platforms, including regional initiatives like Venezuela Te Busca, TerremotoVenezuela, and Patitas a Salvo.
 
 ## Design Principles

@@ -231,6 +231,11 @@ export function Sidebar({
                   </a>
                 </li>
                 <li style={{ marginBottom: '6px' }}>
+                  <a href="https://geofon.gfz-potsdam.de/eqexplorer/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
+                    ↗ GEOFON (GFZ Potsdam) Earthquake Explorer
+                  </a>
+                </li>
+                <li style={{ marginBottom: '6px' }}>
                   <a href="https://pubs.usgs.gov/ds/2006/199/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
                     ↗ USGS Geologic Map of Northern Venezuela (DS 199)
                   </a>

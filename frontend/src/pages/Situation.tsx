@@ -5,6 +5,7 @@ import { bboxToEonetParam } from '@georesponde/shared';
 import { useCatalog } from '../hooks/useCatalog';
 import { useEonetEvents } from '../hooks/useEonetEvents';
 import { useAidSites } from '../hooks/useAidSites';
+import { useGeofonEarthquakes } from '../hooks/useGeofonEarthquakes';
 import { useUsgsEarthquakes } from '../hooks/useUsgsEarthquakes';
 import { useFunvisisEarthquakes } from '../hooks/useFunvisisEarthquakes';
 import { useDamageLayer } from '../hooks/useDamageLayer';
@@ -21,6 +22,7 @@ import { AidSitesControls } from '../components/Situation/AidSitesControls';
 
 /** Dynamic earthquake layers fed by the gateway, not by static /data files. */
 const USGS_LAYER_ID = 'layer-earthquakes';
+const GEOFON_LAYER_ID = 'layer-geofon';
 const FUNVISIS_LAYER_ID = 'layer-funvisis';
 
 export function Situation() {
@@ -50,6 +52,7 @@ export function Situation() {
 
   const bbox = bboxToEonetParam(country);
   const usgsActive = activeLayerIds.has(USGS_LAYER_ID);
+  const geofonActive = activeLayerIds.has(GEOFON_LAYER_ID);
   const funvisisActive = activeLayerIds.has(FUNVISIS_LAYER_ID);
   // Copernicus EMS damage layers are served live by the gateway route.
   const damageActive = activeLayerIds.has('layer-copernicus-damage');
@@ -64,6 +67,7 @@ export function Situation() {
   );
   const { features: aidSiteFeatures } = useAidSites(showSitios);
   const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, timeWindow.quakeStart);
+  const { collection: geofonData } = useGeofonEarthquakes(geofonActive, bbox, timeWindow.quakeStart);
   const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, timeWindow.quakeStart);
   const { collection: copernicusDamageData, attribution: copernicusAttribution } = useDamageLayer(
     'grading',
@@ -101,6 +105,14 @@ export function Situation() {
       }
     }
 
+    if (geofonActive && geofonData && geofonData.features && geofonData.features.length > 0) {
+      for (const f of geofonData.features) {
+        const t = f.properties.time;
+        if (t && t < min) min = t;
+        if (t && t > max) max = t;
+      }
+    }
+
     if (funvisisActive && funvisisData && funvisisData.features && funvisisData.features.length > 0) {
       for (const f of funvisisData.features) {
         const t = f.properties.time;
@@ -113,7 +125,7 @@ export function Situation() {
       return { min: null, max: null };
     }
     return { min, max };
-  }, [showEonet, eonetFeatures, usgsActive, usgsData, funvisisActive, funvisisData]);
+  }, [showEonet, eonetFeatures, usgsActive, usgsData, geofonActive, geofonData, funvisisActive, funvisisData]);
 
   const toggleCategory = (id: string) => {
     setActiveCategories((prev) => {
@@ -153,6 +165,7 @@ export function Situation() {
         // ground-movement) are never "unavailable" via a /data HEAD probe.
         if (
           layer.id === USGS_LAYER_ID ||
+          layer.id === GEOFON_LAYER_ID ||
           layer.id === FUNVISIS_LAYER_ID ||
           layer.id === 'layer-copernicus-damage' ||
           layer.id === 'layer-copernicus-ground-movement'
@@ -267,6 +280,7 @@ export function Situation() {
         showAidSites={showSitios}
         aidSiteActiveTipos={showSitios ? activeTipos : undefined}
         usgsData={usgsData}
+        geofonData={geofonData}
         funvisisData={funvisisData}
         copernicusDamageData={copernicusDamageData}
         copernicusGroundMovementData={groundMovementData}

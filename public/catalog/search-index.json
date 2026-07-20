@@ -12,6 +12,12 @@
     "description": "GOV"
   },
   {
+    "id": "org-gfz",
+    "title": "GFZ German Research Centre for Geosciences",
+    "type": "organization",
+    "description": "ACADEMIC"
+  },
+  {
     "id": "org-copernicus-ems",
     "title": "Copernicus EMS",
     "type": "organization",
@@ -161,6 +167,11 @@
     "type": "source"
   },
   {
+    "id": "src-geofon-api",
+    "title": "GEOFON FDSN Event Web Service",
+    "type": "source"
+  },
+  {
     "id": "src-aftershocks-placeholder",
     "title": "Source for Aftershocks",
     "type": "source"
@@ -275,6 +286,12 @@
     "title": "Recent Earthquakes (M2.5+, Last 24h)",
     "type": "dataset",
     "description": "Automatically updated GeoJSON feed of recent global seismic activity."
+  },
+  {
+    "id": "ds-earthquakes-geofon",
+    "title": "GEOFON Earthquakes (GFZ-Potsdam)",
+    "type": "dataset",
+    "description": "Live global seismic events from the GEOFON network."
   },
   {
     "id": "dataset-aftershocks",
@@ -429,6 +446,11 @@
   {
     "id": "layer-earthquakes",
     "title": "Recent Earthquakes",
+    "type": "layer"
+  },
+  {
+    "id": "layer-geofon",
+    "title": "GEOFON Earthquakes",
     "type": "layer"
   },
   {
