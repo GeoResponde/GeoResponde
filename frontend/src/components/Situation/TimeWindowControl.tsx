@@ -10,15 +10,15 @@ interface Props {
   /** Scrubber bounds/value — only used while `advanced` is on. */
   min: number | null;
   max: number | null;
-  value: number;
-  onScrub: (epoch: number) => void;
+  interval: [number, number];
+  onRangeChange: (range: [number, number]) => void;
 }
 
 /**
  * Shared time-window control for the Situation map. Presets (Hoy / 7 días /
  * 1 mes / Histórico) drive the actual fetch window for EONET, USGS and FUNVISIS
- * so the map defaults to recent activity. "Datos avanzados" reveals the fine
- * order-of-appearance scrubber (EONET) for power users.
+ * so the map defaults to recent activity. "Datos avanzados" reveals the global
+ * temporal interval filter for power users.
  */
 export function TimeWindowControl({
   preset,
@@ -27,8 +27,8 @@ export function TimeWindowControl({
   onToggleAdvanced,
   min,
   max,
-  value,
-  onScrub,
+  interval,
+  onRangeChange,
 }: Props) {
   const { t } = useTranslation();
   const disabled = min === null || max === null || min === max;
@@ -97,36 +97,51 @@ export function TimeWindowControl({
       </label>
 
       {advanced && (
-        <div style={{ borderTop: '1px solid #334155', paddingTop: '10px' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-              marginBottom: '6px',
-            }}
-          >
-            <span style={{ color: '#cbd5e1', fontSize: '12px' }}>
-              {t('situation.timeline.scrubberLabel')}
-            </span>
-            <span style={{ color: '#94a3b8', fontSize: '12px' }}>
-              {min !== null && max !== null ? new Date(value).toLocaleDateString() : '—'}
-            </span>
+        <div style={{ borderTop: '1px solid #334155', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {/* Start Date Slider */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+              <span style={{ color: '#cbd5e1', fontSize: '12px' }}>
+                Start Date
+              </span>
+              <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+                {min !== null && max !== null ? new Date(interval[0]).toLocaleDateString() : '—'}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={min ?? 0}
+              max={interval[1] ?? 0}
+              step={86400000}
+              value={interval[0]}
+              disabled={disabled}
+              onChange={(e) => onRangeChange([Number(e.target.value), interval[1]])}
+              style={{ width: '100%', accentColor: '#3b82f6', cursor: disabled ? 'default' : 'pointer' }}
+            />
           </div>
-          <input
-            type="range"
-            min={min ?? 0}
-            max={max ?? 0}
-            step={86400000}
-            value={value}
-            disabled={disabled}
-            onChange={(e) => onScrub(Number(e.target.value))}
-            style={{
-              width: '100%',
-              accentColor: '#3b82f6',
-              cursor: disabled ? 'default' : 'pointer',
-            }}
-          />
+
+          {/* End Date Slider */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+              <span style={{ color: '#cbd5e1', fontSize: '12px' }}>
+                End Date
+              </span>
+              <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+                {min !== null && max !== null ? new Date(interval[1]).toLocaleDateString() : '—'}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={interval[0] ?? 0}
+              max={max ?? 0}
+              step={86400000}
+              value={interval[1]}
+              disabled={disabled}
+              onChange={(e) => onRangeChange([interval[0], Number(e.target.value)])}
+              style={{ width: '100%', accentColor: '#3b82f6', cursor: disabled ? 'default' : 'pointer' }}
+            />
+          </div>
+
           {min !== null && max !== null && (
             <div
               style={{

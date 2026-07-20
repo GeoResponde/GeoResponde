@@ -82,6 +82,9 @@ importers:
 
   frontend:
     dependencies:
+      '@georesponde/catalog':
+        specifier: workspace:*
+        version: link:../packages/catalog
       '@georesponde/client':
         specifier: workspace:*
         version: link:../packages/client

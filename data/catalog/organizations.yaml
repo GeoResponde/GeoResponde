@@ -108,3 +108,13 @@
   name: Centros de Acopio Venezuela
   type: OTHER
   website: https://acopiovenezuela.vercel.app/
+
+- id: org-juntosve
+  name: JuntosVE
+  type: NGO
+  website: https://juntosve.org/
+
+- id: prov-venezuela-rescate
+  name: Venezuela Rescate
+  url: https://venezuelarescate.com/
+  type: NGO

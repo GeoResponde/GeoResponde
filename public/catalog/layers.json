@@ -23,7 +23,9 @@
           2
         ]
       }
-    }
+    },
+    "timestampField": "time",
+    "timestampFormat": "epoch"
   },
   {
     "id": "layer-funvisis",
@@ -38,7 +40,9 @@
     "visualization": {
       "type": "points",
       "color": "#3498db"
-    }
+    },
+    "timestampField": "time",
+    "timestampFormat": "epoch"
   },
   {
     "id": "layer-faults",

@@ -9,7 +9,7 @@ export const EONET_LAYER_ID = 'eonet-events-viz';
 
 interface Props {
   features: RenderFeature[];
-  visibleEpoch?: number | null;
+  visibleInterval?: [number, number] | null;
   activeCategories?: Set<string>;
   selectedId?: string | null;
   onSelect?: (id: string | null) => void;
@@ -64,7 +64,7 @@ function popupFromFeature(f: RenderFeature): PopupState {
 
 export function EonetLayer({
   features,
-  visibleEpoch = null,
+  visibleInterval = null,
   activeCategories,
   selectedId,
   onSelect,
@@ -139,8 +139,9 @@ export function EonetLayer({
 
   const filter: unknown[] | undefined = (() => {
     const clauses: unknown[] = ['all'];
-    if (typeof visibleEpoch === 'number' && Number.isFinite(visibleEpoch)) {
-      clauses.push(['<=', ['get', 'firstDateEpoch'], visibleEpoch]);
+    if (visibleInterval) {
+      clauses.push(['>=', ['get', 'firstDateEpoch'], visibleInterval[0]]);
+      clauses.push(['<=', ['get', 'firstDateEpoch'], visibleInterval[1]]);
     }
     if (activeCategories) {
       clauses.push(['in', ['get', 'category'], ['literal', [...activeCategories]]]);
