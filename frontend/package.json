@@ -12,6 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@georesponde/catalog": "workspace:*",
     "@georesponde/client": "workspace:*",
     "@georesponde/shared": "workspace:*",
     "i18next": "^26.3.3",

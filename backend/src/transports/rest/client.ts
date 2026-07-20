@@ -68,3 +68,52 @@ export async function fetchText(
     clearTimeout(timeout);
   }
 }
+
+/**
+ * Generic REST/GeoJSON transport specifically for Supabase PostgREST endpoints.
+ * PostgREST with Accept: application/geo+json returns a FeatureCollection, so 
+ * standard Range headers break the envelope. This helper fetches paginated
+ * data using limit/offset until all features are collected.
+ */
+export async function fetchPostgrestGeoJson<T = any>(
+  baseUrl: string,
+  options: { timeoutMs?: number; headers?: Record<string, string>; limit?: number } = {},
+): Promise<{ type: 'FeatureCollection'; features: T[] }> {
+  const { timeoutMs = 15000, headers = {}, limit = 1000 } = options;
+  const allFeatures: T[] = [];
+  let offset = 0;
+
+  while (true) {
+    const url = new URL(baseUrl);
+    url.searchParams.set('limit', limit.toString());
+    url.searchParams.set('offset', offset.toString());
+
+    // We use the existing fetchJson helper but enforce the GeoJSON Accept header
+    const data = await fetchJson<{ type: 'FeatureCollection'; features: T[] }>(
+      url.toString(),
+      {
+        timeoutMs,
+        headers: {
+          ...headers,
+          Accept: 'application/geo+json',
+        },
+      }
+    );
+
+    if (data?.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
+      throw new Error('fetchPostgrestGeoJson received invalid GeoJSON format');
+    }
+
+    allFeatures.push(...data.features);
+
+    if (data.features.length < limit) {
+      break;
+    }
+    offset += limit;
+  }
+
+  return {
+    type: 'FeatureCollection',
+    features: allFeatures,
+  };
+}
