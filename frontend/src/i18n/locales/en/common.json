@@ -339,8 +339,7 @@
         "title": "Data Sources",
         "subtitle": "Directory of integrated humanitarian organizations feeding data into GeoResponde.",
         "statusConnected": "Connected",
-        "statusConnecting": "Connecting...",
-        "statusIssues": "Experiencing Issues",
+        "statusIssues": "Temporarily Unavailable",
         "visitWebsite": "Visit Website"
     }
 }

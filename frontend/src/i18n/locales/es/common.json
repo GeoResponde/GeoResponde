@@ -339,8 +339,7 @@
         "title": "Fuentes de Datos",
         "subtitle": "Directorio de organizaciones humanitarias integradas que aportan datos a GeoResponde.",
         "statusConnected": "Conectado",
-        "statusConnecting": "Conectando...",
-        "statusIssues": "Experimentando Problemas",
+        "statusIssues": "Temporalmente No Disponible",
         "visitWebsite": "Visitar Sitio Web"
     }
 }

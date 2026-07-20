@@ -66,20 +66,14 @@ export function Providers() {
           textColor: '#4ade80',
         };
       case 'warming':
-        return {
-          label: t('providersList.statusConnecting'),
-          color: '#94a3b8',
-          bgColor: 'rgba(148, 163, 184, 0.15)',
-          textColor: '#cbd5e1',
-        };
       case 'degrading':
       case 'down':
       default:
         return {
           label: t('providersList.statusIssues'),
-          color: '#ef4444',
-          bgColor: 'rgba(239, 68, 68, 0.15)',
-          textColor: '#f87171',
+          color: '#94a3b8',
+          bgColor: 'rgba(148, 163, 184, 0.15)',
+          textColor: '#cbd5e1',
         };
     }
   };
