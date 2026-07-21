@@ -44,7 +44,9 @@ export function TopNav() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', padding: '0 20px 0 0', borderRight: '1px solid #1e293b', marginRight: '10px' }}>
-          <img src={logoUrl} alt="GeoResponde Logo" style={{ height: '32px' }} />
+          <NavLink to="/about" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logoUrl} alt="GeoResponde Logo" style={{ height: '32px' }} />
+          </NavLink>
         </div>
         
         {/* Desktop Links */}
