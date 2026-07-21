@@ -1,5 +1,5 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
-import type { MissingPerson, FoundPerson, BuscarResponse, EncontradasResponse } from './types.js';
+import type { MissingPerson, FoundPerson, BuscarResponse } from './types.js';
 
 function buildPhotoUrl(photoFilename: string | null): string | undefined {
   if (photoFilename) {
@@ -73,19 +73,23 @@ export function parseFoundPerson(record: FoundPerson): NormalizedSearchResult {
 
 export function parseEstoyAquiVeResponse(
   buscarResponse: BuscarResponse | null | undefined,
-  encontradasResponse: EncontradasResponse | null | undefined
 ): NormalizedSearchResult[] {
   const results: NormalizedSearchResult[] = [];
-
   let missing: MissingPerson[] | null | undefined = buscarResponse?.buscadas;
-  let found: FoundPerson[] | null | undefined = encontradasResponse?.items;
+  let found: FoundPerson[] | null | undefined = buscarResponse?.encontradas;
+
+  const OUTPUT_LENGTH = 20
+
   // Parse missing persons from /buscar (buscadas)
   if (Array.isArray(missing)) {
+    console.log(missing)
+    missing = missing.slice(0, OUTPUT_LENGTH)
     results.push(...missing.map(parseMissingPerson));
   }
 
   // Parse found persons from /encontradas (encontradas)
   if (Array.isArray(found)) {
+    found = found.slice(0, OUTPUT_LENGTH)
     results.push(...found.map(parseFoundPerson));
   }
 

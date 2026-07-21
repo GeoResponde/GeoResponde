@@ -30,8 +30,3 @@ export interface BuscarResponse {
   buscadas: MissingPerson[] | null;
   encontradas: FoundPerson[] | null;
 }
-
-export interface EncontradasResponse {
-  total: number
-  items: FoundPerson[] | null
-}

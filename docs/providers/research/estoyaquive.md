@@ -89,5 +89,5 @@ Represents the response from the `/encontradas` endpoint.
 
 ### Implementation Notes
 
-- The Provider does have a general /buscar endpoint, but does not support paginaion and returns all matching instances (can be over 3000). To mitigate this, the adapter should only return the buscadas property from `/buscar` and use `/encontradas` for found persons.
+- The Provider does have a general /buscar endpoint, but does not support paginaion and returns all matching instances (can be over 3000). To mitigate this, the adapter should only return up to constant `MAX_OUTPUT_LENGTH` each from lost and found persons.
 - There are no pet reports from the provider, so it is not possible as of writing to implement those to the federated search.

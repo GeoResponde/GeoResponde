@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EstoyAquiVeAdapter } from '../adapter.js';
 import * as restClient from '../../../transports/rest/client.js';
 import buscarFixture from '../fixtures/buscar.json';
-import encontradasFixture from '../fixtures/encontradas.json';
 
 vi.mock('../../../transports/rest/client.js', () => ({
   fetchJson: vi.fn(),
@@ -29,7 +28,6 @@ describe('EstoyAquiVeAdapter', () => {
     // need to resolve them based on the URL.
     vi.mocked(restClient.fetchJson).mockImplementation(async (url: string) => {
       if (url.includes('buscar')) return buscarFixture;
-      if (url.includes('encontradas')) return encontradasFixture;
       return [];
     });
 
@@ -37,7 +35,7 @@ describe('EstoyAquiVeAdapter', () => {
     const results = await adapter.search('');
 
     expect(results).toHaveLength(4); // 2 missing + 2 found
-    expect(restClient.fetchJson).toHaveBeenCalledTimes(2);
+    expect(restClient.fetchJson).toHaveBeenCalledTimes(1);
   });
 
   it('gracefully handles fetch errors', async () => {
