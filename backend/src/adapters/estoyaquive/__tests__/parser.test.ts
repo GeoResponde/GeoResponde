@@ -9,7 +9,6 @@ describe('EstoyAquiVe parser', () => {
 
     expect(results).toHaveLength(2);
 
-    // First record should be a missing person
     expect(results[0]).toMatchObject({
       provider: 'Estoy Aquí VE',
       provider_id: '00000000-0000-0000-0000-0000000000a1',
@@ -45,7 +44,6 @@ describe('EstoyAquiVe parser', () => {
   it('should parse found persons (encontradas) correctly', () => {
     const results = parseEstoyAquiVeResponse(null, foundFixture as any);
 
-    // Third record should be a found person (index 2, after 2 missing)
     expect(results[0]).toMatchObject({
       provider: 'Estoy Aquí VE',
       provider_id: '00000000-0000-0000-0000-0000000000b1',
