@@ -222,12 +222,12 @@ describe('warmNasaDpm — full OID-cursor extraction into the stable cache', () 
     expect(fetchJson).toHaveBeenCalledTimes(2);
   });
 
-  it('always sends where=damage=1 + resultRecordCount and NO spatial envelope (ND-03)', async () => {
+  it('always sends where=damage_probability >= 0.1 + resultRecordCount and NO spatial envelope (ND-03)', async () => {
     const fetchJson = routedFetch();
     await warmNasaDpm({}, deps(fetchJson));
     for (const call of fetchJson.mock.calls) {
       const url = call[0] as string;
-      expect(url).toContain('where=damage%3D1');
+      expect(url).toContain('damage_probability+%3E%3D+0.1');
       expect(url).toContain('resultRecordCount=');
       expect(url).not.toContain('geometry=');
       expect(isAllowedArcgisUrl(url.split('?')[0])).toBe(true);
