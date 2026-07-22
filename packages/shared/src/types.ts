@@ -552,6 +552,12 @@ export interface EarthquakeFeatureProperties {
   url?: string;
   /** Attribution label, e.g. "USGS" or "FUNVISIS (vía SismosVE)". */
   source: string;
+  /** Optional Moment Tensor Focal Mechanism parameters (strike, dip, rake) */
+  focalMechanism?: {
+    strike: number;
+    dip: number;
+    rake: number;
+  };
 }
 
 /** A GeoJSON Point Feature carrying normalized earthquake properties. */

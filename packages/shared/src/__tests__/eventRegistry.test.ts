@@ -68,11 +68,11 @@ describe('NASA ARIA DPM block (Phase 15)', () => {
     expect(event?.nasa?.featureServers[0].key).toBe('dpm');
   });
 
-  it('carries the DPM FeatureServer url and the mandatory damage=1 filter as config', () => {
+  it('carries the DPM FeatureServer url and the mandatory damage_probability >= 0.1 filter as config', () => {
     const dpm = getEvent('ve-2026-quake')!.nasa!.featureServers[0];
     expect(dpm.url).toContain('202610_s1_likelydmgareas/FeatureServer/0');
     // The mandatory server-side filter is config, never fetched-all (ND-03).
-    expect(dpm.where).toBe('damage=1');
+    expect(dpm.where).toBe('damage_probability >= 0.1');
     expect(dpm.outFields).toBe('damage_probability,label');
     expect(dpm.label).toContain('DPM');
   });

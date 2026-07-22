@@ -46,7 +46,8 @@ function parseBbox(
 
 export function buildGeofonUrl(params: GeofonQueryParams = {}): string {
   const search = new URLSearchParams();
-  search.set('format', 'text');
+  search.set('format', 'xml');
+  search.set('includefocalmechanism', 'true');
   // Optional limit to protect memory. 1000 is generous for recent earthquakes.
   search.set('limit', '1000');
 

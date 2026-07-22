@@ -106,7 +106,7 @@ export const DISASTER_EVENTS: Record<string, DisasterEvent> = {
           key: 'dpm',
           label: 'Likelihood of Damaged Structures (DPM)',
           url: 'https://services7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_s1_likelydmgareas/FeatureServer/0',
-          where: 'damage=1',
+          where: 'damage_probability >= 0.1',
           outFields: 'damage_probability,label',
         },
       ],
