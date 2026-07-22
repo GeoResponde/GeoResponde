@@ -24,8 +24,6 @@ describe('EstoyAquiVeAdapter', () => {
   });
 
   it('fetches and normalizes data successfully', async () => {
-    // Mock the two fetchJson calls. The adapter does Promise.all so we
-    // need to resolve them based on the URL.
     vi.mocked(restClient.fetchJson).mockImplementation(async (url: string) => {
       if (url.includes('buscar')) return buscarFixture;
       return [];
