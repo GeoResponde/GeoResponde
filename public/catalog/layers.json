@@ -1,7 +1,7 @@
 [
   {
     "id": "layer-earthquakes",
-    "name": "Recent Earthquakes",
+    "name": "USGS Earthquakes",
     "datasetIds": [
       "ds-earthquakes-recent"
     ],

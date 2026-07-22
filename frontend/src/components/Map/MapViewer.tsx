@@ -8,6 +8,7 @@ import { buildLayerFilter } from '../../lib/FilterPipeline';
 import { CopernicusLegend } from './CopernicusLegend';
 import { EonetLayer, EONET_LAYER_ID } from './EonetLayer';
 import { AidSitesLayer, AID_SITES_LAYER_ID } from './AidSitesLayer';
+import { UsgsShakeMapLayer } from './UsgsShakeMapLayer';
 import type { RenderFeature } from '../../lib/eonet';
 import type { AidSiteRenderFeature } from '../../lib/sitios';
 import type { EarthquakeFeatureCollection } from '../../lib/earthquakes';
@@ -43,6 +44,8 @@ interface Props {
   aidSiteActiveTipos?: Set<string>;
   /** Live USGS earthquakes feeding `layer-earthquakes`. */
   usgsData?: EarthquakeFeatureCollection;
+  /** Live USGS ShakeMap feeding `layer-usgs-shakemap`. */
+  usgsShakeMapData?: any;
   /** Live GEOFON earthquakes feeding `layer-geofon`. */
   geofonData?: EarthquakeFeatureCollection;
   /** Live FUNVISIS (via SismosVE) earthquakes feeding `layer-funvisis`. */
@@ -91,6 +94,7 @@ export function MapViewer({
   showAidSites = false,
   aidSiteActiveTipos,
   usgsData = EMPTY_EARTHQUAKES,
+  usgsShakeMapData = null,
   geofonData = EMPTY_EARTHQUAKES,
   funvisisData = EMPTY_EARTHQUAKES,
   copernicusDamageData = EMPTY_DAMAGE,
@@ -773,6 +777,7 @@ export function MapViewer({
         style={{ width: '100%', height: '100%' }}
       >
         {renderLayers(activeLayersWithData)}
+        {usgsShakeMapData && <UsgsShakeMapLayer data={usgsShakeMapData} globalTimeFilter={globalTimeFilter} />}
         {showEonet && (
           <EonetLayer
             features={eonetFeatures}
@@ -809,6 +814,7 @@ export function MapViewer({
         eonetActiveCategories={eonetActiveCategories}
         showAidSites={showAidSites}
         aidSiteActiveTipos={aidSiteActiveTipos}
+        hasShakeMap={!!usgsShakeMapData}
         attribution={copernicusAttribution}
         nasaAttribution={nasaAttribution}
         nasaDisclaimer={nasaDisclaimer}

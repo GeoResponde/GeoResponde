@@ -115,3 +115,60 @@ export async function fetchUsgsEarthquakes(
     return { collection: emptyCollection(), source: 'empty' };
   }
 }
+
+export async function fetchUsgsShakeMap(
+  params: UsgsQueryParams = {},
+  deps: UsgsDeps = { cache: defaultCache, fetchJson },
+): Promise<{ collection: any; source: UsgsSource }> {
+  const url = buildUsgsUrl(params) + '&producttype=shakemap&limit=3&minmagnitude=4.5';
+  const key = 'shakemap_' + cacheKey(url);
+
+  const fresh = deps.cache.get(key);
+  if (fresh) return { collection: fresh, source: 'cache' };
+
+  try {
+    const raw = await deps.fetchJson<UsgsResponse>(url, { timeoutMs: 10000 });
+    
+    const featureCollections = await Promise.all(
+      (raw.features || []).map(async (feat) => {
+        if (!feat.properties?.detail) return null;
+        try {
+          const detail = await deps.fetchJson<any>(feat.properties?.detail, { timeoutMs: 10000 });
+          const shakemap = detail?.properties?.products?.shakemap?.[0];
+          if (!shakemap) return null;
+          const contUrl = shakemap.contents?.['download/cont_mmi.json']?.url;
+          if (!contUrl) return null;
+          
+          const contourGeoJson = await deps.fetchJson<any>(contUrl, { timeoutMs: 10000 });
+          
+          // Inject the earthquake's timestamp into each contour feature so the frontend can filter by time
+          if (contourGeoJson && Array.isArray(contourGeoJson.features) && feat.properties?.time) {
+            contourGeoJson.features.forEach((f: any) => {
+              if (f.properties) {
+                f.properties.time = feat.properties?.time;
+              }
+            });
+          }
+          
+          return contourGeoJson;
+        } catch (e) {
+          console.warn('[usgs] Failed to fetch shakemap for event', feat.id, e);
+          return null;
+        }
+      })
+    );
+
+    const allFeatures = featureCollections
+      .filter((fc) => fc && fc.type === 'FeatureCollection' && Array.isArray(fc.features))
+      .flatMap((fc) => fc.features);
+
+    const merged = { type: 'FeatureCollection', features: allFeatures };
+    deps.cache.set(key, merged as any);
+    return { collection: merged, source: 'live' };
+  } catch (err) {
+    console.error(`[usgs] upstream shakemap fetch failed: ${err instanceof Error ? err.message : String(err)}`);
+    const stale = deps.cache.getStale(key);
+    if (stale) return { collection: stale, source: 'cache' };
+    return { collection: { type: 'FeatureCollection', features: [] }, source: 'empty' };
+  }
+}

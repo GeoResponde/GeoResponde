@@ -7,6 +7,7 @@ import { useEonetEvents } from '../hooks/useEonetEvents';
 import { useAidSites } from '../hooks/useAidSites';
 import { useGeofonEarthquakes } from '../hooks/useGeofonEarthquakes';
 import { useUsgsEarthquakes } from '../hooks/useUsgsEarthquakes';
+import { useUsgsShakeMap } from '../hooks/useUsgsShakeMap';
 import { useFunvisisEarthquakes } from '../hooks/useFunvisisEarthquakes';
 import { useDamageLayer } from '../hooks/useDamageLayer';
 import { useNasaDpmLayer } from '../hooks/useNasaDpmLayer';
@@ -67,6 +68,8 @@ export function Situation() {
   );
   const { features: aidSiteFeatures } = useAidSites(showSitios);
   const { collection: usgsData } = useUsgsEarthquakes(usgsActive, bbox, timeWindow.quakeStart);
+  const shakemapActive = activeLayerIds.has('layer-usgs-shakemap');
+  const { collection: usgsShakeMapData } = useUsgsShakeMap(shakemapActive, bbox, timeWindow.quakeStart);
   const { collection: geofonData } = useGeofonEarthquakes(geofonActive, bbox, timeWindow.quakeStart);
   const { collection: funvisisData } = useFunvisisEarthquakes(funvisisActive, timeWindow.quakeStart);
   const { collection: copernicusDamageData, attribution: copernicusAttribution } = useDamageLayer(
@@ -280,6 +283,7 @@ export function Situation() {
         showAidSites={showSitios}
         aidSiteActiveTipos={showSitios ? activeTipos : undefined}
         usgsData={usgsData}
+        usgsShakeMapData={usgsShakeMapData}
         geofonData={geofonData}
         funvisisData={funvisisData}
         copernicusDamageData={copernicusDamageData}

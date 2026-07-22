@@ -289,7 +289,7 @@
   },
   {
     "id": "ds-earthquakes-recent",
-    "title": "Recent Earthquakes (M2.5+, Last 24h)",
+    "title": "USGS Earthquakes (M2.5+, Last 24h)",
     "type": "dataset",
     "description": "Automatically updated GeoJSON feed of recent global seismic activity."
   },
@@ -445,7 +445,7 @@
   },
   {
     "id": "layer-earthquakes",
-    "title": "Recent Earthquakes",
+    "title": "USGS Earthquakes",
     "type": "layer"
   },
   {

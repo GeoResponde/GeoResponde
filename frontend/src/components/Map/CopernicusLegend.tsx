@@ -10,6 +10,7 @@ interface CopernicusLegendProps {
   /** Aid-sites layer state (a dynamic, non-catalog source). */
   showAidSites?: boolean;
   aidSiteActiveTipos?: Set<string>;
+  hasShakeMap?: boolean;
   /** EU/Copernicus attribution from the gateway `X-Attribution` header (D-07). */
   attribution?: string | null;
   /** ARIA/NASA/ESA/Overture attribution for the DPM layer (ND-06). */
@@ -24,6 +25,7 @@ export function CopernicusLegend({
   eonetActiveCategories,
   showAidSites = false,
   aidSiteActiveTipos,
+  hasShakeMap = false,
   attribution = null,
   nasaAttribution = null,
   nasaDisclaimer = null,
@@ -54,7 +56,8 @@ export function CopernicusLegend({
     !hasFaults &&
     !hasCitizenReports &&
     !hasEonet &&
-    !hasSitios
+    !hasSitios &&
+    !hasShakeMap
   ) {
     return null;
   }
@@ -194,6 +197,26 @@ export function CopernicusLegend({
             ].map(item => (
               <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div style={{ width: '10px', height: '10px', backgroundColor: item.color, borderRadius: '50%', border: '1px solid #fff' }}></div>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hasShakeMap && (
+        <div style={{ marginBottom: '8px' }}>
+          <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>USGS ShakeMap (MMI)</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {[
+              { label: 'Extreme (X+)', color: '#cc0000' },
+              { label: 'Severe (VIII-IX)', color: '#ff9100' },
+              { label: 'Strong (VI-VII)', color: '#ffff00' },
+              { label: 'Moderate (IV-V)', color: '#80ffff' },
+              { label: 'Weak (II-III)', color: '#bfccff' }
+            ].map(item => (
+              <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '12px', height: '12px', backgroundColor: item.color, border: '1px solid #666' }}></div>
                 <span>{item.label}</span>
               </div>
             ))}

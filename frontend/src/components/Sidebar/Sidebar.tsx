@@ -1,6 +1,7 @@
 import { useState, type ReactNode, useEffect } from 'react';
 import { useCatalog } from '../../hooks/useCatalog';
 import { LayerToggle } from './LayerToggle';
+import { UsgsExpandableLayer } from './UsgsExpandableLayer';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -114,18 +115,32 @@ export function Sidebar({
 
               {/* Scientific Layers always expanded without a category header */}
               <div style={{ paddingLeft: '8px', marginBottom: '20px' }}>
-                {layers.filter(l => scientificCategories.includes(l.category)).map(layer => (
-                  <LayerToggle 
-                    key={layer.id} 
-                    layer={layer}
-                    dataset={getDatasetForLayer(layer)}
-                    isActive={activeLayerIds.has(layer.id)} 
-                    onToggle={onToggleLayer}
-                    activeVariantId={activeLayerVariants[layer.id]}
-                    onToggleVariant={onToggleLayerVariant}
-                    isUnavailable={unavailableLayerIds.has(layer.id)}
-                  />
-                ))}
+                {layers.filter(l => scientificCategories.includes(l.category)).map(layer => {
+                  if (layer.id === 'layer-earthquakes') {
+                    return (
+                      <UsgsExpandableLayer 
+                        key={layer.id}
+                        layer={layer}
+                        dataset={getDatasetForLayer(layer)}
+                        activeLayerIds={activeLayerIds}
+                        onToggleLayer={onToggleLayer}
+                      />
+                    );
+                  }
+                  
+                  return (
+                    <LayerToggle 
+                      key={layer.id} 
+                      layer={layer}
+                      dataset={getDatasetForLayer(layer)}
+                      isActive={activeLayerIds.has(layer.id)} 
+                      onToggle={onToggleLayer}
+                      activeVariantId={activeLayerVariants[layer.id]}
+                      onToggleVariant={onToggleLayerVariant}
+                      isUnavailable={unavailableLayerIds.has(layer.id)}
+                    />
+                  );
+                })}
               </div>
               
               {/* Other categories are collapsible */}

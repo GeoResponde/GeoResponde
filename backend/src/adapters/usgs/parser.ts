@@ -15,6 +15,7 @@ export interface UsgsRawFeature {
     place?: string | null;
     time?: number | null;
     url?: string | null;
+    detail?: string | null;
   } | null;
   geometry?: {
     type?: string;

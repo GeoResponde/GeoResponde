@@ -11,7 +11,7 @@ import { HealthProbeService } from './gateway/health/HealthProbeService.js'
 import { VenezuelaTeBuscaAdapter } from './adapters/venezuelatebusca/adapter.js'
 import { fetchEonetEvents } from './adapters/eonet/service.js'
 import { fetchAidSites } from './adapters/sitios/service.js'
-import { fetchUsgsEarthquakes } from './adapters/usgs/service.js'
+import { fetchUsgsEarthquakes, fetchUsgsShakeMap } from './adapters/usgs/service.js'
 import { fetchGeofonEarthquakes } from './adapters/geofon/service.js'
 import { fetchFunvisisEarthquakes } from './adapters/funvisis/service.js'
 import { fetchCopernicusProduct } from './adapters/damage/service.js'
@@ -232,6 +232,16 @@ export function buildApp(): FastifyInstance {
   fastify.get('/api/usgs/earthquakes', async (request, reply) => {
     const { bbox, start } = request.query as { bbox?: string; start?: string }
     const result = await fetchUsgsEarthquakes({ bbox, start })
+    reply.header('X-USGS-Source', result.source)
+    reply.header('X-Attribution', 'USGS')
+    return result.collection
+  })
+
+  // Situation map USGS ShakeMap layer. Fetches MMI contours for the most recent
+  // significant earthquake.
+  fastify.get('/api/usgs/shakemap', async (request, reply) => {
+    const { bbox, start } = request.query as { bbox?: string; start?: string }
+    const result = await fetchUsgsShakeMap({ bbox, start })
     reply.header('X-USGS-Source', result.source)
     reply.header('X-Attribution', 'USGS')
     return result.collection
