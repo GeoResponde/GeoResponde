@@ -438,12 +438,6 @@
     "description": "Likelihood of damaged structures based on Sentinel-1 radar data."
   },
   {
-    "id": "ds-nasa-interferogram",
-    "title": "NASA Sentinel-1 Unwrapped Interferogram",
-    "type": "dataset",
-    "description": "Continuous line-of-sight ground displacement."
-  },
-  {
     "id": "ds-citizen-reports",
     "title": "Citizen Reports",
     "type": "dataset",
@@ -492,11 +486,6 @@
   {
     "id": "layer-nasa-sentinel-damage",
     "title": "NASA Sentinel Damage Map",
-    "type": "layer"
-  },
-  {
-    "id": "layer-nasa-interferogram",
-    "title": "NASA Unwrapped Interferogram",
     "type": "layer"
   },
   {

@@ -139,18 +139,6 @@
   visualization:
     type: fill
 
-- id: layer-nasa-interferogram
-  name: NASA Unwrapped Interferogram
-  datasetIds:
-    - ds-nasa-interferogram
-  category: Scientific
-  confidence: Official
-  refreshFrequency: Static
-  enabled: false
-  visualization:
-    type: raster
-    url: 'https://tiledimageservices7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_sentinel1_unwrappedInterferogram/ImageServer/tile/{z}/{y}/{x}'
-
 - id: layer-verified-buildings
   name:
     en: Field-Verified Buildings (TerremotoVenezuela)

@@ -525,16 +525,6 @@
       ]
     },
     {
-      "id": "ds-nasa-interferogram",
-      "title": "NASA Sentinel-1 Unwrapped Interferogram",
-      "description": "Continuous line-of-sight ground displacement.",
-      "sourceId": "src-nasa-arcgis",
-      "tags": [
-        "interferogram",
-        "displacement"
-      ]
-    },
-    {
       "id": "ds-citizen-reports",
       "title": "Citizen Reports",
       "description": "Aggregated citizen reports for missing persons and shelters.",
@@ -729,21 +719,6 @@
       "disclaimer": "Experimental — not validated for operational use.",
       "visualization": {
         "type": "fill"
-      }
-    },
-    {
-      "id": "layer-nasa-interferogram",
-      "name": "NASA Unwrapped Interferogram",
-      "datasetIds": [
-        "ds-nasa-interferogram"
-      ],
-      "category": "Scientific",
-      "confidence": "Official",
-      "refreshFrequency": "Static",
-      "enabled": false,
-      "visualization": {
-        "type": "raster",
-        "url": "https://tiledimageservices7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/202610_sentinel1_unwrappedInterferogram/ImageServer/tile/{z}/{y}/{x}"
       }
     },
     {

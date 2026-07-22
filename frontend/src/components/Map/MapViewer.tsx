@@ -147,7 +147,7 @@ export function MapViewer({
   const activeLayersWithData = useMemo(() => {
     return layers.filter(l => 
       activeLayerIds.has(l.id) && 
-      (l.id === 'layer-earthquakes' || l.id === 'layer-geofon' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-satellite' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-nasa-interferogram' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
+      (l.id === 'layer-earthquakes' || l.id === 'layer-geofon' || l.id === 'layer-funvisis' || l.id === 'layer-hospitals' || l.id === 'layer-faults' || l.id === 'layer-geologic-units' || l.id === 'layer-satellite' || l.id === 'layer-copernicus-damage' || l.id === 'layer-copernicus-ground-movement' || l.id === 'layer-nasa-sentinel-damage' || l.id === 'layer-citizen-reports' || l.id === 'layer-verified-buildings')
     );
   }, [layers, activeLayerIds]);
 

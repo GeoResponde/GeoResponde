@@ -162,13 +162,6 @@
     - radar
     - sentinel
 
-- id: ds-nasa-interferogram
-  title: NASA Sentinel-1 Unwrapped Interferogram
-  description: Continuous line-of-sight ground displacement.
-  sourceId: src-nasa-arcgis
-  tags:
-    - interferogram
-    - displacement
 - id: ds-citizen-reports
   title: Citizen Reports
   description: Aggregated citizen reports for missing persons and shelters.
