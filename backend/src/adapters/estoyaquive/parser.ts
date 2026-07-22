@@ -82,7 +82,6 @@ export function parseEstoyAquiVeResponse(
 
   // Parse missing persons from /buscar (buscadas)
   if (Array.isArray(missing)) {
-    console.log(missing)
     missing = missing.slice(0, OUTPUT_LENGTH)
     results.push(...missing.map(parseMissingPerson));
   }

@@ -16,7 +16,7 @@ export class EstoyAquiVeAdapter implements BaseAdapter {
   async search(query: string): Promise<NormalizedSearchResult[]> {
     try {
       // The /buscar endpoint accepts a 'q' parameter for searching
-      const url = `${API_BASE}?q=${query}`
+      const url = `${API_BASE}?q=${encodeURIComponent(query)}`
       const response = await fetchJson<BuscarResponse>(url, { timeoutMs: 10000 });
       const normalizedResults = parseEstoyAquiVeResponse(response);
 

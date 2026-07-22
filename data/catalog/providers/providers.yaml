@@ -274,5 +274,4 @@
   adapter: EstoyAquiVeAdapter
   capabilities:
     - search
-    - person_lookup
 

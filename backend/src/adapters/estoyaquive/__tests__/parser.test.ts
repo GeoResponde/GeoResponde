@@ -3,7 +3,7 @@ import { parseEstoyAquiVeResponse } from '../parser.js';
 import buscarFixture from '../fixtures/buscar.json';
 
 describe('EstoyAquiVe parser', () => {
-  it('should parse missing persons (buscandas) correctly', () => {
+  it('should parse missing persons (buscadas) correctly', () => {
     const results = parseEstoyAquiVeResponse(buscarFixture as any);
 
     expect(results).toHaveLength(4);
@@ -81,11 +81,11 @@ describe('EstoyAquiVe parser', () => {
     expect(parseEstoyAquiVeResponse(null)).toEqual([]);
     expect(parseEstoyAquiVeResponse(undefined)).toEqual([]);
     expect(parseEstoyAquiVeResponse({} as any,)).toEqual([]);
-    expect(parseEstoyAquiVeResponse({ buscandas: null } as any)).toEqual([]);
+    expect(parseEstoyAquiVeResponse({ buscadas: null } as any)).toEqual([]);
   });
 
   it('should handle empty arrays', () => {
-    expect(parseEstoyAquiVeResponse({ buscandas: [] } as any )).toEqual([]);
+    expect(parseEstoyAquiVeResponse({ buscadas: [] } as any )).toEqual([]);
   });
 
   it('should parse both missing and found persons together', () => {
