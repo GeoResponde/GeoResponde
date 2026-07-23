@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+    <identifier>urn:oid:2.49.0.1.840.0.e91d489518dd4c6793ad0173154d20f97915386c.001.1</identifier>
+    <sender>w-nws.webmaster@noaa.gov</sender>
+    <sent>2026-07-10T11:32:00-05:00</sent>
+    <status>Actual</status>
+    <msgType>Alert</msgType>
+    <scope>Public</scope>
+    <code>IPAWSv1.0</code>
+    <info>
+        <language>en-US</language>
+        <category>Met</category>
+        <event>Flood Watch</event>
+        <responseType>Prepare</responseType>
+        <urgency>Future</urgency>
+        <severity>Severe</severity>
+        <certainty>Possible</certainty>
+        <eventCode>
+            <valueName>SAME</valueName>
+            <value>FFA</value>
+        </eventCode>
+        <eventCode>
+            <valueName>NationalWeatherService</valueName>
+            <value>FAA</value>
+        </eventCode>
+        <effective>2026-07-10T11:32:00-05:00</effective>
+        <onset>2026-07-10T11:32:00-05:00</onset>
+        <expires>2026-07-11T07:00:00-05:00</expires>
+        <senderName>NWS Springfield MO</senderName>
+        <headline>Flood Watch issued July 10 at 11:32AM CDT until July 11 at 7:00PM CDT by NWS Springfield MO</headline>
+        <description>* WHAT...Flooding caused by excessive rainfall continues to be
+possible.
+
+* WHERE...Portions of central, southwest, and west central Missouri,
+including the following areas, in central Missouri, Benton,
+Camden, Hickory and Morgan. In southwest Missouri, Dallas, Laclede
+and Wright. In west central Missouri, St. Clair.
+
+* WHEN...Through Saturday evening.
+
+* IMPACTS...Excessive runoff may result in flooding of rivers,
+creeks, streams, and other low-lying and flood-prone locations.
+Low-water crossings may be flooded.
+
+* ADDITIONAL DETAILS...
+- A band of showers and thunderstorms expected to develop this
+afternoon and tonight may produce heavy rainfall and
+localized
+areas up to 3 to 5 inches of rain. This may result in flash
+flooding in localized areas.
+- http://www.weather.gov/safety/flood
+</description>
+        <instruction>You should monitor later forecasts and be alert for possible Flood
+Warnings. Those living in areas prone to flooding should be prepared
+to take action should flooding develop.</instruction>
+        <web>http://www.weather.gov</web>
+        <parameter>
+            <valueName>AWIPSidentifier</valueName>
+            <value>FFASGF</value>
+        </parameter>
+        <parameter>
+            <valueName>WMOidentifier</valueName>
+            <value>WGUS63 KSGF 101632</value>
+        </parameter>
+        <parameter>
+            <valueName>NWSheadline</valueName>
+            <value>FLOOD WATCH IN EFFECT THROUGH SATURDAY EVENING</value>
+        </parameter>
+        <parameter>
+            <valueName>BLOCKCHANNEL</valueName>
+            <value>EAS</value>
+        </parameter>
+        <parameter>
+            <valueName>BLOCKCHANNEL</valueName>
+            <value>NWEM</value>
+        </parameter>
+        <parameter>
+            <valueName>EAS-ORG</valueName>
+            <value>WXR</value>
+        </parameter>
+        <parameter>
+            <valueName>VTEC</valueName>
+            <value>/O.EXB.KSGF.FA.A.0011.000000T0000Z-260712T0000Z/</value>
+        </parameter>
+        <parameter>
+            <valueName>eventEndingTime</valueName>
+            <value>2026-07-11T19:00:00-05:00</value>
+        </parameter>
+        <parameter>
+            <valueName>BLOCKCHANNEL</valueName>
+            <value>CMAS</value>
+        </parameter>
+        <area>
+            <areaDesc>Benton; Morgan; St. Clair; Hickory; Camden; Dallas; Laclede; Wright</areaDesc>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029015</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029141</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029185</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029085</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029029</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029059</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029105</value>
+            </geocode>
+            <geocode>
+                <valueName>SAME</valueName>
+                <value>029229</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ055</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ056</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ067</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ068</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ069</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ080</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ081</value>
+            </geocode>
+            <geocode>
+                <valueName>UGC</valueName>
+                <value>MOZ092</value>
+            </geocode>
+        </area>
+    </info>
+</alert>
