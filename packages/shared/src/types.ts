@@ -127,15 +127,25 @@ export interface Observation {
   updatedAt?: string;
 }
 
+export type ConfidenceLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+
+export interface ObservationEdge {
+  sourceId: string;
+  targetId: string;
+  confidence: number;
+  reasons: string[];
+}
+
 /**
  * A resolved entity consisting of one or more grouped Observations.
  */
 export interface CandidateEntity {
   id: string;
   entityType: string;
-  confidence: string; // "HIGH", etc.
+  confidence: ConfidenceLevel;
   observations: Observation[];
   conflicts: any[]; // Detected conflicts between observations
+  explanations?: string[]; // Explainability: why these observations were grouped
   createdAt: string;
   updatedAt: string;
 }

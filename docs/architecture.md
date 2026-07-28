@@ -38,7 +38,7 @@ flowchart TB
 
   subgraph CORE["Backend core"]
     direction TB
-    GW["Provider Gateway<br />gateway/ProviderGateway.ts<br />search() fan-out · dedupe · submit() fan-out"]:::gateway
+    GW["Provider Gateway<br />gateway/ProviderGateway.ts<br />search() fan-out · Resolution Engine · submit() fan-out"]:::gateway
     HTTP["Fastify HTTP layer<br />backend/src/index.ts buildApp()<br />/api/search · /api/report · /api/providers<br />+ cached read-proxy routes"]:::http
   end
 
@@ -55,7 +55,7 @@ flowchart TB
   HUM -->|REST / ArcGIS / Supabase| ADAPT
   SCI -->|REST / GeoJSON| ADAPT
   ADAPT -->|NormalizedSearchResult| GW
-  GW -->|search results, deduped| HTTP
+  GW -->|search results, resolved via Engine| HTTP
   HTTP -->|JSON, attribution headers| API
   API --> PAGES
 
@@ -90,7 +90,7 @@ flowchart TB
 ## Read path, in one line
 
 ```
-external provider → adapter (parse + normalize) → gateway (fan-out + dedupe)
+external provider → adapter (parse + normalize) → gateway (fan-out + Resolution Engine)
   → Fastify route (cache + attribution) → frontend hook → map / list UI
 ```
 
@@ -113,11 +113,11 @@ backend/src/adapters/registry.ts
 
 ### Provider Gateway
 
-The federation engine. Loads active providers from the catalog, instantiates their adapters, and exposes `search()` (fan-out + cédula-aware dedupe) and `submit()` (fan-out a report by topic, idempotency-keyed, dry-run by default).
+The federation engine. Loads active providers from the catalog, instantiates their adapters, and exposes `search()` (fan-out + Resolution Engine logic) and `submit()` (fan-out a report by topic, idempotency-keyed, dry-run by default).
 
 ```
 backend/src/gateway/ProviderGateway.ts
-backend/src/gateway/dedupe.ts
+backend/src/resolution/ResolutionEngine.ts
 backend/src/gateway/idempotency.ts
 ```
 
@@ -176,7 +176,7 @@ frontend/src/pages/{Situation,Find,Report}
 
 | Route | Method | Purpose |
 |---|---|---|
-| `/api/search` | `GET` | Federated search fan-out across search-capable adapters, deduped |
+| `/api/search` | `GET` | Federated search fan-out across search-capable adapters, resolved into CandidateEntities |
 | `/api/report` | `POST` | Validates a report, then fans it out via Gateway `submit()` to trusted providers (dry-run by default) |
 | `/api/providers` | `GET` | Lists active providers from the catalog with live adapter status |
 | `/api/providers/:id/geojson` | `GET` | GeoJSON layer for a single provider |

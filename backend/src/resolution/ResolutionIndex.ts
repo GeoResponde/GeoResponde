@@ -9,7 +9,7 @@ export class ResolutionIndex {
 
   constructor() {
     this.engine = new ResolutionEngine();
-    this.engine.use(new ExactIdentifierStrategy());
+    this.engine.register(new ExactIdentifierStrategy());
   }
 
   /**

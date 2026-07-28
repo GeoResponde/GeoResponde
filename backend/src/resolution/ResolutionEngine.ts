@@ -1,36 +1,71 @@
-import type { Observation, CandidateEntity } from '@georesponde/shared';
+import type { Observation, CandidateEntity, ConfidenceLevel } from '@georesponde/shared';
 import { ResolutionStrategy } from './strategies/ResolutionStrategy.js';
+import { RelationshipGraph } from './RelationshipGraph.js';
+import crypto from 'crypto';
 
 export class ResolutionEngine {
   private strategies: ResolutionStrategy[] = [];
 
-  use(strategy: ResolutionStrategy) {
+  register(strategy: ResolutionStrategy) {
     this.strategies.push(strategy);
   }
 
   /**
    * Runs observations through the resolution pipeline.
-   * For V1, we rely on the first registered strategy (or fallback to 1:1 candidate creation).
+   * V2 creates a RelationshipGraph and derives Candidates from connected components.
    */
   resolve(observations: Observation[]): CandidateEntity[] {
-    if (this.strategies.length === 0) {
-      // Fallback: 1 observation = 1 candidate
-      return observations.map(obs => ({
-        id: `ce-${obs.id}`,
-        entityType: obs.entityType,
-        confidence: 'NORMAL',
-        observations: [obs],
-        conflicts: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }));
+    const graph = new RelationshipGraph();
+    
+    // 1. Add all nodes
+    for (const obs of observations) {
+      graph.addNode(obs);
     }
 
-    // Execute the primary grouping strategy
-    const candidates = this.strategies[0].execute(observations);
+    // 2. Execute all strategies and collect edges
+    for (const strategy of this.strategies) {
+      const edges = strategy.execute(observations);
+      for (const edge of edges) {
+        graph.addEdge(edge);
+      }
+    }
 
-    // Conflict detection logic would go here.
-    // In V1, generic visual conflict detection is handled at the UI layer.
+    // 3. Extract components and build candidate views
+    const components = graph.getConnectedComponents();
+    const candidates: CandidateEntity[] = [];
+
+    for (const comp of components) {
+      let confidence: ConfidenceLevel = 'LOW';
+      const explanations = new Set<string>();
+
+      // Derive confidence from edges
+      if (comp.observations.length > 1) {
+        let maxConfidence = 0;
+        for (const edge of comp.edges) {
+          if (edge.confidence > maxConfidence) {
+            maxConfidence = edge.confidence;
+          }
+          for (const reason of edge.reasons) {
+            explanations.add(reason);
+          }
+        }
+        
+        if (maxConfidence >= 0.9) confidence = 'HIGH';
+        else if (maxConfidence >= 0.5) confidence = 'MEDIUM';
+        else confidence = 'LOW';
+      }
+
+      candidates.push({
+        id: crypto.randomUUID(),
+        entityType: comp.observations[0]?.entityType || 'unknown',
+        confidence,
+        observations: comp.observations,
+        conflicts: [], // Conflict detection delegated elsewhere
+        explanations: Array.from(explanations),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+    }
 
     return candidates;
   }
