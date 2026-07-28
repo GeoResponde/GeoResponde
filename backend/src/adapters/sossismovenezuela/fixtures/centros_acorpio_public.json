@@ -1,0 +1,53 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-0000000000b1",
+    "nombre": "Fake Collection Center",
+    "direccion": "Fake Collection Center en Zone I, Municipio Sintetico",
+    "address_reference": "Montalban I",
+    "ciudad": "Caracas",
+    "state": "Distrito Capital",
+    "municipality": "Municipio Sintetico",
+    "zone": "Zone I",
+    "country": "Venezuela",
+    "telefono": null,
+    "horario": null,
+    "items_aceptados": [
+      "Agua potable",
+      "Alimentos no perecederos",
+      "Insumos medicos",
+      "Ropa y abrigos"
+    ],
+    "source": "some random source",
+    "source_url": null,
+    "estado": "verificado",
+    "latitude": 10.4708,
+    "longitude": -66.9583,
+    "created_at": "2026-06-25T08:14:32.695073+00:00",
+    "updated_at": "2026-06-25T22:29:32.808129+00:00"
+  },
+  {
+    "id": "00000000-0000-0000-0000-0000000000b2",
+    "nombre": "Other Fake Collection Center",
+    "direccion": "Calle Principal, Alguna Playa",
+    "address_reference": "Detras de la plaza principal",
+    "ciudad": "Valencia",
+    "state": "Carabobo",
+    "municipality": "Some municipality",
+    "zone": "Alguna Playa",
+    "country": "Venezuela",
+    "telefono": "0412-000-0000",
+    "horario": "8:00 AM - 6:00 PM",
+    "items_aceptados": [
+      "Alimentos",
+      "Agua",
+      "Medicinas"
+    ],
+    "source": "Comunidad Local",
+    "source_url": "https://example.com/centro-saman",
+    "estado": "verificado",
+    "latitude": 10.1625,
+    "longitude": -68.0076,
+    "created_at": "2026-06-20T10:00:00.000Z",
+    "updated_at": "2026-06-22T15:30:00.000Z"
+  }
+]
