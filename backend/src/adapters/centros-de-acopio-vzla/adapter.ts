@@ -64,8 +64,8 @@ export class CentrosDeAcopioVzlaAdapter implements BaseAdapter {
         return (
           center.title.toLowerCase().includes(lowerQuery) ||
           (center.subtitle && center.subtitle.toLowerCase().includes(lowerQuery)) ||
-          (center.address && center.address.toLowerCase().includes(lowerQuery)) ||
-          (center.tags && center.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
+          (center.metadata?.address && center.metadata.address.toLowerCase().includes(lowerQuery)) ||
+          (center.metadata?.tags && center.metadata.tags.some((tag: string) => tag.toLowerCase().includes(lowerQuery)))
         );
       });
     } catch (e) {

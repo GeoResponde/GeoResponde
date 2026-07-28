@@ -1071,6 +1071,24 @@
       "capabilities": [
         "search"
       ]
+    },
+    {
+      "id": "prov-centros-de-acopio-vzla",
+      "display_name": "Centros de Acopio Vzla",
+      "website": "https://www.centrosdeacopiovzla.com",
+      "description": "Live directory of collection centers across Venezuela.",
+      "logo": "/logos/centrosdeacopiovzla.png",
+      "status": "active",
+      "adapter": "CentrosDeAcopioVzlaAdapter",
+      "capabilities": [
+        "search"
+      ],
+      "metadata": {
+        "cacheTtlMs": 300000
+      },
+      "config": {
+        "url": "https://www.centrosdeacopiovzla.com/data.json"
+      }
     }
   ]
 }
