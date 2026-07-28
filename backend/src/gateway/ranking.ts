@@ -1,4 +1,4 @@
-import { NormalizedSearchResult } from '@georesponde/shared';
+import type { NormalizedSearchResult, CandidateEntity } from '@georesponde/shared';
 
 /**
  * Relevance ranking for federated search results (issue #19).
@@ -81,8 +81,8 @@ function matchScore(result: NormalizedSearchResult, queryTokens: string[], query
   );
 }
 
-function corroborationScore(result: NormalizedSearchResult): number {
-  const extra = Math.min(result.sources?.length ?? 0, CORROBORATION_MAX_SOURCES);
+function corroborationScore(candidate: CandidateEntity): number {
+  const extra = Math.max(0, Math.min(candidate.observations.length - 1, CORROBORATION_MAX_SOURCES));
   return extra * CORROBORATION_PER_SOURCE;
 }
 
@@ -99,24 +99,30 @@ function confidenceScore(result: NormalizedSearchResult): number {
   return Math.max(0, Math.min(1, c)) * CONFIDENCE_WEIGHT;
 }
 
-/** Total relevance score for one result against the query. Exported for tests. */
+/** Total relevance score for one candidate against the query. Exported for tests. */
 export function scoreResult(
-  result: NormalizedSearchResult,
+  candidate: CandidateEntity,
   queryTokens: string[],
   queryNorm: string,
 ): number {
-  return (
-    matchScore(result, queryTokens, queryNorm) +
-    corroborationScore(result) +
-    structuredScore(result) +
-    confidenceScore(result)
-  );
+  // Score the best observation inside the candidate for textual match and structured completeness
+  const obsScores = candidate.observations.map(obs => {
+    const result = obs.normalizedFields;
+    return (
+      matchScore(result, queryTokens, queryNorm) +
+      structuredScore(result) +
+      confidenceScore(result)
+    );
+  });
+  const bestObsScore = obsScores.length > 0 ? Math.max(...obsScores) : 0;
+
+  return bestObsScore + corroborationScore(candidate);
 }
 
-/** Epoch ms for a result's last_update, or -Infinity when absent/unparsable. */
-function updatedAt(result: NormalizedSearchResult): number {
-  if (!result.last_update) return -Infinity;
-  const t = Date.parse(result.last_update);
+/** Epoch ms for a candidate's updatedAt, or -Infinity when absent/unparsable. */
+function updatedAt(candidate: CandidateEntity): number {
+  if (!candidate.updatedAt) return -Infinity;
+  const t = Date.parse(candidate.updatedAt);
   return Number.isNaN(t) ? -Infinity : t;
 }
 
@@ -126,23 +132,23 @@ function updatedAt(result: NormalizedSearchResult): number {
  * sort is stable. Never mutates the input.
  */
 export function rankResults(
-  results: NormalizedSearchResult[],
+  candidates: CandidateEntity[],
   query: string,
-): NormalizedSearchResult[] {
+): CandidateEntity[] {
   const queryTokens = tokenize(query);
   const queryNorm = queryTokens.join(' ');
 
-  return results
-    .map((result, index) => ({
-      result,
+  return candidates
+    .map((candidate, index) => ({
+      candidate,
       index,
-      score: scoreResult(result, queryTokens, queryNorm),
-      updated: updatedAt(result),
+      score: scoreResult(candidate, queryTokens, queryNorm),
+      updated: updatedAt(candidate),
     }))
     .sort((a, b) => {
       if (b.score !== a.score) return b.score - a.score;
       if (b.updated !== a.updated) return b.updated - a.updated;
       return a.index - b.index;
     })
-    .map((entry) => entry.result);
+    .map((entry) => entry.candidate);
 }

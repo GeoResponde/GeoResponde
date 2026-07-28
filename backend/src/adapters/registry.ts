@@ -25,6 +25,7 @@ import { AcopioVenezuelaAyudaAdapter } from './acopio-venezuela-ayuda/adapter.js
 import { JuntosVeAdapter } from './juntosve/adapter.js';
 import { VenezuelaRescateAdapter } from './venezuelarescate/adapter.js';
 import { EstoyAquiVeAdapter } from './estoyaquive/adapter.js';
+import { MockResolutionAdapter } from './mock-resolution/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -90,3 +91,7 @@ registerAdapter('AcopioVenezuelaAyudaAdapter', AcopioVenezuelaAyudaAdapter);
 registerAdapter('JuntosVeAdapter', JuntosVeAdapter);
 registerAdapter('VenezuelaRescateAdapter', VenezuelaRescateAdapter);
 registerAdapter('EstoyAquiVeAdapter', EstoyAquiVeAdapter);
+
+if (process.env.NODE_ENV !== 'production') {
+  registerAdapter('MockResolutionAdapter', MockResolutionAdapter);
+}
