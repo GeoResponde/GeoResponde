@@ -1,9 +1,9 @@
-import type { Observation, CandidateEntity } from '@georesponde/shared';
+import type { Observation, ObservationEdge } from '@georesponde/shared';
 
 export interface ResolutionStrategy {
   /**
-   * Groups a set of observations into Candidate Entities.
-   * Can be chained or used as part of a multi-pass resolution pipeline.
+   * Evaluates a set of observations and returns the calculated edges (relationships)
+   * between them. The edges will be combined into a RelationshipGraph.
    */
-  execute(observations: Observation[]): CandidateEntity[];
+  execute(observations: Observation[]): ObservationEdge[];
 }
