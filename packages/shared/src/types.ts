@@ -109,6 +109,38 @@ export interface NormalizedSearchResult {
 }
 
 /**
+ * An immutable representation of a single humanitarian record coming from one provider.
+ * The Resolution Engine groups observations into Candidate Entities based on generic `identityHints`.
+ */
+export interface Observation {
+  id: string; // Internal id for the observation
+  provider: string; // e.g. "acopio-venezuela-ayuda"
+  providerRecordId: string; // ID from the provider
+  entityType: string; // e.g. "person", "shelter"
+  /** Generic hints for resolution (e.g. { national_id: ["V1234567"] }) */
+  identityHints: Record<string, string[]>;
+  /** The fields as we currently normalize them */
+  normalizedFields: NormalizedSearchResult;
+  rawRecord?: any;
+  sourceUrl?: string;
+  observedAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * A resolved entity consisting of one or more grouped Observations.
+ */
+export interface CandidateEntity {
+  id: string;
+  entityType: string;
+  confidence: string; // "HIGH", etc.
+  observations: Observation[];
+  conflicts: any[]; // Detected conflicts between observations
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
  * @deprecated Use `Report`. Kept as an alias so existing imports keep compiling
  * while the codebase migrates to the structured `Report` vocabulary. Convert a
  * legacy package into a `Report` with {@link toReport}.

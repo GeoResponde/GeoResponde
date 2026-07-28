@@ -1,5 +1,5 @@
 import { NormalizedSearchResult, PersonRecord } from '@georesponde/shared';
-import { normalizeCedula } from '../adapters/person.js';
+import { isCedula, normalizeCedula } from '../../adapters/person.js';
 
 /** Normalize a name for comparison: strip accents/punctuation, lowercase, collapse spaces. */
 function normalizeName(value: unknown): string {

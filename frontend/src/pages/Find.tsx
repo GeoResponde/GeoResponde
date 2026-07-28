@@ -1,63 +1,14 @@
-import { useState, type ReactNode } from 'react';
-import type { NormalizedSearchResult, PersonStatus, Gender } from '@georesponde/shared';
+import { useState } from 'react';
+import type { CandidateEntity } from '@georesponde/shared';
 import { useTranslation } from 'react-i18next';
 import { FindMap } from '../components/Map/FindMap';
+import { CandidateEntityCard } from '../components/CandidateEntityCard';
 import { API_BASE } from '../lib/api';
 import { shouldShowNoResults } from '../lib/searchState';
 
-const STATUS_META: Record<PersonStatus, { label: string; color: string }> = {
-  missing: { label: 'Desaparecido', color: '#ef4444' },
-  found: { label: 'Encontrado', color: '#22c55e' },
-  hospitalized: { label: 'Hospitalizado', color: '#f59e0b' },
-  safe: { label: 'A salvo', color: '#3b82f6' },
-  deceased: { label: 'Fallecido', color: '#6b7280' },
-  unknown: { label: 'Sin estado', color: '#64748b' },
-};
-
-const GENDER_LABEL: Record<Gender, string> = {
-  male: 'Masculino',
-  female: 'Femenino',
-  other: 'Otro',
-  unknown: '',
-};
-
-function Chip({ children, color }: { children: ReactNode; color?: string }) {
-  return (
-    <span
-      style={{
-        backgroundColor: color ? `${color}22` : '#0f172a',
-        color: color || '#94a3b8',
-        border: `1px solid ${color || '#334155'}`,
-        padding: '3px 10px',
-        borderRadius: '12px',
-        fontSize: '12px',
-        fontWeight: 600,
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
-function PersonChips({ person }: { person: NonNullable<NormalizedSearchResult['person']> }) {
-  const status = person.status ? STATUS_META[person.status] : undefined;
-  const gender = person.gender ? GENDER_LABEL[person.gender] : '';
-  return (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-      {status && <Chip color={status.color}>{status.label}</Chip>}
-      {person.cedula && <Chip>CI: {person.cedula}</Chip>}
-      {typeof person.age === 'number' && <Chip>{person.age} años</Chip>}
-      {gender && <Chip>{gender}</Chip>}
-      {person.hospital && <Chip>{person.hospital}</Chip>}
-      {person.verified && <Chip color="#22c55e">Verificado</Chip>}
-      {person.isMinor && <Chip color="#f59e0b">Menor</Chip>}
-    </div>
-  );
-}
-
 export function Find() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<NormalizedSearchResult[]>([]);
+  const [results, setResults] = useState<CandidateEntity[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [searchFailed, setSearchFailed] = useState(false);
@@ -169,32 +120,8 @@ export function Find() {
 
       {view === 'list' && (
       <div className="search-results-list">
-        {results.map((r, i) => (
-          <div key={i} className="search-result-card">
-            <div className="search-result-info">
-              <h3 className="search-result-title">{r.title}</h3>
-              <p className="search-result-subtitle">{r.subtitle}</p>
-              {r.person && <PersonChips person={r.person} />}
-              <div className="search-result-metadata">
-                <span className="search-result-type-badge">
-                  {t('find.type')}: {r.type}
-                </span>
-                <span className="search-result-source">
-                  {t('find.source')}: <strong style={{ color: '#fff' }}>{r.provider}</strong>
-                </span>
-              </div>
-            </div>
-            <div className="search-result-action">
-              <a 
-                href={r.url} 
-                target="_blank" 
-                rel="noreferrer"
-                className="search-result-button"
-              >
-                {t('find.openResource')}
-              </a>
-            </div>
-          </div>
+        {results.map((r) => (
+          <CandidateEntityCard key={r.id} candidate={r} />
         ))}
         {shouldShowNoResults({ loading, hasSearched, searchFailed, resultCount: results.length }) && (
           <div style={{ color: '#94a3b8', textAlign: 'center', marginTop: '40px', fontSize: '18px' }}>

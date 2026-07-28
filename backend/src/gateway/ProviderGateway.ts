@@ -5,6 +5,7 @@ import {
   HumanitarianProvider,
   NormalizedSearchResult,
   Report,
+  CandidateEntity,
   SubmissionReport,
   SubmissionResult,
   summarize,
@@ -12,7 +13,7 @@ import {
 import { BaseAdapter, isSubmissionCapable } from '../adapters/BaseAdapter.js';
 import { createAdapter } from '../adapters/registry.js';
 import { isCedula, normalizeCedula } from '../adapters/person.js';
-import { dedupePersons } from './dedupe.js';
+import { resolutionIndex } from '../resolution/ResolutionIndex.js';
 import { submissionCapabilities, type CapabilitiesByTopic } from './capabilities.js';
 import { rankResults } from './ranking.js';
 import { newReportKey, deriveKey, hashKey } from './idempotency.js';
@@ -51,6 +52,19 @@ export class ProviderGateway {
       const content = fs.readFileSync(catalogPath, 'utf8');
       this.providers = JSON.parse(content);
       
+      if (process.env.NODE_ENV !== 'production') {
+        this.providers.push({
+          id: 'mock-resolution',
+          display_name: 'Mock Resolution Tester',
+          description: 'A local development provider to test the Resolution Index.',
+          website: 'http://localhost',
+          logo: '',
+          status: 'active',
+          adapter: 'MockResolutionAdapter',
+          capabilities: ['search'],
+        });
+      }
+
       for (const p of this.providers) {
         if (p.status !== 'active') continue;
 
@@ -67,7 +81,7 @@ export class ProviderGateway {
     }
   }
 
-  async search(query: string, domain?: string): Promise<NormalizedSearchResult[]> {
+  async search(query: string, domain?: string): Promise<CandidateEntity[]> {
     const searchPromises: Promise<NormalizedSearchResult[]>[] = [];
     
     for (const [id, adapter] of this.adapters.entries()) {
@@ -84,22 +98,24 @@ export class ProviderGateway {
     const resultsArray = await Promise.all(searchPromises);
     const results = resultsArray.flat();
 
-    // Cédula search: when the query is a national ID, providers whose text
-    // search accepts the number return the person; keep only exact cédula
-    // matches (by digits) so the result set is precise. Masked cédulas that
-    // cannot be compared in full are dropped from a cédula search.
+    // Pass everything through the Resolution Index (which converts to Observation 
+    // and returns grouped CandidateEntity records via ResolutionEngine)
+    const candidates = resolutionIndex.resolve(results);
+
+    // Cédula search: when the query is a national ID, keep only exact cédula matches
     if (isCedula(query)) {
       const target = normalizeCedula(query);
-      const matches = results.filter(
-        (r) => r.person?.cedula && normalizeCedula(r.person.cedula) === target,
+      const matches = candidates.filter(
+        (c) => c.observations.some(obs => {
+          const cedula = obs.normalizedFields.person?.cedula;
+          return cedula && normalizeCedula(cedula) === target;
+        })
       );
-      return rankResults(dedupePersons(matches), query);
+      return rankResults(matches, query);
     }
 
-    // Many of these providers aggregate one another, so the same person is
-    // reported by several. Collapse those into one result with provenance, then
-    // order by relevance so the best-matched, best-corroborated results lead.
-    return rankResults(dedupePersons(results), query);
+    // Rank candidate entities based on their best inner observations
+    return rankResults(candidates, query);
   }
 
   /**
