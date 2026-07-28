@@ -38,14 +38,17 @@ describe('CentrosDeAcopioVzla Parser', () => {
     expect(center.provider).toBe(providerId);
     expect(center.title).toBe('CC Forum Plaza - Lechería');
     expect(center.subtitle).toBe('Centro Comercial Forum Plaza');
-    expect(center.address).toBe('Centro Comercial Forum Plaza, Lechería, Anzoátegui, Venezuela');
-    expect(center.category).toBe('centro de acopio');
-    expect(center.location).toEqual({ lat: 10.188, lng: -64.68 });
+    expect(center.metadata?.address).toBe('Centro Comercial Forum Plaza, Lechería, Anzoátegui, Venezuela');
+    expect(center.metadata?.category).toBe('centro de acopio');
+    expect(center.location).toEqual([-64.68, 10.188]);
     expect(center.url).toBe('https://maps.google.com/?q=10.188,-64.68');
     
-    expect(center.tags).toEqual(['agua', 'comida']);
+    expect(center.metadata?.tags).toEqual(['agua', 'comida']);
     
     expect(center.metadata).toEqual({
+      address: 'Centro Comercial Forum Plaza, Lechería, Anzoátegui, Venezuela',
+      category: 'centro de acopio',
+      tags: ['agua', 'comida'],
       maps: 'https://maps.google.com/?q=10.188,-64.68',
       contacto: '0414-1234567',
       fuente: 'Twitter',
@@ -78,10 +81,10 @@ describe('CentrosDeAcopioVzla Parser', () => {
     
     const center = results[0];
     expect(center.title).toBe('Cruz Roja');
-    expect(center.address).toBe('Barquisimeto, Lara, Venezuela');
-    expect(center.tags).toEqual([]);
+    expect(center.metadata?.address).toBe('Barquisimeto, Lara, Venezuela');
+    expect(center.metadata?.tags).toEqual([]);
     expect(center.location).toBeUndefined();
-    expect(center.url).toBeUndefined();
+    expect(center.url).toBe('');
   });
 
   it('should skip malformed or empty data', () => {

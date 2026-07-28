@@ -45,14 +45,16 @@ export function parseCollectionCenters(providerId: string, data: CentrosDeAcopio
         const uniqueId = `cavzla-${Math.abs(hash).toString(16)}`;
 
         const result: NormalizedSearchResult = {
-          id: uniqueId,
+          provider_id: uniqueId,
           provider: providerId,
+          type: 'shelter',
           title: centro.nombre.trim(),
           subtitle: centro.direccion?.trim(),
-          address: addressParts.join(', '),
-          category: 'centro de acopio', // default category
-          tags: tags,
+          url: centro.maps || '',
           metadata: {
+            address: addressParts.join(', '),
+            category: 'centro de acopio',
+            tags: tags,
             maps: centro.maps,
             contacto: centro.contacto,
             fuente: centro.fuente,
@@ -62,10 +64,7 @@ export function parseCollectionCenters(providerId: string, data: CentrosDeAcopio
         };
 
         if (centro.coords && Array.isArray(centro.coords) && centro.coords.length === 2) {
-          result.location = {
-            lat: centro.coords[0],
-            lng: centro.coords[1]
-          };
+          result.location = [centro.coords[1], centro.coords[0]];
         }
 
         if (centro.maps) {
