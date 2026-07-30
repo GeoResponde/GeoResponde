@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@georesponde/catalog": "workspace:*",
+    "jsdom": "^24.1.3",
     "vitest": "^1.4.0"
   },
   "dependencies": {
