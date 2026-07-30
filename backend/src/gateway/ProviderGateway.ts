@@ -15,7 +15,7 @@ import { createAdapter } from '../adapters/registry.js';
 import { isCedula, normalizeCedula } from '../adapters/person.js';
 import { resolutionIndex } from '../resolution/ResolutionIndex.js';
 import { submissionCapabilities, type CapabilitiesByTopic } from './capabilities.js';
-import { rankResults } from './ranking.js';
+import { executeSearchPipeline } from '../search/pipeline/searchPipeline.js';
 import { newReportKey, deriveKey, hashKey } from './idempotency.js';
 
 // ESM has no __dirname. Derive it from this module's URL so the catalog path
@@ -81,7 +81,7 @@ export class ProviderGateway {
     }
   }
 
-  async search(query: string, domain?: string): Promise<CandidateEntity[]> {
+  async search(query: string, domain?: string): Promise<any[]> {
     const searchPromises: Promise<NormalizedSearchResult[]>[] = [];
     
     for (const [id, adapter] of this.adapters.entries()) {
@@ -98,24 +98,9 @@ export class ProviderGateway {
     const resultsArray = await Promise.all(searchPromises);
     const results = resultsArray.flat();
 
-    // Pass everything through the Resolution Index (which converts to Observation 
-    // and returns grouped CandidateEntity records via ResolutionEngine)
-    const candidates = resolutionIndex.resolve(results);
-
-    // Cédula search: when the query is a national ID, keep only exact cédula matches
-    if (isCedula(query)) {
-      const target = normalizeCedula(query);
-      const matches = candidates.filter(
-        (c) => c.observations.some(obs => {
-          const cedula = obs.normalizedFields.person?.cedula;
-          return cedula && normalizeCedula(cedula) === target;
-        })
-      );
-      return rankResults(matches, query);
-    }
-
-    // Rank candidate entities based on their best inner observations
-    return rankResults(candidates, query);
+    // The Search Pipeline now handles intent detection, 
+    // resolution routing, unified ranking, and explainability.
+    return executeSearchPipeline(query, results, this.providers);
   }
 
   /**

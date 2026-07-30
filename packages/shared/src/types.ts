@@ -617,3 +617,20 @@ export interface EarthquakeFeatureCollection {
   type: 'FeatureCollection';
   features: EarthquakeFeature[];
 }
+
+export interface RankingExplanation {
+  signal: string;
+  scoreContribution: number;
+  explanation: string;
+  debugMetadata?: any;
+}
+
+export interface UnifiedSearchResource {
+  id: string;
+  entityType: string;
+  candidate?: CandidateEntity;
+  result?: NormalizedSearchResult;
+  relevanceScore: number;
+  rankingExplanations: RankingExplanation[];
+  updatedAt?: string;
+}

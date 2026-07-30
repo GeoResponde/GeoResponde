@@ -95,6 +95,45 @@ export class MockResolutionAdapter implements BaseAdapter {
       last_update: new Date().toISOString(),
     };
 
-    return [match1, match2, diff1, diff2, conflict1, conflict2, standalone];
+    // SCENARIO 5: 3+ Providers Match
+    // Same identity across 4 providers
+    const multiMatch1: NormalizedSearchResult = {
+      provider: 'Mock Provider A',
+      provider_id: `scenario-5a-${crypto.randomUUID()}`,
+      type: 'person',
+      title: 'Fernando Multi',
+      url: 'http://localhost/h',
+      person: { cedula: 'V-55555555', status: 'missing' },
+      last_update: new Date().toISOString(),
+    };
+    const multiMatch2: NormalizedSearchResult = {
+      provider: 'Mock Provider B',
+      provider_id: `scenario-5b-${crypto.randomUUID()}`,
+      type: 'person',
+      title: 'Fernando Multi',
+      url: 'http://localhost/i',
+      person: { cedula: 'V-55555555', status: 'missing' },
+      last_update: new Date().toISOString(),
+    };
+    const multiMatch3: NormalizedSearchResult = {
+      provider: 'Mock Provider C',
+      provider_id: `scenario-5c-${crypto.randomUUID()}`,
+      type: 'person',
+      title: 'Fernando Multi',
+      url: 'http://localhost/j',
+      person: { cedula: 'V-55555555', status: 'found' },
+      last_update: new Date().toISOString(),
+    };
+    const multiMatch4: NormalizedSearchResult = {
+      provider: 'Mock Provider D',
+      provider_id: `scenario-5d-${crypto.randomUUID()}`,
+      type: 'person',
+      title: 'Fernando Multi',
+      url: 'http://localhost/k',
+      person: { cedula: 'V-55555555', status: 'safe' },
+      last_update: new Date().toISOString(),
+    };
+
+    return [match1, match2, diff1, diff2, conflict1, conflict2, standalone, multiMatch1, multiMatch2, multiMatch3, multiMatch4];
   }
 }

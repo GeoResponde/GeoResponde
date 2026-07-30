@@ -161,8 +161,31 @@
                 "unknown": ""
             },
             "verified": "Verified",
-            "minor": "Minor"
-        }
+            "minor": "Minor",
+            "ageSuffix": "years"
+        },
+        "entityType": {
+            "person": "Person",
+            "shelter": "Shelter",
+            "hospital": "Hospital",
+            "building": "Building",
+            "request": "Request",
+            "medical": "Medical",
+            "rescued": "Rescued",
+            "other": "Other",
+            "unknown": "Unknown"
+        },
+        "signals": {
+            "IntentSignal": "Matches search intent",
+            "RecencySignal": "Recently updated",
+            "ProviderConfidenceSignal": "High provider confidence",
+            "CorroborationSignal": "Supported by {{count}} providers",
+            "ProviderWeightSignal": "High trust source ({{provider}})",
+            "ExactMatchSignal_exact": "Exact match",
+            "ExactMatchSignal_all": "Contains all search terms",
+            "ExactMatchSignal_partial": "Partial match"
+        },
+        "filterAll": "All"
     },
     "report": {
         "underDevelopment": "Federated reporting is under active development. Whether and how a report reaches a provider depends on that provider's capabilities.",

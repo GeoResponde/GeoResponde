@@ -69,7 +69,10 @@ async search(query: string): Promise<NormalizedSearchResult[]> {
 
 Use these helpers when the upstream resource is a person to safely parse and normalize Venezuelan national IDs for the `person.cedula` field.
 
-### `dedupePersons`
-`backend/src/gateway/dedupe.ts`
+### Deduplication and Resolution
 
-This is automatically applied by the Provider Gateway across all providers. Adapters should focus exclusively on fetching, normalizing, and returning data from their single upstream source; the gateway handles deduplication across the federation.
+Deduplication is **not** handled by the adapter. 
+
+The Provider Gateway passes the normalized results from all adapters into the **Search Pipeline**, where the [Resolution Engine](../architecture/search_pipeline.md#4-resolution-engine-entity-clustering) intelligently links identical entities across multiple providers (e.g., matching patients by Cédula).
+
+Adapters should focus exclusively on fetching, normalizing, and returning data from their single upstream source; the pipeline handles resolution across the federation automatically.

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import Map, { Marker, Popup, NavigationControl } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import type { CandidateEntity } from '@georesponde/shared';
+import type { UnifiedSearchResource } from '@georesponde/shared';
 
 const TYPE_COLOR: Record<string, string> = {
   person: '#3b82f6',
@@ -13,15 +13,20 @@ const TYPE_COLOR: Record<string, string> = {
   dataset: '#64748b',
 };
 
-function colorFor(c: CandidateEntity): string {
-  return TYPE_COLOR[c.entityType] || '#94a3b8';
+function colorFor(r: UnifiedSearchResource): string {
+  return TYPE_COLOR[r.entityType] || '#94a3b8';
 }
 
-function getCoords(c: CandidateEntity): [number, number] | null {
-  for (const obs of c.observations) {
-    const loc = obs.normalizedFields.location;
-    if (Array.isArray(loc) && loc.length === 2 && loc.every((n) => Number.isFinite(n))) {
-      return loc as [number, number];
+function getCoords(r: UnifiedSearchResource): [number, number] | null {
+  if (r.candidate) {
+    const loc = r.candidate.observations[0]?.normalizedFields?.location;
+    if (loc && Array.isArray(loc) && loc.length === 2 && loc.every((n) => Number.isFinite(n))) {
+      return [loc[0], loc[1]] as [number, number];
+    }
+  } else if (r.result) {
+    const loc = r.result.location;
+    if (loc && Array.isArray(loc) && loc.length === 2 && loc.every((n) => Number.isFinite(n))) {
+      return [loc[0], loc[1]] as [number, number];
     }
   }
   return null;
@@ -31,9 +36,9 @@ function getCoords(c: CandidateEntity): [number, number] | null {
  * Map view for Find. Plots the candidate entities that carry coordinates as pins; entities
  * without a location stay in the list (a counter shows how many were dropped).
  */
-export function FindMap({ results }: { results: CandidateEntity[] }) {
+export function FindMap({ results }: { results: UnifiedSearchResource[] }) {
   const located = useMemo(() => results.filter(r => getCoords(r) !== null), [results]);
-  const [selected, setSelected] = useState<CandidateEntity | null>(null);
+  const [selected, setSelected] = useState<UnifiedSearchResource | null>(null);
   const initial = located.length > 0 ? getCoords(located[0]) : null;
 
   return (
@@ -62,7 +67,7 @@ export function FindMap({ results }: { results: CandidateEntity[] }) {
               }}
             >
               <div
-                title={r.observations[0]?.normalizedFields.title || 'Ubicación'}
+                title={r.candidate?.observations[0]?.normalizedFields.title || r.result?.title || 'Ubicación'}
                 style={{
                   width: '14px',
                   height: '14px',
@@ -86,14 +91,14 @@ export function FindMap({ results }: { results: CandidateEntity[] }) {
             maxWidth="280px"
           >
             <div style={{ color: '#0f172a' }}>
-              <strong>{selected.observations[0]?.normalizedFields.title}</strong>
-              {selected.observations[0]?.normalizedFields.subtitle && <div style={{ fontSize: '12px', margin: '4px 0' }}>{selected.observations[0].normalizedFields.subtitle}</div>}
-              <div style={{ fontSize: '11px', color: '#475569', marginBottom: '4px', textTransform: 'capitalize' }}>
-                {selected.entityType} · {selected.observations.length} reportes
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <h4 style={{ margin: 0, fontSize: '14px' }}>
+                  {selected.candidate?.observations[0]?.normalizedFields?.title || selected.result?.title || 'Unknown'}
+                </h4>
               </div>
-              <a href={selected.observations[0]?.normalizedFields.url} target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#2563eb' }}>
-                Abrir principal ↗
-              </a>
+              <div style={{ fontSize: '11px', color: '#475569', marginBottom: '4px', textTransform: 'capitalize' }}>
+                {selected.entityType}
+              </div>
             </div>
           </Popup>
         )}

@@ -1,0 +1,25 @@
+intents:
+  hospital:
+    keywords:
+      - hospital
+      - clinica
+      - medic
+      - salud
+      - emergencia
+      - cdt
+
+  shelter:
+    keywords:
+      - refugio
+      - acopio
+      - albergue
+      - donacion
+      - centro
+      - ayuda
+
+  person:
+    keywords:
+      - persona
+      - desaparecido
+      - buscando
+      - familiar

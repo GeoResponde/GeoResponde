@@ -161,8 +161,31 @@
                 "unknown": ""
             },
             "verified": "Verificado",
-            "minor": "Menor"
-        }
+            "minor": "Menor",
+            "ageSuffix": "años"
+        },
+        "entityType": {
+            "person": "Persona",
+            "shelter": "Refugio",
+            "hospital": "Hospital",
+            "building": "Edificio",
+            "request": "Solicitud",
+            "medical": "Médico",
+            "rescued": "Rescatado",
+            "other": "Otro",
+            "unknown": "Desconocido"
+        },
+        "signals": {
+            "IntentSignal": "Coincide con intención de búsqueda",
+            "RecencySignal": "Actualización reciente",
+            "ProviderConfidenceSignal": "Alta confianza del proveedor",
+            "CorroborationSignal": "Respaldado por {{count}} proveedores",
+            "ProviderWeightSignal": "Fuente de alta confianza ({{provider}})",
+            "ExactMatchSignal_exact": "Coincidencia exacta",
+            "ExactMatchSignal_all": "Contiene todos los términos",
+            "ExactMatchSignal_partial": "Coincidencia parcial"
+        },
+        "filterAll": "Todos"
     },
     "report": {
         "underDevelopment": "El reporte federado está en desarrollo activo. Si un reporte llega a un proveedor, y cómo lo hace, depende de las capacidades de ese proveedor.",
