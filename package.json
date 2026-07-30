@@ -42,6 +42,7 @@
     ]
   },
   "overrides": {
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "undici": "6.19.8"
   }
 }
