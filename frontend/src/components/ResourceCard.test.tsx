@@ -1,5 +1,4 @@
 import { describe, it, expect, vi } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { ResourceCard } from './ResourceCard';
 import type { UnifiedSearchResource } from '@georesponde/shared';

@@ -3,7 +3,6 @@ import Map, { Marker, Popup, NavigationControl } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { UnifiedSearchResource } from '@georesponde/shared';
-import { useTranslation } from 'react-i18next';
 
 const TYPE_COLOR: Record<string, string> = {
   person: '#3b82f6',
