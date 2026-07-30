@@ -79,7 +79,7 @@ GeoResponde is built on five core principles to ensure efficiency, trust, and sc
 GeoResponde operates on a modular, tiered architecture designed to securely connect user actions with federated data without creating local duplicates. The system is structured into four main layers:
 
 * **Application Layer:** The user-facing modules that drive the core workflows (Situation, Find, and Report).
-* **Core Services:** The operational engines handling the logic for the *Scientific Intelligence* processing and the *Humanitarian Federation* routing.
+* **Core Services:** The operational engines handling the logic for the *Scientific Intelligence* processing and the *Humanitarian Federation* routing. (See the [Search Pipeline Architecture](docs/architecture/search_pipeline.md) for details on federation logic).
 * **Integration Layer:** The backbone of the federation. It utilizes a **Provider Gateway** to manage API calls and data translation, paired with a **Provider Registry** that authenticates and manages the active list of trusted partners.
 * **External Sources:** The decentralized endpoints that maintain data ownership, encompassing Humanitarian Organizations, Scientific Agencies, and Public Data Sources.
 
