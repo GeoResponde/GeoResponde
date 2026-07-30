@@ -29,9 +29,7 @@
     "prettier": "^3.0.0",
     "tsx": "^4.22.4",
     "typescript": "5.9.3",
-    "yaml": "^2.9.0",
-    "jsdom": "^24.0.0",
-    "undici": "6.19.8"
+    "yaml": "^2.9.0"
   },
   "dependencies": {
     "@playwright/test": "^1.61.1",
