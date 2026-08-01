@@ -354,7 +354,7 @@
     "id": "prov-sossismovenezuela",
     "display_name": "SOS Sismo Venezuela",
     "website": "https://sossismovenezuela.com/",
-    "description": "Missing-persons registry and collection centers directory for the 2026 Venezuela earthquake, via the public Supabase API.",
+    "description": "Centralized missing-persons registry and collection centers directory for the 2026 Venezuela earthquake, via its public Supabase API.",
     "logo": "/logos/sismovenezuela.png",
     "status": "active",
     "adapter": "SossismoVenezuelaAdapter",
