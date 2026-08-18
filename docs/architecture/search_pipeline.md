@@ -55,11 +55,13 @@ Results are split into two tracks:
 - **Resolution-Eligible**: Entities like `person` that frequently have duplicates and need clustering.
 - **Pass-through**: Entities like `shelter` or `building` that can be rendered independently.
 
-### 4. Resolution Engine (Entity Clustering)
-Resolution uses a graph-based approach to group duplicates into a `CandidateEntity`:
+### 4. Resolution Engine (Relationship Explorer)
+Resolution uses a graph-based approach to group duplicates into a `CandidateEntity` while preserving uncertainty:
 - Observations form the **Nodes** in a `RelationshipGraph`.
-- Modular strategies (e.g., `ExactIdentifierStrategy`) evaluate observation pairs and draw **Edges** if they share a hard identifier (like a Cédula or National ID).
-- Connected components are extracted via BFS and collapsed into unified candidates.
+- Modular strategies (e.g., `ExactIdentifierStrategy`) evaluate observation pairs and draw **Edges** with associated confidence scores.
+- Connected components are extracted via BFS using a strict confidence threshold (`0.9`). Observations clustered here become a unified `CandidateEntity`.
+- **Conflicts**: Field-level discrepancies (e.g., differing `status` between providers) within a candidate are detected and preserved, rather than destructively merged.
+- **Weak Relationships**: Edges below the candidate threshold but above `0.5` do not force a merge. Instead, they are mapped as `RelatedObservation` links, allowing the UI to suggest "Possible related matches" to the user while maintaining provenance.
 
 ### 5. Unified Search Resources
 All entities (both resolved candidates and pass-through results) are mapped into a single uniform contract: `UnifiedSearchResource`. This struct carries the entity's type, underlying data, and an initially empty relevance score and explanation array.

@@ -73,15 +73,10 @@ export function ResourceCard({ resource }: { resource: UnifiedSearchResource }) 
   const status = person?.status ? { label: t(`find.card.statusMeta.${person.status}`), color: getStatusColor(person.status) } : undefined;
   const gender = person?.gender ? t(`find.card.gender.${person.gender}`) : '';
 
-  const statuses = new Set(
-    observations
-      .map((obs) => obs.person?.status)
-      .filter(Boolean)
-  );
-  const hasConflict = statuses.size > 1;
-
-  // Has High Confidence Signal
   const isHighConfidence = isCandidate && resource.candidate?.confidence === 'HIGH';
+  const conflicts = resource.candidate?.conflicts || [];
+  const relatedObservations = resource.candidate?.relatedObservations || [];
+  const hasConflict = conflicts.length > 0;
 
   return (
     <div className="search-result-card" style={{ border: isHighConfidence ? '1px solid #22c55e' : undefined }}>
@@ -108,8 +103,33 @@ export function ResourceCard({ resource }: { resource: UnifiedSearchResource }) 
         )}
 
         {hasConflict && (
-          <div style={{ marginBottom: '8px' }}>
-            <span style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 'bold' }}>{t('find.card.conflict')}</span>
+          <div style={{ marginBottom: '8px', padding: '8px', backgroundColor: '#451a03', borderLeft: '4px solid #f59e0b', borderRadius: '4px' }}>
+            <div style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 'bold', marginBottom: '4px' }}>
+              ⚠️ {t('find.card.discrepanciesDetected', 'Discrepancies Detected')}
+            </div>
+            <ul style={{ margin: '0 0 0 16px', padding: 0, fontSize: '11px', color: '#fcd34d' }}>
+              {conflicts.map((c, i) => (
+                <li key={i}>
+                  <strong>{c.field}</strong>:{' '}
+                  {c.observations.map(o => `${String(o.value)} (${o.provider})`).join(' vs ')}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {relatedObservations.length > 0 && (
+          <div style={{ marginBottom: '8px', padding: '8px', backgroundColor: '#1e1b4b', borderLeft: '4px solid #818cf8', borderRadius: '4px' }}>
+            <div style={{ color: '#818cf8', fontSize: '12px', fontWeight: 'bold', marginBottom: '4px' }}>
+              🔗 {t('find.card.relatedMatches', 'Possible related matches')}
+            </div>
+            <ul style={{ margin: '0 0 0 16px', padding: 0, fontSize: '11px', color: '#c7d2fe' }}>
+              {relatedObservations.map((r, i) => (
+                <li key={i}>
+                  {t('find.card.matchConfidence', 'Match confidence')} {Math.round(r.confidence * 100)}% ({r.reasons.join(', ')})
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 

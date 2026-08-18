@@ -33,10 +33,18 @@ export class RelationshipGraph {
   }
 
   /**
-   * Finds all connected components (clusters of observations) in the graph.
-   * Observations that have no edges will form a component of size 1.
+   * Retrieves all registered relationships (edges).
    */
-  getConnectedComponents(): ConnectedComponent[] {
+  getEdges(): ObservationEdge[] {
+    return this.edges;
+  }
+
+  /**
+   * Finds all connected components (clusters of observations) in the graph.
+   * Only edges with confidence >= minConfidence are traversed to build the clusters.
+   * Observations that have no strong edges will form a component of size 1.
+   */
+  getConnectedComponents(minConfidence: number = 0): ConnectedComponent[] {
     const adjacencyList = new Map<string, Array<{ targetId: string; edge: ObservationEdge }>>();
     
     // Initialize adjacency list for all nodes
@@ -48,6 +56,9 @@ export class RelationshipGraph {
     for (const edge of this.edges) {
       if (!adjacencyList.has(edge.sourceId) || !adjacencyList.has(edge.targetId)) {
         continue; // Skip edges for unknown nodes
+      }
+      if (edge.confidence < minConfidence) {
+        continue; // Skip weak edges when building clusters
       }
       adjacencyList.get(edge.sourceId)!.push({ targetId: edge.targetId, edge });
       adjacencyList.get(edge.targetId)!.push({ targetId: edge.sourceId, edge });
