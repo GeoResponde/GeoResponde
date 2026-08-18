@@ -4,12 +4,16 @@ import { ExactIdentifierStrategy } from './strategies/ExactIdentifierStrategy.js
 import crypto from 'crypto';
 import { normalizeCedula } from '../adapters/person.js';
 
+import { MockWeakEdgeStrategy } from '../adapters/mock-resolution/adapter.js';
+
 export class ResolutionIndex {
   private engine: ResolutionEngine;
 
   constructor() {
     this.engine = new ResolutionEngine();
     this.engine.register(new ExactIdentifierStrategy());
+    // Temporary strategy for testing UI weak edges
+    this.engine.register(new MockWeakEdgeStrategy());
   }
 
   /**

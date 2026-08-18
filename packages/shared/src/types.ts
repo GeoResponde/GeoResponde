@@ -127,7 +127,31 @@ export interface Observation {
   updatedAt?: string;
 }
 
+export const RESOLUTION_THRESHOLDS = {
+  candidate: 0.9,
+  related: 0.5,
+};
+
 export type ConfidenceLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+
+export type RelationshipType = 'probable' | 'possible' | 'weak';
+
+export interface RelatedObservation {
+  sourceObservationId: string;
+  targetObservationId: string;
+  confidence: number;
+  relationshipType: RelationshipType;
+  reasons: string[];
+}
+
+export interface FieldConflict {
+  field: string;
+  observations: Array<{
+    observationId: string;
+    provider: string;
+    value: unknown;
+  }>;
+}
 
 export interface ObservationEdge {
   sourceId: string;
@@ -144,7 +168,8 @@ export interface CandidateEntity {
   entityType: string;
   confidence: ConfidenceLevel;
   observations: Observation[];
-  conflicts: any[]; // Detected conflicts between observations
+  conflicts: FieldConflict[]; // Detected conflicts between observations
+  relatedObservations?: RelatedObservation[]; // Lower-confidence relationships
   explanations?: string[]; // Explainability: why these observations were grouped
   createdAt: string;
   updatedAt: string;

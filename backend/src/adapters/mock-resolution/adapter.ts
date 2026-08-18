@@ -1,7 +1,34 @@
 import { NormalizedSearchResult } from '@georesponde/shared';
 import { BaseAdapter, SubmitOptions } from '../BaseAdapter.js';
-import { HumanitarianProvider, Report, SubmissionResult } from '@georesponde/shared';
+import { HumanitarianProvider, Report, SubmissionResult, Observation, ObservationEdge } from '@georesponde/shared';
+import { ResolutionStrategy } from '../../resolution/strategies/ResolutionStrategy.js';
 import crypto from 'crypto';
+
+export class MockWeakEdgeStrategy implements ResolutionStrategy {
+  execute(observations: Observation[]): ObservationEdge[] {
+    const edges: ObservationEdge[] = [];
+    for (let i = 0; i < observations.length; i++) {
+      for (let j = i + 1; j < observations.length; j++) {
+        const title1 = observations[i].normalizedFields.title;
+        const title2 = observations[j].normalizedFields.title;
+        
+        // Connect Eduardo Standalone to Carlos Different with a weak edge
+        if (
+          (title1 === 'Eduardo Standalone' && title2 === 'Carlos Different') ||
+          (title1 === 'Carlos Different' && title2 === 'Eduardo Standalone')
+        ) {
+          edges.push({
+            sourceId: observations[i].id,
+            targetId: observations[j].id,
+            confidence: 0.6,
+            reasons: ['Weak name similarity mock']
+          });
+        }
+      }
+    }
+    return edges;
+  }
+}
 
 export class MockResolutionAdapter implements BaseAdapter {
   constructor(public provider: HumanitarianProvider) {}
