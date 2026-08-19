@@ -20,7 +20,7 @@ describe('person helpers', () => {
 
   it('reduces a cédula to its digits', () => {
     expect(normalizeCedula('V-12.345.678')).toBe('12345678');
-    expect(normalizeCedula('28••••11')).toBe('2811');
+    expect(normalizeCedula('28••••11')).toBe('28••••11');
     expect(normalizeCedula(12345678)).toBe('12345678');
     expect(normalizeCedula(null)).toBe('');
   });

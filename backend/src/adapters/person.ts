@@ -20,7 +20,8 @@ export function normalizeGender(value: unknown): Gender | undefined {
  */
 export function normalizeCedula(value: unknown): string {
   if (value == null) return '';
-  return String(value).replace(/\D+/g, '');
+  // Preserve digits and asterisks/bullets used for masking, remove everything else
+  return String(value).replace(/[^\d*•]/g, '');
 }
 
 /**

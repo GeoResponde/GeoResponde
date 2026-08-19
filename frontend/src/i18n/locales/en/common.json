@@ -162,7 +162,32 @@
             },
             "verified": "Verified",
             "minor": "Minor",
-            "ageSuffix": "years"
+            "ageSuffix": "years",
+            "relatedMatches": "Possible related matches",
+            "matchConfidence": "Match confidence",
+            "discrepanciesDetected": "Discrepancies Detected"
+        },
+        "fields": {
+            "status": "Status",
+            "lastSeenLocation": "Last seen location",
+            "gender": "Gender",
+            "age": "Age",
+            "cedula": "ID number",
+            "national_id": "ID number"
+        },
+        "reasons": {
+            "nameSimilarity": "Name similarity",
+            "differingLocations": "Differing locations",
+            "compatibleLocation": "Compatible location",
+            "compatibleAge": "Compatible age",
+            "matchingGender": "Matching gender",
+            "compatibleMaskedIdentifier": "Compatible masked identifier",
+            "compatibleMaskedIdentifiers": "Compatible masked identifiers",
+            "conflictingGender": "Conflicting gender",
+            "conflictingAge": "Conflicting age",
+            "conflictingExplicitIdentifiers": "Conflicting explicit identifiers",
+            "incompatibleMaskedIdentifier": "Incompatible masked identifier",
+            "incompatibleMaskedIdentifiers": "Incompatible masked identifiers"
         },
         "entityType": {
             "person": "Person",

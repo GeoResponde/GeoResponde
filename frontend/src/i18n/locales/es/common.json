@@ -162,7 +162,32 @@
             },
             "verified": "Verificado",
             "minor": "Menor",
-            "ageSuffix": "años"
+            "ageSuffix": "años",
+            "relatedMatches": "Posibles coincidencias relacionadas",
+            "matchConfidence": "Confianza de coincidencia",
+            "discrepanciesDetected": "Discrepancias detectadas"
+        },
+        "fields": {
+            "status": "Estado",
+            "lastSeenLocation": "Última ubicación conocida",
+            "gender": "Género",
+            "age": "Edad",
+            "cedula": "Cédula",
+            "national_id": "Cédula"
+        },
+        "reasons": {
+            "nameSimilarity": "Similitud del nombre",
+            "differingLocations": "Ubicaciones diferentes",
+            "compatibleLocation": "Ubicación compatible",
+            "compatibleAge": "Edad compatible",
+            "matchingGender": "Género coincidente",
+            "compatibleMaskedIdentifier": "Coincidencia parcial de identificación",
+            "compatibleMaskedIdentifiers": "Coincidencias parciales de identificación",
+            "conflictingGender": "Género conflictivo",
+            "conflictingAge": "Edad conflictiva",
+            "conflictingExplicitIdentifiers": "Identificadores explícitos conflictivos",
+            "incompatibleMaskedIdentifier": "Identificación parcial incompatible",
+            "incompatibleMaskedIdentifiers": "Identificaciones parciales incompatibles"
         },
         "entityType": {
             "person": "Persona",

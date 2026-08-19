@@ -56,9 +56,17 @@ Results are split into two tracks:
 - **Pass-through**: Entities like `shelter` or `building` that can be rendered independently.
 
 ### 4. Resolution Engine (Relationship Explorer)
-Resolution uses a graph-based approach to group duplicates into a `CandidateEntity` while preserving uncertainty:
+Resolution uses a graph-based approach to group duplicates into a `CandidateEntity` while preserving uncertainty. It operates on two distinct layers of evidence:
+
+#### Deterministic vs Probabilistic Resolution
+- **Deterministic Resolution (`ExactIdentifierStrategy`)**: Merges observations that have identical, fully-visible identifiers (e.g. `12879928` and `V-12879928` normalize to the same value). This is considered guaranteed identity proof and creates a `1.0` confidence edge.
+- **Probabilistic Resolution (`HeuristicMatchStrategy`)**: Accumulates evidence for records lacking an exact ID match. It fuzzily compares names, evaluates contextual agreement (demographics, location), and checks weak identity evidence (e.g. partial/masked IDs like `V-12****28` vs `V-12879928`). 
+  - **Vetoes**: The heuristic layer enforces hard vetoes for contradicting full IDs or incompatible demographics.
+  - **Exact Names Are Insufficient**: Identical names alone without context max out at a `MEDIUM` confidence to prevent false identity merges for common names (like "Maria Perez").
+
+#### Graph Grouping
 - Observations form the **Nodes** in a `RelationshipGraph`.
-- Modular strategies (e.g., `ExactIdentifierStrategy`) evaluate observation pairs and draw **Edges** with associated confidence scores.
+- Modular strategies evaluate observation pairs and draw **Edges** with associated confidence scores. (The graph deduplicates edges between the same nodes by keeping the highest confidence).
 - Connected components are extracted via BFS using a strict confidence threshold (`0.9`). Observations clustered here become a unified `CandidateEntity`.
 - **Conflicts**: Field-level discrepancies (e.g., differing `status` between providers) within a candidate are detected and preserved, rather than destructively merged.
 - **Weak Relationships**: Edges below the candidate threshold but above `0.5` do not force a merge. Instead, they are mapped as `RelatedObservation` links, allowing the UI to suggest "Possible related matches" to the user while maintaining provenance.
