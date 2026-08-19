@@ -22,7 +22,24 @@ export class RelationshipGraph {
    * Adds an edge (relationship) between two observations.
    */
   addEdge(edge: ObservationEdge) {
-    this.edges.push(edge);
+    const existingIndex = this.edges.findIndex(e => 
+      (e.sourceId === edge.sourceId && e.targetId === edge.targetId) ||
+      (e.sourceId === edge.targetId && e.targetId === edge.sourceId)
+    );
+
+    if (existingIndex !== -1) {
+      const existing = this.edges[existingIndex];
+      if (edge.confidence > existing.confidence) {
+        const allReasons = Array.from(new Set([...existing.reasons, ...edge.reasons]));
+        edge.reasons = allReasons;
+        this.edges[existingIndex] = edge;
+      } else {
+        const allReasons = Array.from(new Set([...existing.reasons, ...edge.reasons]));
+        existing.reasons = allReasons;
+      }
+    } else {
+      this.edges.push(edge);
+    }
   }
 
   /**

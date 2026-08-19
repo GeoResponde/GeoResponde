@@ -110,7 +110,7 @@ export function ResourceCard({ resource }: { resource: UnifiedSearchResource }) 
             <ul style={{ margin: '0 0 0 16px', padding: 0, fontSize: '11px', color: '#fcd34d' }}>
               {conflicts.map((c, i) => (
                 <li key={i}>
-                  <strong>{c.field}</strong>:{' '}
+                  <strong>{t(`find.fields.${c.field}`, c.field)}</strong>:{' '}
                   {c.observations.map(o => `${String(o.value)} (${o.provider})`).join(' vs ')}
                 </li>
               ))}
@@ -124,11 +124,22 @@ export function ResourceCard({ resource }: { resource: UnifiedSearchResource }) 
               🔗 {t('find.card.relatedMatches', 'Possible related matches')}
             </div>
             <ul style={{ margin: '0 0 0 16px', padding: 0, fontSize: '11px', color: '#c7d2fe' }}>
-              {relatedObservations.map((r, i) => (
-                <li key={i}>
-                  {t('find.card.matchConfidence', 'Match confidence')} {Math.round(r.confidence * 100)}% ({r.reasons.join(', ')})
-                </li>
-              ))}
+              {relatedObservations.map((r, i) => {
+                const translatedReasons = r.reasons.map((reason: string) => {
+                  if (reason.startsWith('Name similarity:')) {
+                    const pct = reason.split(': ')[1];
+                    return `${t('find.reasons.nameSimilarity', 'Name similarity')}: ${pct}`;
+                  }
+                  // Normalizes the reason to camelCase for key lookup (e.g. "Differing locations" -> "differingLocations")
+                  const key = reason.split(' ').map((w, idx) => idx === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+                  return t(`find.reasons.${key}`, reason);
+                });
+                return (
+                  <li key={i}>
+                    {t('find.card.matchConfidence', 'Match confidence')} {Math.round(r.confidence * 100)}% ({translatedReasons.join(', ')})
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}

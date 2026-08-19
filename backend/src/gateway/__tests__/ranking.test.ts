@@ -139,9 +139,9 @@ describe('rankResults', () => {
   });
 
   it('is a stable sort when everything ties', () => {
-    const a = makeCandidate({ title: 'Same', provider_id: 'a' });
-    const b = makeCandidate({ title: 'Same', provider_id: 'b' });
-    const c = makeCandidate({ title: 'Same', provider_id: 'c' });
+    const a = makeCandidate({ title: 'Same', provider_id: 'a', last_update: '2026-01-01T00:00:00Z' });
+    const b = makeCandidate({ title: 'Same', provider_id: 'b', last_update: '2026-01-01T00:00:00Z' });
+    const c = makeCandidate({ title: 'Same', provider_id: 'c', last_update: '2026-01-01T00:00:00Z' });
     expect(rankResults([a, b, c], 'nomatch').map((r) => r.observations[0].normalizedFields.provider_id)).toEqual(['a', 'b', 'c']);
   });
 
