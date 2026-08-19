@@ -6,15 +6,8 @@ import { parseAyudaVenezuelaResponse, AyudaVenezuelaItem } from './parser.js';
 const API_BASE =
   'https://tthturshkovywsluoqtv.supabase.co/rest/v1/person_reports_public';
 
-/**
- * Supabase publishable (anon) key for the Ayuda Venezuela project.
- *
- * CAVEAT: this anon key is extracted from the public site bundle and rotates
- * between deploys of ayudavenezuela.app. If the adapter suddenly starts
- * returning 401/empty results, re-extract the current publishable key from the
- * site's JavaScript bundle and update this constant.
- */
-const ANON_KEY = 'sb_publishable_amRzqevs9UFKz9ttOcyfrQ_m8dhYjGV';
+const ANON_KEY = process.env.AYUDA_VENEZUELA_ANON_KEY;
+if (!ANON_KEY) throw new Error('Missing AYUDA_VENEZUELA_ANON_KEY env var');
 
 /**
  * Adapter for ayudavenezuela.app missing-persons directory, served through a

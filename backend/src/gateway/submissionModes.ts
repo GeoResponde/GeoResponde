@@ -74,6 +74,7 @@ function shortSummary(report: Report): string {
  * URL-encoded. The user submits on the provider's own domain.
  */
 export function buildDeepLink(baseUrl: string, report: Report): string {
+  if (!/^https?:\/\//i.test(baseUrl)) return baseUrl;
   const params: string[] = [];
   for (const field of presentFields(report)) {
     if (field.sensitive) continue; // never leak sensitive PII into a URL

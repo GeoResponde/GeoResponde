@@ -75,7 +75,7 @@ export class UshahidiAdapter implements BaseAdapter {
         url,
         body,
         {
-          idempotencyKey: opts.idempotencyKey,
+          idempotencyKey: opts.idempotencyKey ?? crypto.randomUUID(),
           headers: { Authorization: `Bearer ${token}` },
           retryable: true,
         },
