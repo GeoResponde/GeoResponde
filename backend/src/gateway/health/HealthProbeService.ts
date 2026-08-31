@@ -1,5 +1,5 @@
 import { HealthTracker } from './HealthTracker.js';
-import type { HealthSample } from './types.js';
+import type { HealthSample, ProviderStatus } from './types.js';
 import { averageLatencyMs } from './metrics.js';
 
 /**
@@ -25,8 +25,8 @@ export const HEALTH_PROBE_QUERY = '__health_probe__';
  * (and therefore can never leak) those fields (T-18-01).
  */
 export type InspectResult =
-  | { status: 'ok'; normalizedResults: number; elapsedMs?: number }
-  | { status: 'error'; elapsedMs?: number }
+  | { status: 'ok'; normalizedResults: number; elapsedMs?: number; newestObservationAt?: number; oldestObservationAt?: number }
+  | { status: 'error'; elapsedMs?: number; errorDetail?: string }
   | { status: 'not_found' };
 
 /**
@@ -36,9 +36,12 @@ export type InspectResult =
  * Phase 19 (HEALTH-08/09) rendering concern, not this service's job.
  */
 export interface ProviderHealthSnapshot {
+  providerStatus: ProviderStatus;
   averageLatencyMs: number | null;
   lastSuccessAt: number | null;
+  lastSuccessfulDataRetrievalAt: number | null;
   consecutiveFailures: number;
+  lastErrorDetail: string | null;
   samples: HealthSample[];
   up: number;
   total: number;
@@ -72,10 +75,16 @@ export function mapInspectToStatus(result: InspectResult): 'ok' | 'empty' | 'err
 export function assembleSnapshot(tracker: HealthTracker, providerId: string): ProviderHealthSnapshot {
   const samples = tracker.samples(providerId);
   const up = samples.filter((s) => s.outcome === 'up').length;
+  // find latest error detail in the tracker record
+  const record = (tracker as any).providers?.get(providerId);
+  
   return {
+    providerStatus: tracker.deriveStatus(providerId),
     averageLatencyMs: averageLatencyMs(samples),
     lastSuccessAt: tracker.lastSuccessAt(providerId),
+    lastSuccessfulDataRetrievalAt: tracker.lastSuccessfulDataRetrievalAt(providerId),
     consecutiveFailures: tracker.consecutiveFailures(providerId),
+    lastErrorDetail: record?.lastErrorDetail ?? null,
     samples,
     up,
     total: samples.length,
@@ -167,12 +176,21 @@ export class HealthProbeService {
       const result = await this.probeFn(id, HEALTH_PROBE_QUERY);
       const status = mapInspectToStatus(result);
       const elapsedMs = 'elapsedMs' in result && typeof result.elapsedMs === 'number' ? result.elapsedMs : undefined;
-      this.tracker.record(id, status, elapsedMs ?? this.now() - startedAt, this.now());
+      
+      const opts: any = {};
+      if (result.status === 'ok') {
+        opts.newestObservationAt = result.newestObservationAt;
+        opts.oldestObservationAt = result.oldestObservationAt;
+      } else if (result.status === 'error') {
+        opts.errorDetail = result.errorDetail;
+      }
+
+      this.tracker.record(id, status, elapsedMs ?? this.now() - startedAt, this.now(), opts);
     } catch {
       // A throwing probe fn is never a health signal we can inspect for
       // detail — record DOWN with a measured elapsed and never rethrow, so
       // probeAll can never reject because of one bad provider (T-18-03).
-      this.tracker.record(id, 'error', this.now() - startedAt, this.now());
+      this.tracker.record(id, 'error', this.now() - startedAt, this.now(), { errorDetail: 'Probe function threw an error' });
     } finally {
       this.lastProbedAt.set(id, this.now());
     }

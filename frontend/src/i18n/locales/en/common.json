@@ -383,10 +383,10 @@
     "dev": {
         "providerStatus": {
             "badge": {
-                "healthy": "Healthy",
-                "degrading": "Degrading",
-                "down": "Down",
-                "warming": "Warming up"
+                "HEALTHY": "Healthy",
+                "DEGRADED": "Degraded",
+                "UNAVAILABLE": "Unavailable",
+                "UNKNOWN": "Unknown"
             },
             "sparkline": {
                 "aria": "Response-time history",
@@ -394,15 +394,18 @@
             },
             "title": "Provider Status",
             "refresh": "Refresh",
-            "refreshing": "Refreshing…",
+            "refreshing": "Refreshing...",
             "colProvider": "Provider Name",
             "colAdapter": "Adapter ID",
             "colBadge": "Status",
             "colAvailability": "Availability",
             "colLatency": "Avg. Latency",
+            "colLastChecked": "Last Checked",
+            "colDataFreshness": "Data Freshness",
+            "colRecentErrors": "Recent Errors",
             "colLastSuccess": "Last Success",
             "colFailures": "Consecutive Failures",
-            "colHistory": "Response-time History",
+            "colHistory": "Latency (Last 3m)",
             "latencyUnit": "ms",
             "never": "Never",
             "warmingUp": "Warming up",

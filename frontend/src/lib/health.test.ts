@@ -1,106 +1,29 @@
 import { describe, it, expect } from 'vitest';
 import {
-  classifyBadge,
   formatAvailability,
   buildSparkline,
-  FRONTEND_DOWN_THRESHOLD,
   type ProviderHealthSnapshot,
   type HealthSample,
 } from './health';
 
 function sample(outcome: 'up' | 'down', latencyMs: number | null, timestamp = 0): HealthSample {
-  return { outcome, latencyMs, timestamp };
+  return { outcome, status: outcome === 'up' ? 'ok' : 'error', latencyMs, timestamp };
 }
 
 function snapshot(overrides: Partial<ProviderHealthSnapshot>): ProviderHealthSnapshot {
   return {
+    providerStatus: 'UNKNOWN',
     averageLatencyMs: null,
     lastSuccessAt: null,
+    lastSuccessfulDataRetrievalAt: null,
     consecutiveFailures: 0,
+    lastErrorDetail: null,
     samples: [],
     up: 0,
     total: 0,
     ...overrides,
   };
 }
-
-describe('FRONTEND_DOWN_THRESHOLD', () => {
-  it('mirrors the backend DOWN_THRESHOLD of 3', () => {
-    expect(FRONTEND_DOWN_THRESHOLD).toBe(3);
-  });
-});
-
-describe('classifyBadge', () => {
-  it('classifies total === 0 as warming, never healthy/100%', () => {
-    const snap = snapshot({ total: 0, up: 0, samples: [] });
-    expect(classifyBadge(snap)).toBe('warming');
-  });
-
-  it('classifies consecutiveFailures >= 3 as down', () => {
-    const snap = snapshot({
-      total: 5,
-      up: 2,
-      consecutiveFailures: 3,
-      samples: [sample('down', null, 3), sample('down', null, 2), sample('down', null, 1)],
-    });
-    expect(classifyBadge(snap)).toBe('down');
-  });
-
-  it('does NOT classify consecutiveFailures === 2 as down (boundary: down only at >= 3)', () => {
-    const snap = snapshot({
-      total: 5,
-      up: 3,
-      consecutiveFailures: 2,
-      samples: [sample('down', null, 2), sample('down', null, 1)],
-    });
-    expect(classifyBadge(snap)).not.toBe('down');
-    expect(classifyBadge(snap)).toBe('degrading');
-  });
-
-  it('classifies latest sample down with consecutiveFailures 1-2 as degrading', () => {
-    const snap = snapshot({
-      total: 5,
-      up: 4,
-      consecutiveFailures: 1,
-      averageLatencyMs: 100,
-      samples: [sample('up', 100, 1), sample('down', null, 2)],
-    });
-    expect(classifyBadge(snap)).toBe('degrading');
-  });
-
-  it('classifies latest up-sample latency > 2x average as degrading', () => {
-    const snap = snapshot({
-      total: 5,
-      up: 5,
-      consecutiveFailures: 0,
-      averageLatencyMs: 100,
-      samples: [sample('up', 100, 1), sample('up', 250, 2)],
-    });
-    expect(classifyBadge(snap)).toBe('degrading');
-  });
-
-  it('classifies all-up, latency near average, no failures as healthy', () => {
-    const snap = snapshot({
-      total: 5,
-      up: 5,
-      consecutiveFailures: 0,
-      averageLatencyMs: 100,
-      samples: [sample('up', 100, 1), sample('up', 110, 2)],
-    });
-    expect(classifyBadge(snap)).toBe('healthy');
-  });
-
-  it('classifies as healthy when averageLatencyMs is null but total > 0 and no failures (no false degrade)', () => {
-    const snap = snapshot({
-      total: 1,
-      up: 1,
-      consecutiveFailures: 0,
-      averageLatencyMs: null,
-      samples: [sample('up', 50, 1)],
-    });
-    expect(classifyBadge(snap)).toBe('healthy');
-  });
-});
 
 describe('formatAvailability', () => {
   it('formats up=17/total=18 as "94% (17/18)"', () => {

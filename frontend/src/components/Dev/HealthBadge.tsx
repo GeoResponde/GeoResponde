@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import type { HealthBadgeState } from '../../lib/health';
+import type { ProviderStatus } from '../../lib/health';
 
 interface Props {
-  state: HealthBadgeState;
+  state: ProviderStatus;
 }
 
-const COLORS: Record<HealthBadgeState, { background: string; color: string }> = {
-  healthy: { background: '#bbf7d0', color: '#065f46' },
-  degrading: { background: '#fef08a', color: '#713f12' },
-  down: { background: '#fecaca', color: '#7f1d1d' },
-  warming: { background: '#e2e8f0', color: '#334155' },
+const COLORS: Record<ProviderStatus, { background: string; color: string }> = {
+  HEALTHY: { background: '#bbf7d0', color: '#065f46' },
+  DEGRADED: { background: '#fef08a', color: '#713f12' },
+  UNAVAILABLE: { background: '#fecaca', color: '#7f1d1d' },
+  UNKNOWN: { background: '#e2e8f0', color: '#334155' },
 };
 
 /**

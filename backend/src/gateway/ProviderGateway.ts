@@ -17,6 +17,7 @@ import { resolutionIndex } from '../resolution/ResolutionIndex.js';
 import { submissionCapabilities, type CapabilitiesByTopic } from './capabilities.js';
 import { executeSearchPipeline } from '../search/pipeline/searchPipeline.js';
 import { newReportKey, deriveKey, hashKey } from './idempotency.js';
+import type { HealthTracker } from './health/HealthTracker.js';
 
 // ESM has no __dirname. Derive it from this module's URL so the catalog path
 // resolves relative to the compiled file — production-safe on Railway and after
@@ -31,6 +32,7 @@ interface AuditLogger {
 export class ProviderGateway {
   private providers: HumanitarianProvider[] = [];
   private adapters: Map<string, BaseAdapter> = new Map();
+  private healthTracker?: HealthTracker;
   /**
    * Structured logger for the audit-lite line. Defaults to console so the
    * gateway stays usable standalone; the HTTP app injects Fastify's pino logger.
@@ -40,6 +42,10 @@ export class ProviderGateway {
   /** Inject a structured logger (e.g. Fastify's pino) for audit-lite lines. */
   setLogger(logger: AuditLogger) {
     this.log = logger;
+  }
+
+  setHealthTracker(tracker: HealthTracker) {
+    this.healthTracker = tracker;
   }
 
   async initialize() {
@@ -86,12 +92,41 @@ export class ProviderGateway {
     
     for (const [id, adapter] of this.adapters.entries()) {
       if (adapter.provider.capabilities.includes('search')) {
-        searchPromises.push(
-          adapter.search(query, domain).catch(e => {
+        const searchPromise = (async () => {
+          const startedAt = Date.now();
+          try {
+            const results = await adapter.search(query, domain);
+            const elapsedMs = Date.now() - startedAt;
+            
+            if (this.healthTracker) {
+              const status = results.length > 0 ? 'ok' : 'empty';
+              let newestObservationAt: number | undefined;
+              let oldestObservationAt: number | undefined;
+              
+              if (results.length > 0) {
+                const timestamps = results
+                  .map(r => r.last_update ? new Date(r.last_update).getTime() : undefined)
+                  .filter((t): t is number => t !== undefined && !isNaN(t));
+                  
+                if (timestamps.length > 0) {
+                  newestObservationAt = Math.max(...timestamps);
+                  oldestObservationAt = Math.min(...timestamps);
+                }
+              }
+
+              this.healthTracker.record(id, status, elapsedMs, Date.now(), { newestObservationAt, oldestObservationAt });
+            }
+            
+            return results;
+          } catch (e: any) {
             console.error(`[Gateway] Provider ${id} search failed:`, e);
+            if (this.healthTracker) {
+              this.healthTracker.record(id, 'error', Date.now() - startedAt, Date.now(), { errorDetail: e?.message ?? String(e) });
+            }
             return [];
-          })
-        );
+          }
+        })();
+        searchPromises.push(searchPromise);
       }
     }
 
@@ -242,6 +277,21 @@ export class ProviderGateway {
     const startedAt = Date.now();
     try {
       const results = await adapter.search(query);
+      
+      let newestObservationAt: number | undefined;
+      let oldestObservationAt: number | undefined;
+      
+      if (results.length > 0) {
+        const timestamps = results
+          .map(r => r.last_update ? new Date(r.last_update).getTime() : undefined)
+          .filter((t): t is number => t !== undefined && !isNaN(t));
+          
+        if (timestamps.length > 0) {
+          newestObservationAt = Math.max(...timestamps);
+          oldestObservationAt = Math.min(...timestamps);
+        }
+      }
+
       return {
         providerId,
         provider: adapter.provider.display_name,
@@ -250,6 +300,8 @@ export class ProviderGateway {
         normalizedResults: results.length,
         elapsedMs: Date.now() - startedAt,
         sample: results.slice(0, 3),
+        newestObservationAt,
+        oldestObservationAt
       };
     } catch (err: any) {
       return {
@@ -259,6 +311,7 @@ export class ProviderGateway {
         status: 'error' as const,
         elapsedMs: Date.now() - startedAt,
         error: err?.message ?? String(err),
+        errorDetail: err?.message ?? String(err),
       };
     }
   }
