@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE, fetchProviderHealth } from '../../lib/api';
-import { classifyBadge, formatAvailability, type ProviderHealthSnapshot } from '../../lib/health';
+import { formatAvailability, type ProviderHealthSnapshot } from '../../lib/health';
 import { HealthBadge } from '../../components/Dev/HealthBadge';
 import { Sparkline } from '../../components/Dev/Sparkline';
 
@@ -23,9 +23,12 @@ interface Provider {
 
 /** A snapshot for a provider with no health data yet (absent from the map). */
 const WARMING_SNAPSHOT: ProviderHealthSnapshot = {
+  providerStatus: 'UNKNOWN',
   averageLatencyMs: null,
   lastSuccessAt: null,
+  lastSuccessfulDataRetrievalAt: null,
   consecutiveFailures: 0,
+  lastErrorDetail: null,
   samples: [],
   up: 0,
   total: 0,
@@ -116,6 +119,18 @@ export function ProviderStatus() {
     <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', width: '100%', color: 'var(--text-primary)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h2 style={{ margin: 0 }}>{t('dev.providerStatus.title')}</h2>
+        
+        <div style={{ display: 'flex', gap: '1rem', fontSize: '13px' }}>
+          <span style={{ color: 'var(--text-secondary)' }}>
+            <strong>{providers.filter(p => (health[p.id]?.providerStatus || 'UNKNOWN') === 'HEALTHY').length}</strong> {t('dev.providerStatus.badge.HEALTHY')}
+          </span>
+          <span style={{ color: 'var(--text-secondary)' }}>
+            <strong>{providers.filter(p => (health[p.id]?.providerStatus || 'UNKNOWN') === 'DEGRADED').length}</strong> {t('dev.providerStatus.badge.DEGRADED')}
+          </span>
+          <span style={{ color: 'var(--text-secondary)' }}>
+            <strong>{providers.filter(p => (health[p.id]?.providerStatus || 'UNKNOWN') === 'UNAVAILABLE').length}</strong> {t('dev.providerStatus.badge.UNAVAILABLE')}
+          </span>
+        </div>
         <button
           onClick={pollHealth}
           disabled={refreshing}
@@ -154,42 +169,75 @@ export function ProviderStatus() {
           <thead style={{ backgroundColor: 'var(--bg-surface)', borderBottom: '1px solid var(--border-subtle)' }}>
             <tr>
               <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colProvider')}</th>
-              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colAdapter')}</th>
               <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colBadge')}</th>
-              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colAvailability')}</th>
+              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colLastChecked')}</th>
+              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colDataFreshness')}</th>
+              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colRecentErrors')}</th>
               <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colLatency')}</th>
-              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colLastSuccess')}</th>
-              <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colFailures')}</th>
               <th style={{ padding: '12px 16px' }}>{t('dev.providerStatus.colHistory')}</th>
             </tr>
           </thead>
           <tbody>
             {providers.map((p) => {
               const snap = health[p.id] ?? WARMING_SNAPSHOT;
-              const badgeState = classifyBadge(snap);
-              const availability = formatAvailability(snap);
-              const isWarmingAvailability = availability === 'warming';
-              const lastSuccessIso = snap.lastSuccessAt !== null ? new Date(snap.lastSuccessAt).toISOString() : undefined;
+              const badgeState = snap.providerStatus;
+              
+              // Last Checked (Integration Freshness)
+              const lastCheckedEpoch = snap.samples.length > 0 ? snap.samples[snap.samples.length - 1].timestamp : null;
+              const lastCheckedIso = lastCheckedEpoch !== null ? new Date(lastCheckedEpoch).toISOString() : undefined;
+              const lastCheckedLabel = lastCheckedEpoch !== null ? relativeLabel(lastCheckedEpoch) : t('dev.providerStatus.never');
+              
+              // Data Freshness
+              // Get the newest observation from the most recent successful sample that has one
+              const successfulSamples = snap.samples.filter(s => s.outcome === 'up');
+              let newestObservationEpoch = null;
+              for (let i = successfulSamples.length - 1; i >= 0; i--) {
+                if (successfulSamples[i].newestObservationAt) {
+                  newestObservationEpoch = successfulSamples[i].newestObservationAt;
+                  break;
+                }
+              }
+              const dataFreshnessIso = newestObservationEpoch !== null ? new Date(newestObservationEpoch).toISOString() : undefined;
+              let dataFreshnessLabel = t('dev.providerStatus.never');
+              if (newestObservationEpoch !== null) {
+                dataFreshnessLabel = relativeLabel(newestObservationEpoch);
+              } else if (snap.lastSuccessfulDataRetrievalAt !== null) {
+                 dataFreshnessLabel = `${relativeLabel(snap.lastSuccessfulDataRetrievalAt)} (probe)`;
+              }
 
               return (
                 <tr key={p.id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <td style={{ padding: '12px 16px', fontWeight: 'bold' }}>{p.display_name}</td>
-                  <td style={{ padding: '12px 16px', color: 'var(--text-secondary)', fontSize: '14px' }}>{p.adapter}</td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <div style={{ fontWeight: 'bold' }}>{p.display_name}</div>
+                    <div style={{ color: 'var(--text-secondary)', fontSize: '12px', marginTop: '2px' }}>{p.adapter}</div>
+                  </td>
                   <td style={{ padding: '12px 16px' }}>
                     <HealthBadge state={badgeState} />
+                    <div style={{ color: 'var(--text-secondary)', fontSize: '12px', marginTop: '4px' }}>
+                      {formatAvailability(snap) === 'warming' ? t('dev.providerStatus.warmingUp') : formatAvailability(snap)}
+                    </div>
+                  </td>
+                  <td style={{ padding: '12px 16px', fontSize: '13px' }} title={lastCheckedIso}>
+                    {lastCheckedLabel}
+                  </td>
+                  <td style={{ padding: '12px 16px', fontSize: '13px' }} title={dataFreshnessIso}>
+                    {dataFreshnessLabel}
                   </td>
                   <td style={{ padding: '12px 16px', fontSize: '13px' }}>
-                    {isWarmingAvailability ? t('dev.providerStatus.warmingUp') : availability}
+                    {snap.consecutiveFailures > 0 ? (
+                       <span style={{ color: 'var(--accent-danger)' }}>
+                         {snap.consecutiveFailures} {t('dev.providerStatus.colFailures')}
+                         {snap.lastErrorDetail && <div style={{ fontSize: '11px', opacity: 0.8, marginTop: '2px', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={snap.lastErrorDetail}>{snap.lastErrorDetail}</div>}
+                       </span>
+                    ) : (
+                       <span style={{ color: 'var(--text-secondary)' }}>-</span>
+                    )}
                   </td>
                   <td style={{ padding: '12px 16px', fontSize: '13px' }}>
                     {snap.averageLatencyMs !== null
                       ? `${Math.round(snap.averageLatencyMs)}${t('dev.providerStatus.latencyUnit')}`
                       : '—'}
                   </td>
-                  <td style={{ padding: '12px 16px', fontSize: '13px' }} title={lastSuccessIso}>
-                    {snap.lastSuccessAt !== null ? relativeLabel(snap.lastSuccessAt) : t('dev.providerStatus.never')}
-                  </td>
-                  <td style={{ padding: '12px 16px', fontSize: '13px' }}>{snap.consecutiveFailures}</td>
                   <td style={{ padding: '12px 16px' }}>
                     <Sparkline samples={snap.samples} />
                   </td>
@@ -198,7 +246,7 @@ export function ProviderStatus() {
             })}
             {providers.length === 0 && (
               <tr>
-                <td colSpan={8} style={{ textAlign: 'center', padding: '24px', color: 'var(--text-secondary)' }}>
+                <td colSpan={7} style={{ textAlign: 'center', padding: '24px', color: 'var(--text-secondary)' }}>
                   {t('dev.providerStatus.loading')}
                 </td>
               </tr>

@@ -95,6 +95,7 @@ export function buildApp(): FastifyInstance {
   // and dedupes real probes so client poll frequency never scales into
   // upstream request volume (T-18-02).
   const healthTracker = new HealthTracker()
+  gateway.setHealthTracker(healthTracker)
   const healthProbe = new HealthProbeService({ tracker: healthTracker, probe: (id, q) => gateway.inspect(id, q) })
 
   // Warm the full NASA DPM set in the BACKGROUND at startup so the first viewport

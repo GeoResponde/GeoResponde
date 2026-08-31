@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ExternalLink } from 'lucide-react';
 import { API_BASE, fetchProviderHealth } from '../lib/api';
-import { classifyBadge, type ProviderHealthSnapshot, type HealthBadgeState } from '../lib/health';
+import { type ProviderHealthSnapshot, type ProviderStatus } from '../lib/health';
 import styles from './Providers.module.css';
 
 interface Provider {
@@ -56,18 +56,18 @@ export function Providers() {
     };
   }, []);
 
-  const getStatusConfig = (state: HealthBadgeState) => {
+  const getStatusConfig = (state: ProviderStatus) => {
     switch (state) {
-      case 'healthy':
+      case 'HEALTHY':
         return {
           label: t('providersList.statusConnected'),
           color: '#22c55e',
           bgColor: 'rgba(34, 197, 94, 0.15)',
           textColor: '#4ade80',
         };
-      case 'warming':
-      case 'degrading':
-      case 'down':
+      case 'UNKNOWN':
+      case 'DEGRADED':
+      case 'UNAVAILABLE':
       default:
         return {
           label: t('providersList.statusIssues'),
@@ -99,7 +99,7 @@ export function Providers() {
         <div className={styles.grid}>
           {providers.map((p) => {
             const snap = health[p.id];
-            const badgeState = snap ? classifyBadge(snap) : 'warming';
+            const badgeState = snap ? snap.providerStatus : 'UNKNOWN';
             const statusConfig = getStatusConfig(badgeState);
 
             return (

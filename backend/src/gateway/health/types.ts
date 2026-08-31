@@ -9,6 +9,8 @@
  * — never a query string, payload, or any provider response body.
  */
 
+export type ProviderStatus = 'HEALTHY' | 'DEGRADED' | 'UNAVAILABLE' | 'UNKNOWN';
+
 /** Collapsed two-state outcome a classified probe result maps onto. */
 export type HealthOutcome = 'up' | 'down';
 
@@ -18,8 +20,12 @@ export type HealthOutcome = 'up' | 'down';
  */
 export interface HealthSample {
   outcome: HealthOutcome;
+  status: 'ok' | 'empty' | 'error' | 'not_found';
   latencyMs: number | null;
   timestamp: number;
+  newestObservationAt?: number;
+  oldestObservationAt?: number;
+  errorDetail?: string;
 }
 
 /**

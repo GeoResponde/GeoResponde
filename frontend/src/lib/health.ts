@@ -12,14 +12,20 @@
 /** Collapsed two-state outcome a classified probe result maps onto (mirrors backend). */
 export type HealthOutcome = 'up' | 'down';
 
+export type ProviderStatus = 'HEALTHY' | 'DEGRADED' | 'UNAVAILABLE' | 'UNKNOWN';
+
 /**
  * One recorded health check. `latencyMs` is null for DOWN samples — an
  * errored probe never completes a timed response.
  */
 export interface HealthSample {
   outcome: HealthOutcome;
+  status: 'ok' | 'empty' | 'error' | 'not_found';
   latencyMs: number | null;
   timestamp: number;
+  newestObservationAt?: number;
+  oldestObservationAt?: number;
+  errorDetail?: string;
 }
 
 /**
@@ -34,66 +40,15 @@ export interface HealthSample {
  * needs no reversal.
  */
 export interface ProviderHealthSnapshot {
+  providerStatus: ProviderStatus;
   averageLatencyMs: number | null;
   lastSuccessAt: number | null;
+  lastSuccessfulDataRetrievalAt: number | null;
   consecutiveFailures: number;
+  lastErrorDetail: string | null;
   samples: HealthSample[];
   up: number;
   total: number;
-}
-
-/** Badge states the dashboard renders (HEALTH-08 + HEALTH-11 warming state). */
-export type HealthBadgeState = 'healthy' | 'degrading' | 'down' | 'warming';
-
-/**
- * Frontend mirror of the backend's `DOWN_THRESHOLD` constant
- * (`repo/backend/src/gateway/health/types.ts`). Duplicated intentionally:
- * the frontend is a separate build target with no import path to that
- * backend-only constant (and `@georesponde/shared` does not export it).
- * If the backend threshold ever changes, update this value to match.
- */
-export const FRONTEND_DOWN_THRESHOLD = 3;
-
-/** Multiplier above a provider's own average latency that counts as a spike. */
-const LATENCY_SPIKE_MULTIPLIER = 2;
-
-/**
- * Classify a snapshot into a badge state (HEALTH-08 + HEALTH-11), evaluated
- * in this precedence order:
- *   1. total === 0            -> 'warming' (never a fake healthy/100%)
- *   2. consecutiveFailures >= FRONTEND_DOWN_THRESHOLD -> 'down'
- *   3. latest sample is 'down' (consecutiveFailures 1-2) -> 'degrading'
- *   4. latest up-sample latency > 2x own average -> 'degrading'
- *   5. otherwise -> 'healthy'
- */
-export function classifyBadge(snapshot: ProviderHealthSnapshot): HealthBadgeState {
-  if (snapshot.total === 0) {
-    return 'warming';
-  }
-
-  if (snapshot.consecutiveFailures >= FRONTEND_DOWN_THRESHOLD) {
-    return 'down';
-  }
-
-  const latest = snapshot.samples[snapshot.samples.length - 1];
-
-  if (latest?.outcome === 'down' && snapshot.consecutiveFailures >= 1) {
-    return 'degrading';
-  }
-
-  if (
-    latest?.outcome === 'up' &&
-    typeof latest.latencyMs === 'number' &&
-    Number.isFinite(latest.latencyMs) &&
-    typeof snapshot.averageLatencyMs === 'number' &&
-    Number.isFinite(snapshot.averageLatencyMs) &&
-    snapshot.averageLatencyMs > 0 &&
-    latest.latencyMs > LATENCY_SPIKE_MULTIPLIER * snapshot.averageLatencyMs
-  ) {
-    return 'degrading';
-  }
-
-  return 'healthy';
 }
 
 /**

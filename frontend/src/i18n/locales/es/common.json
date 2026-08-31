@@ -383,10 +383,10 @@
     "dev": {
         "providerStatus": {
             "badge": {
-                "healthy": "Operativo",
-                "degrading": "Degradado",
-                "down": "Caído",
-                "warming": "Calentando"
+                "HEALTHY": "Operativo",
+                "DEGRADED": "Degradado",
+                "UNAVAILABLE": "No disponible",
+                "UNKNOWN": "Desconocido"
             },
             "sparkline": {
                 "aria": "Historial de tiempos de respuesta",
@@ -400,9 +400,12 @@
             "colBadge": "Estado",
             "colAvailability": "Disponibilidad",
             "colLatency": "Latencia Promedio",
-            "colLastSuccess": "Último Éxito",
+            "colLastChecked": "Última comprobación",
+            "colDataFreshness": "Actualidad de datos",
+            "colRecentErrors": "Errores recientes",
+            "colLastSuccess": "Último éxito",
             "colFailures": "Fallas Consecutivas",
-            "colHistory": "Historial de Tiempos de Respuesta",
+            "colHistory": "Historial (Últ. 3m)",
             "latencyUnit": "ms",
             "never": "Nunca",
             "warmingUp": "Calentando",
