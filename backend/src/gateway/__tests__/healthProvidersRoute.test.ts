@@ -4,7 +4,7 @@ import { buildApp } from '../../index.js';
 import { ProviderGateway } from '../ProviderGateway.js';
 import { HEALTH_PROBE_QUERY } from '../health/HealthProbeService.js';
 
-const SNAPSHOT_KEYS = ['averageLatencyMs', 'lastSuccessAt', 'consecutiveFailures', 'samples', 'up', 'total'].sort();
+const SNAPSHOT_KEYS = ['averageLatencyMs', 'lastSuccessAt', 'consecutiveFailures', 'samples', 'up', 'total', 'providerStatus', 'lastErrorDetail', 'lastSuccessfulDataRetrievalAt'].sort();
 
 describe('GET /api/health/providers', () => {
   afterEach(async () => {

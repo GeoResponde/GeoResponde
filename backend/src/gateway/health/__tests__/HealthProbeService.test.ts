@@ -32,9 +32,12 @@ describe('assembleSnapshot', () => {
     const tracker = new HealthTracker();
     const snapshot = assembleSnapshot(tracker, 'provA');
     expect(snapshot).toEqual({
+      providerStatus: 'UNKNOWN',
       averageLatencyMs: null,
       lastSuccessAt: null,
+      lastSuccessfulDataRetrievalAt: null,
       consecutiveFailures: 0,
+      lastErrorDetail: null,
       samples: [],
       up: 0,
       total: 0,
@@ -73,7 +76,7 @@ describe('assembleSnapshot', () => {
     tracker.record('provA', 'ok', 100, 1000);
     const snapshot = assembleSnapshot(tracker, 'provA');
     expect(Object.keys(snapshot).sort()).toEqual(
-      ['averageLatencyMs', 'consecutiveFailures', 'lastSuccessAt', 'samples', 'total', 'up'].sort(),
+      ['averageLatencyMs', 'consecutiveFailures', 'lastErrorDetail', 'lastSuccessAt', 'lastSuccessfulDataRetrievalAt', 'providerStatus', 'samples', 'total', 'up'].sort()
     );
     expect(JSON.stringify(snapshot)).not.toContain(HEALTH_PROBE_QUERY);
   });
@@ -134,7 +137,7 @@ describe('HealthProbeService', () => {
     const service = new HealthProbeService({ tracker, probe, now: makeClock().now });
 
     await service.probeAll(['p1']);
-    expect(tracker.samples('p1')).toEqual([{ outcome: 'up', latencyMs: 120, timestamp: 0 }]);
+    expect(tracker.samples('p1')).toEqual([{ outcome: 'up', status: 'ok', latencyMs: 120, timestamp: 0, newestObservationAt: undefined, oldestObservationAt: undefined, errorDetail: undefined }]);
   });
 
   it('records up sample for ok with zero results (empty)', async () => {
@@ -167,9 +170,12 @@ describe('HealthProbeService', () => {
     const result = await service.probeAll(['p1']);
     expect(tracker.samples('p1')).toEqual([]);
     expect(result.p1).toEqual({
+      providerStatus: 'UNKNOWN',
       averageLatencyMs: null,
       lastSuccessAt: null,
+      lastSuccessfulDataRetrievalAt: null,
       consecutiveFailures: 0,
+      lastErrorDetail: null,
       samples: [],
       up: 0,
       total: 0,

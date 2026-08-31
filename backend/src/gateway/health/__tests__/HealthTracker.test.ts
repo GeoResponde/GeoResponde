@@ -6,7 +6,7 @@ describe('HealthTracker', () => {
   it('records an UP sample and sets lastSuccessAt / resets consecutiveFailures on ok/empty', () => {
     const tracker = new HealthTracker();
     tracker.record('provA', 'ok', 120, 1000);
-    expect(tracker.samples('provA')).toEqual([{ outcome: 'up', latencyMs: 120, timestamp: 1000 }]);
+    expect(tracker.samples('provA')).toEqual([{ outcome: 'up', status: 'ok', latencyMs: 120, timestamp: 1000, errorDetail: undefined, newestObservationAt: undefined, oldestObservationAt: undefined }]);
     expect(tracker.lastSuccessAt('provA')).toBe(1000);
     expect(tracker.consecutiveFailures('provA')).toBe(0);
 
@@ -20,8 +20,8 @@ describe('HealthTracker', () => {
     tracker.record('provA', 'ok', 100, 1000);
     tracker.record('provA', 'error', 999, 2000);
     expect(tracker.samples('provA')).toEqual([
-      { outcome: 'up', latencyMs: 100, timestamp: 1000 },
-      { outcome: 'down', latencyMs: null, timestamp: 2000 },
+      { outcome: 'up', status: 'ok', latencyMs: 100, timestamp: 1000, errorDetail: undefined, newestObservationAt: undefined, oldestObservationAt: undefined },
+      { outcome: 'down', status: 'error', latencyMs: null, timestamp: 2000, errorDetail: undefined, newestObservationAt: undefined, oldestObservationAt: undefined },
     ]);
     expect(tracker.consecutiveFailures('provA')).toBe(1);
     expect(tracker.lastSuccessAt('provA')).toBe(1000);
