@@ -14,9 +14,8 @@ Frontend and backend are deployed as two independent Vercel projects, connected 
 
 ## System topology
 
-A fully rendered architecture digram can be seen [here](architecture_export.html)
-
 Solid arrows are the search / read path. Dashed arrows are the report submission path.
+For deep-dive documentation on the Federated Search logic, see [Search Pipeline Architecture](architecture/search_pipeline.md).
 
 ```mermaid
 flowchart TB
@@ -179,6 +178,7 @@ frontend/src/pages/{Situation,Find,Report}
 | `/api/search` | `GET` | Federated search fan-out across search-capable adapters, resolved into CandidateEntities |
 | `/api/report` | `POST` | Validates a report, then fans it out via Gateway `submit()` to trusted providers (dry-run by default) |
 | `/api/providers` | `GET` | Lists active providers from the catalog with live adapter status |
+| `/api/health/providers` | `GET` | Returns aggregated provider health and data freshness metrics |
 | `/api/providers/:id/geojson` | `GET` | GeoJSON layer for a single provider |
 | `/api/usgs/earthquakes` | `GET` | Cached read-proxy to USGS earthquake feed |
 | `/api/geofon/earthquakes` | `GET` | Cached read-proxy to GEOFON earthquake feed |
@@ -194,4 +194,4 @@ frontend/src/pages/{Situation,Find,Report}
 
 Sourced by reading the repo directly (adapters, gateway, Fastify routes, catalog build, frontend hooks) — not from docs alone. Frontend and backend are deployed as two independent Vercel projects, connected only via `VITE_API_URL`; no database or persistent store exists in the system.
 
-See also: [`docs/providers.md`](./providers.md) for the provider integration workflow, [`docs/deployment.md`](./deployment.md) for how the two pieces are deployed, and [`knowledge/adr/0001-connector-strategy.md`](../knowledge/adr/0001-connector-strategy.md) for the git-driven connector ADR.
+See also: [`docs/providers.md`](./providers.md) for the provider integration workflow and [`docs/deployment.md`](./deployment.md) for how the two pieces are deployed.

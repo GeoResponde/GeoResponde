@@ -40,6 +40,10 @@ mis-filed — flag it.
 
 ## Current Providers
 
-| Provider | Status | Transport |
-|---|---|---|
-| Venezuela Te Busca | Experimental | Remix Single Fetch |
+Because the list of active integrations changes frequently, we no longer maintain a hardcoded table in this document.
+
+Instead, you can view the active fleet of integrations directly within the application:
+1. **[Public Provider Registry](/providers)**: Shows all active organizations and their search capabilities.
+2. **[Developer Health Dashboard](/dev/providers)**: Shows real-time telemetry, including adapter uptime, data freshness metrics, and latency history for every active provider.
+
+*Note: The system dynamically loads provider configurations from the internal catalog.*
