@@ -27,6 +27,7 @@ import { VenezuelaRescateAdapter } from './venezuelarescate/adapter.js';
 import { EstoyAquiVeAdapter } from './estoyaquive/adapter.js';
 import { CentrosDeAcopioVzlaAdapter } from './centros-de-acopio-vzla/adapter.js';
 import { MockResolutionAdapter } from './mock-resolution/adapter.js';
+import { SossismoVenezuelaAdapter } from './sossismovenezuela/adapter.js';
 
 /**
  * Any class that can build a BaseAdapter from a provider configuration.
@@ -86,7 +87,6 @@ registerAdapter('UshahidiAdapter', UshahidiAdapter);
 registerAdapter('IngresosAdapter', IngresosAdapter);
 registerAdapter('AvisaveAdapter', AvisaveAdapter);
 registerAdapter('TeBuscoAdapter', TeBuscoAdapter);
-
 registerAdapter('AjeAyudaVenezuelaAdapter', AjeAyudaVenezuelaAdapter);
 registerAdapter('AcopioVenezuelaAyudaAdapter', AcopioVenezuelaAyudaAdapter);
 registerAdapter('JuntosVeAdapter', JuntosVeAdapter);
@@ -97,3 +97,4 @@ registerAdapter('CentrosDeAcopioVzlaAdapter', CentrosDeAcopioVzlaAdapter);
 if (process.env.NODE_ENV !== 'production') {
   registerAdapter('MockResolutionAdapter', MockResolutionAdapter);
 }
+registerAdapter('SossismoVenezuelaAdapter', SossismoVenezuelaAdapter);

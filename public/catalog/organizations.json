@@ -153,5 +153,11 @@
     "name": "Estoy Aquí VE",
     "url": "https://estoyaquive.up.railway.app/",
     "type": "NGO"
+  },
+  {
+    "id": "prov-sossismovenezuela",
+    "name": "SOS Sismo Venezuela",
+    "url": "https://sossismovenezuela.com/",
+    "type": "NGO"
   }
 ]

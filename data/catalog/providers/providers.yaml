@@ -288,3 +288,17 @@
     cacheTtlMs: 300000
   config:
     url: "https://www.centrosdeacopiovzla.com/data.json"
+
+- id: prov-sossismovenezuela
+  display_name: SOS Sismo Venezuela
+  website: https://sossismovenezuela.com/
+  description: Centralized missing-persons registry and collection centers directory for the 2026 Venezuela earthquake, via its public Supabase API.
+  logo: /logos/sismovenezuela.png
+  status: active
+  adapter: SossismoVenezuelaAdapter
+  capabilities:
+    - search
+  config:
+    url: "https://pjbxkshoxcglucfzxlfe.supabase.co/rest/v1"
+    apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqYnhrc2hveGNnbHVjZnp4bGZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNTM2MzIsImV4cCI6MjA5NzkyOTYzMn0.ZdLDAzGU8cn7NUS5dPoyHQsfXpG0JCPPoFPAgFNnCdI"
+
